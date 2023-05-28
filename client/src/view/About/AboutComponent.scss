@@ -1,0 +1,61 @@
+.about-fastfood {
+    margin: 0;
+
+    height: 100%;
+
+    background-color: #222831;
+
+    .row {
+        display: flex;
+        align-items: center;
+        box-sizing: border-box;
+    }
+
+    p {
+        font-size: 18px;
+        display: flex;
+        float: left;
+
+    }
+
+    .about {
+        padding: 10px;
+        font-family: "Open Sans", sans-serif;
+
+    }
+
+    .word-about {
+        padding-left: 100px;
+        max-width: 50%;
+    }
+
+    h2 {
+        max-width: 50%;
+        float: left;
+    }
+
+    .detail-box {
+        float: left;
+        text-align: left;
+    }
+
+    a {
+        color: white;
+        text-decoration: none;
+        display: inline-block;
+        padding: 10px 30px;
+        margin-top: 50px;
+        background-color: #ffbe33;
+        color: #ffffff;
+        border-radius: 45px;
+        float: left;
+        transition: all 0.3s;
+        border: none;
+
+
+    }
+
+    a:hover {
+        background-color: gray;
+    }
+}

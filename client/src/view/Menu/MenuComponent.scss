@@ -1,0 +1,39 @@
+#content {
+    height: 1500px;
+    background-color: white;
+
+    
+    }
+   
+.cards {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    gap: 1rem;
+   
+    
+      
+  }
+  .card {
+    background-color: orange;
+    color: white;
+    padding: 1rem;
+    
+
+    
+  }
+
+  @media (min-width: 900px) {
+    .cards { grid-template-columns: repeat(3, 1fr); }
+  }
+
+h5{
+    color: black;
+}
+.btn-primary{
+    background-color: red;
+}
+.card-price{
+    color: black;
+    font-weight: 500;
+}

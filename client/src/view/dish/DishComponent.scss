@@ -1,0 +1,148 @@
+.dish-wrapper {
+    height: 1500px;
+    justify-content: space-between;
+    padding-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 80%;
+
+
+}
+
+.dish-detail {
+    background-color: #222831;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 20px;
+    padding-bottom: 100px;
+    max-width: 100%;
+    height: 100%;
+    justify-content: space-between;
+
+    .img-dish {
+        width: 30%;
+        border: 5px solid #ffbe33;
+        ;
+    }
+
+    h3 {
+        color: orange;
+        text-align: center;
+    }
+
+    h5 {
+        padding-left: 20px;
+    }
+
+    input {
+        border-radius: 5px;
+        color: #000;
+        float: right;
+        width: 70%;
+        height: 50px;
+        font-size: 20px;
+    }
+
+    .dish-content {
+        display: flex;
+
+        .about-dish {
+
+            float: left;
+        }
+
+        .info-dish {
+            padding-bottom: 20px;
+            padding-left: 30px;
+        }
+    }
+
+}
+
+.nav-commnent {
+    height: 100%;
+    width: 100%;
+    padding-top: 100px;
+
+    .item-detail-cart {
+        display: flex;
+
+        justify-content: space-between;
+
+
+    }
+
+    .comment-summary {
+
+
+        padding: 20px;
+        margin: 0;
+        border-radius: 5px;
+        height: 52%;
+        background-color: #222831;
+        color: white;
+
+        .header-comment {
+
+
+            h2 {
+                font-size: 24px;
+            }
+
+            .comment {
+                display: flex;
+            }
+
+            .input-comment {
+                width: 90%;
+                height: 70px;
+
+
+
+
+            }
+
+            .btn-comment {
+                width: 100px;
+                font-size: 24px;
+                font-weight: 500;
+                background: green;
+                right: 30px;
+                top: 5px;
+            }
+        }
+
+        .user-comment {
+
+            .user {
+                padding-top: 20px;
+
+                .name {
+                    font-weight: 500;
+                    margin-right: 5px;
+                    color: #79767f;
+                }
+
+                .star {
+
+                    margin: 10px;
+                    color: black;
+                    background-color: #ffbe33;
+                }
+
+            }
+
+            .p-comment {
+
+                padding: 8px 8px 8px 10px;
+                background: #a9a9a94d;
+                border-radius: 5px;
+                word-break: break-word;
+                user-select: text;
+            }
+        }
+
+
+
+    }
+}

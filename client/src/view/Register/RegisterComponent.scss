@@ -1,0 +1,201 @@
+img {
+    width: 100%;
+}
+
+.register {
+    height: 700px;
+    width: 100%;
+    background: white;
+    position: relative;
+}
+
+.register_box {
+    width: 1050px;
+    height: 650px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffbe33;
+    border-radius: 10px;
+    box-shadow: 1px 4px 22px -8px #0004;
+    display: flex;
+    overflow: hidden;
+}
+
+.register_box .-register {
+    width: 60%;
+    height: 100%;
+    padding: 25px 25px;
+
+}
+
+.register_box .left-register {
+    height: 100%;
+    padding: 25px 25px;
+
+}
+
+.img-register {
+    width: 80%;
+}
+
+.register_box .right-register {
+
+    width: 49%;
+    height: 100%
+}
+
+.left-register .top_link a {
+    color: #452A5A;
+    font-weight: 400;
+}
+
+.left-register .top_link {
+    height: 20px
+}
+
+.right-register .info-register {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    height: 100%;
+    width: 73%;
+    margin: auto;
+}
+
+.right-register h3 {
+    text-align: center;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.right-register input {
+    border: none;
+    width: 80%;
+    margin: 15px 0px;
+    border-bottom: 1px solid #4f30677d;
+    padding: 7px 9px;
+    width: 100%;
+    overflow: hidden;
+    background: transparent;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+
+
+.left-register {
+
+    background-color: #ffbe33;
+}
+
+.submit-register {
+    border: none;
+    padding: 15px 100px;
+    border-radius: 25px;
+    display: block;
+    margin: auto;
+    cursor: pointer;
+    background-color: #ffbe33;
+    color: #fff;
+    font-weight: bold;
+    -webkit-box-shadow: 0px 9px 15px -11px rgba(88, 54, 114, 1);
+    -moz-box-shadow: 0px 9px 15px -11px rgba(88, 54, 114, 1);
+    box-shadow: 0px 9px 15px -11px rgba(88, 54, 114, 1);
+
+}
+
+
+
+h6 {
+    margin: 0;
+    text-align: left;
+    font-size: 14px;
+}
+
+P {
+    font-size: 16px;
+}
+
+.submit-facebook {
+    border: none;
+    padding: 15px 50px;
+    border-radius: 25px;
+    display: block;
+    margin: auto;
+    margin-top: 10px;
+    background-color: #3b5998 !important;
+    border-color: #3b5998 !important;
+    color: #fff;
+    font-weight: bold;
+    -webkit-box-shadow: 0px 9px 15px -11px rgba(88, 54, 114, 1);
+    -moz-box-shadow: 0px 9px 15px -11px rgba(88, 54, 114, 1);
+    box-shadow: 0px 9px 15px -11px rgba(88, 54, 114, 1);
+}
+
+.submit-google {
+    border: none;
+    padding: 15px 60px;
+    border-radius: 25px;
+    display: block;
+    margin: auto;
+    margin-top: 10px;
+    background-color: #e4002b;
+    border: 1px solid #e4002b;
+    color: #fff;
+    font-weight: bold;
+    -webkit-box-shadow: 0px 9px 15px -11px rgba(88, 54, 114, 1);
+    -moz-box-shadow: 0px 9px 15px -11px rgba(88, 54, 114, 1);
+    box-shadow: 0px 9px 15px -11px rgba(88, 54, 114, 1);
+}
+
+
+.right-register {
+    background-color: #222831;
+    color: #fff;
+    position: relative;
+}
+
+.right-register .left-text {
+    height: 100%;
+    position: relative;
+    transform: translate(0%, 45%);
+}
+
+.left-register-text h2 {
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-size: 50px;
+    font-weight: 500;
+}
+
+.left-register-text h5 {
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-size: 19px;
+    font-weight: 400;
+}
+
+.left-register .left-inductor {
+    position: absolute;
+    width: 70px;
+    height: 7px;
+    background: #fff0;
+    left: 50%;
+    bottom: 70px;
+    transform: translate(-50%, 0%);
+}
+
+.top_link img {
+    width: 28px;
+    padding-right: 7px;
+    margin-top: -3px;
+}
+
+.go-login {
+    color: #ffbe33;
+}
