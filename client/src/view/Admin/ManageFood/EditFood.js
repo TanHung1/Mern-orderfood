@@ -9,20 +9,20 @@ function EditFood() {
     nameprod: "",
     price: "",
     image: "",
-    description: "",
+    category: "",
   });
 
   useEffect(() => {
     axios
       .get(`http://localhost:5000/api/product/${_id}`)
       .then((response) => {
-        const { nameprod, price, image, description } = response.data.product;
+        const { nameprod, price, image, category } = response.data.product;
         setInputData({
           ...inputData,
           nameprod: nameprod,
           price: price,
           image: image,
-          description: description,
+          category: category,
         });
       })
       .catch((err) => console.log(err));
@@ -35,6 +35,7 @@ function EditFood() {
       .then((res) => {
         alert("Chỉnh sửa món ăn thành công");
         navigate("/manage-food");
+        console.log(inputData);
       })
       .catch((err) => {
         console.log(err);
@@ -51,7 +52,7 @@ function EditFood() {
           <input
             type="text"
             className="form-control"
-            _id="nameprod"
+            id="nameprod"
             name="nameprod"
             value={inputData.nameprod}
             onChange={(e) =>
@@ -68,7 +69,7 @@ function EditFood() {
           <input
             type="text"
             className="form-control"
-            _id="price"
+            id="price"
             name="price"
             value={inputData.price}
             onChange={(e) =>
@@ -85,7 +86,7 @@ function EditFood() {
           <input
             type="text"
             className="form-control"
-            _id="image"
+            id="image"
             name="image"
             value={inputData.image}
             onChange={(e) =>
@@ -98,17 +99,27 @@ function EditFood() {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="description">Mô tả</label>
-          <textarea
+          <label htmlFor="category" className="lb-edit-staff">
+            Loại
+          </label>
+          <select
             className="form-control"
-            _id="description"
-            name="description"
-            value={inputData.description}
+            id="category"
+            name="category"
+            value={inputData.category}
             onChange={(e) =>
-              setInputData({ ...inputData, description: e.target.value })
+              setInputData((prevState) => ({
+                ...prevState,
+                category: e.target.value,
+              }))
             }
-            placeholder="Nhập mô tả món ăn"
-          />
+          >
+            <option value="">Chọn loại</option>
+            <option value="pizza">Pizza</option>
+            <option value="desserts">Tráng miệng</option>
+            <option value="drink">Đồ uống</option>
+            <option value="side">Món ăn kèm</option>
+          </select>
         </div>
         <button type="submit" className="btn btn-primary">
           Lưu

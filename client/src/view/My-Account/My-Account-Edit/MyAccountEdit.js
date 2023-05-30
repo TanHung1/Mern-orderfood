@@ -3,6 +3,7 @@ import "../../My-Account/MyAccountEdit.scss";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { NavLink } from "react-router-dom";
 function MyAccountEdit() {
   const [personalInfo, setPersonalInfo] = useState(null);
 
@@ -21,6 +22,10 @@ function MyAccountEdit() {
         console.error(error);
       });
   }, []);
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    window.location.pathname = "/"; // Chuyển hướng đến trang đăng nhập khi đăng xuất
+  };
   return (
     <section className="my-account-wrapper">
       <div className="my-account-content">
@@ -33,7 +38,7 @@ function MyAccountEdit() {
                   <br /> HƯNG
                 </h2>
                 <p>
-                  <a href="">Đăng xuất</a>
+                  <NavLink onClick={handleLogout}>Đăng xuất</NavLink>
                 </p>
               </div>
               <ul>

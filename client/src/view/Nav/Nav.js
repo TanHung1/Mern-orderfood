@@ -5,10 +5,8 @@ import { NavLink, Link, useLocation, useNavigate } from "react-router-dom";
 
 function Nav() {
   const [cartItemCount, setCartItemCount] = useState(0);
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    window.location.pathname = "/login"; // Chuyển hướng đến trang đăng nhập khi đăng xuất
-  };
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
@@ -17,7 +15,17 @@ function Nav() {
       0
     );
     setCartItemCount(itemCount);
-  }, []);
+  }, [cartItemCount]);
+
+  useEffect(() => {
+    if (location.pathname === "/my-account/edit") {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        navigate("/login");
+      }
+    }
+  }, [location, navigate]);
+
   return (
     <div>
       <div className="topnav">
@@ -38,16 +46,16 @@ function Nav() {
             Staff
           </NavLink>
         </div>
-        {/* <i class="fa-solid fa-cart-shopping"></i>  */}
         <div className="nav-right">
           <NavLink to="/cart" activeClassName="active">
-            <i class="fa-solid fa-cart-shopping"></i>
+            <i className="fa-solid fa-cart-shopping">
+              {cartItemCount > 0 && (
+                <span className="cart-count">({cartItemCount})</span>
+              )}
+            </i>
           </NavLink>
           <NavLink to="/my-account/edit" activeClassName="active">
-            <i class="fa-solid fa-user"></i>
-          </NavLink>
-          <NavLink onClick={handleLogout}>
-            <i class="fa-solid fa-right-from-bracket"></i>
+            <i className="fa-solid fa-user"></i>
           </NavLink>
         </div>
       </div>

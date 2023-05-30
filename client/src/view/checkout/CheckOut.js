@@ -16,6 +16,7 @@ const CheckOut = () => {
   const handlePayment = async () => {
     try {
       const accessToken = localStorage.getItem("token");
+      const dataUser = JSON.parse(accessToken);
       if (!accessToken) {
         alert("Bạn cần đăng nhập để tiếp tục đặt hàng.");
         return;
@@ -25,13 +26,16 @@ const CheckOut = () => {
         "http://localhost:5000/api/checkout",
         {
           cart,
-          customerName,
+          customerName: dataUser.user.username,
           customerAddress,
-          customerPhone,
-          customerEmail,
+          customerPhon: dataUser.user.phonenumber,
+          customerEmail: dataUser.user.email,
         },
         {
-          headers: { Authorization: `Bearer ${accessToken}` },
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
         }
       );
       alert("Thanh toán thành công!", response);

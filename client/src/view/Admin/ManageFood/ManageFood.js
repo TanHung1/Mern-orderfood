@@ -10,6 +10,7 @@ function ManageFood() {
     nameprod: "",
     price: "",
     image: "",
+    category: "",
   });
   const [data, setData] = useState([]);
   const navigate = useNavigate();
@@ -142,6 +143,26 @@ function ManageFood() {
                       }
                     />
                   </div>
+                  <div class="form-group">
+                    <label
+                      for="exampleFormControlTextarea1"
+                      className="text-lable"
+                    >
+                      Loại
+                    </label>
+                    <select
+                      class="form-control"
+                      onChange={(e) =>
+                        setInputData({ ...inputData, category: e.target.value })
+                      }
+                    >
+                      <option>Loại</option>
+                      <option>pizza</option>
+                      <option>desserts</option>
+                      <option>drink</option>
+                      <option>side</option>
+                    </select>
+                  </div>
 
                   <button type="submit" class="btn btn-primary">
                     Submit
@@ -155,7 +176,7 @@ function ManageFood() {
                 <th className="food-header">Tên món</th>
                 <th className="food-header">Hình ảnh</th>
                 <th className="food-header">Giá</th>
-                <th className="food-header">Mô tả</th>
+                <th className="food-header">Loại</th>
                 <th className="food-header">Chỉnh sửa</th>
                 <th className="food-header">Xóa</th>
               </tr>
@@ -168,7 +189,7 @@ function ManageFood() {
                     <img src={d.image} className="img-manageFood" />{" "}
                   </td>
                   <td className="food-content">{d.price}đ</td>
-                  <td className="food-content">{d.description}</td>
+                  <td className="food-content">{d.category}</td>
                   <td className="food-content">
                     <Link
                       className="text-decoration-none btn btn-sm btn-success"
