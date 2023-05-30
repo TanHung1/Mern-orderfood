@@ -27,9 +27,7 @@ const AuthenticationAccount = async (req, res, next) => {
 }
 
 passport.use(new GooglePlusTokenStrategy({
-    // clientID: process.env.clientID,
-    // clientSecret: process.env.clientSecret,
-    // passReqToCallback: true
+    
 }, async (res, req, accessToken, refreshToken, profile, next) => {
     try {
         // console.log('accessToken', accessToken);
