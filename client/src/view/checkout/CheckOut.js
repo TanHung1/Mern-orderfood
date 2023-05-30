@@ -21,14 +21,15 @@ const CheckOut = () => {
         return;
       }
       console.log(accessToken);
+      const dataUser = JSON.parse(accessToken);
       const response = await axios.post(
-        "http://localhost:5000/api/checkout",
+        "http://localhost:5000/api/order/neworder",
         {
           cart,
-          customerName,
+          customerName: dataUser.user.username,
           customerAddress,
-          customerPhone,
-          customerEmail,
+          customerPhone: dataUser.user.phonenumber,
+          customerEmail: dataUser.user.email,
         },
         {
           headers: { Authorization: `Bearer ${accessToken}` },

@@ -10,21 +10,23 @@ class ProductController {
       res.status(200).json({
         products: mutipleMongooseToObject(products),
       });
+      //horkoherkohwohmwmhpw
     } catch (err) {
       res.status(500).json(err);
     }
   };
 
-  async detail(req, res, next) {
+  detail(req, res, next) {
     //[get] /product/:id
-    try {
-      const product = await Product.findOne({ _id: req.params.id });
-      res.status(200).json({
-        product: mongooesToObject(product),
+    Product.findOne({ _id: req.params.id })
+      .then((product) => {
+        res.status(200).json({
+          product: mongooesToObject(product),
+        });
+      })
+      .catch((err) => {
+        res.status(500).json(err);
       });
-    } catch (err) {
-      res.status(500).json(err);
-    }
   }
 }
 
