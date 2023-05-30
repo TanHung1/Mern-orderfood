@@ -34,6 +34,16 @@ const Account = new Schema(
             type: String
         },
 
+        authGoogleID:{
+            type: String,
+            default: null,
+        },
+        authFacebookID:{
+            type: String,
+            default: null,
+        },
+
+
         loginType: {
             type: String,
             enum: ['local', 'google', 'facebook'],

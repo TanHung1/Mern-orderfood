@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const products = new Schema({
+const items = new Schema({
     nameprod: {
         type: String,
     },
@@ -13,6 +13,10 @@ const products = new Schema({
 
     price: {
         type: Number,
+    },
+
+    image: {
+        type: String,
     },
 
     id: {
@@ -26,7 +30,7 @@ const Order = new Schema(
 
         product: {
             type: [
-                products
+                items
             ]
         },
 
@@ -34,6 +38,18 @@ const Order = new Schema(
         {
             type: String
         }, 
+
+        address:{
+            type: String,
+        },
+
+        phonenumber: {
+            type: String,
+        },
+
+        email: {
+            type: String
+        },
 
         status: {
             type: String,

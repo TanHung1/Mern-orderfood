@@ -22,13 +22,14 @@ const CheckOut = () => {
         return;
       }
       console.log(accessToken);
+
       const response = await axios.post(
-        "http://localhost:5000/api/checkout",
+        "http://localhost:5000/api/order/neworder",
         {
           cart,
           customerName: dataUser.user.username,
           customerAddress,
-          customerPhon: dataUser.user.phonenumber,
+          customerPhone: dataUser.user.phonenumber,
           customerEmail: dataUser.user.email,
         },
         {
