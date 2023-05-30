@@ -11,7 +11,18 @@ const CheckOut = () => {
   useEffect(() => {
     const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
     setCart(cartItems);
+
+    const accessToken = localStorage.getItem("token");
+    const dataUser = JSON.parse(accessToken);
+    if (accessToken) {
+      setCustomerName(dataUser.user.username);
+      setCustomerAddress(dataUser.user.address);
+      setCustomerPhone(dataUser.user.phonenumber);
+      setCustomerEmail(dataUser.user.email);
+    }
   }, []);
+  const accessToken = localStorage.getItem("token");
+  const dataUser = JSON.parse(accessToken);
 
   const handlePayment = async () => {
     try {
@@ -92,7 +103,7 @@ const CheckOut = () => {
               Họ tên:
               <input
                 type="text"
-                value={customerName}
+                value={dataUser ? dataUser.user.username : customerName}
                 onChange={(e) => setCustomerName(e.target.value)}
               />
             </label>
