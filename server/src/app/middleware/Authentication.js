@@ -29,8 +29,7 @@ const AuthenticationAccount = async (req, res, next) => {
 passport.use(
   new GooglePlusTokenStrategy(
     {
-      clientID:
-        "113981226682-vk1qqh65b4d0j2l5ag62k455s69dvkes.apps.googleusercontent.com",
+      clientID:"113981226682-vk1qqh65b4d0j2l5ag62k455s69dvkes.apps.googleusercontent.com",
       clientSecret: "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",
       passReqToCallback: true,
     },

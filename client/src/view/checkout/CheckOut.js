@@ -2,11 +2,14 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const CheckOut = () => {
+
   const [cart, setCart] = useState([]);
   const [customerName, setCustomerName] = useState("");
   const [customerAddress, setCustomerAddress] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
+  const accessToken = localStorage.getItem("token");
+  const dataUser = JSON.parse(accessToken);
 
   useEffect(() => {
     const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
@@ -15,8 +18,7 @@ const CheckOut = () => {
 
   const handlePayment = async () => {
     try {
-      const accessToken = localStorage.getItem("token");
-      const dataUser = JSON.parse(accessToken);
+      
       if (!accessToken) {
         alert("Bạn cần đăng nhập để tiếp tục đặt hàng.");
         return;
