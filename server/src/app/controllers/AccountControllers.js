@@ -70,10 +70,11 @@ class AccountControler {
 
     //[post] /api/account/auth/google
     authGoogle = async (req, res) =>{
-        const token = encodedToken(req.user._id)
-        console.log(token)
-        res.setHeader('Authorization', token);
-        return res.status(200).json({success: true})
+        console.log('auth google', req.user)
+        // const token = encodedToken(req.user._id)
+        // console.log(token)
+        // res.setHeader('Authorization', token);
+        // return res.status(200).json({success: true})
     }
 
     //[put] api/account/:id/update-account

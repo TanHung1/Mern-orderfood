@@ -1,7 +1,8 @@
 const jwt = require("jsonwebtoken");
 const Account = require("../models/Account");
-const GooglePlusTokenStrategy = require("passport-google-plus-token");
+const GooglePlusTokenStrategy = require('passport-google-plus-token');
 const passport = require("passport");
+const env = require("dotenv");
 
 const AuthenticationAccount = async (req, res, next) => {
   const authheader = req.header("Authorization");
@@ -26,41 +27,39 @@ const AuthenticationAccount = async (req, res, next) => {
   }
 };
 
-passport.use(
-  new GooglePlusTokenStrategy(
-    {
-      clientID:"113981226682-vk1qqh65b4d0j2l5ag62k455s69dvkes.apps.googleusercontent.com",
-      clientSecret: "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",
-      passReqToCallback: true,
-    },
-    async (res, req, accessToken, refreshToken, profile, next) => {
-      try {
-        // console.log('accessToken', accessToken);
-        // console.log('refreshToken', refreshToken);
-        // console.log('profile', profile);
 
-        const user = await Account.findOne({
-          authGoogleID: accessToken.id,
-          loginType: "google",
-        });
 
-        //Already have an account
-        if (user) return user;
+passport.use(new GooglePlusTokenStrategy({
+  clientID: "113981226682-vk1qqh65b4d0j2l5ag62k455s69dvkes.apps.googleusercontent.com",
+  clientSecret: "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",
 
-        //no account
-        const newUser = new Account({
-          loginType: "google",
-          authGoogleID: accessToken.id,
-          email: accessToken.emails[0].value,
-        });
-        await newUser.save();
-        // console.log(newUser)
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  )
-);
+}, async (req, res, accessToken, refreshToken, profile, done) => {
+  try {
+    // console.log('accessToken: ' , accessToken);
+    // console.log('refreshToken: ', refreshToken);
+    // console.log('profile: ' , profile);
+
+    const user = await Account.findOne({
+      loginType: 'google',
+      authGoogleID: accessToken.id,
+
+    });
+
+    if (user) return done(null, user);
+
+
+    const newAccount = new Account({
+      loginType: 'google',
+      email: accessToken.emails[0].value,
+      authGoogleID: accessToken.id,
+    })
+    await newAccount.save();
+    done(null, newAccount);
+
+  } catch (error) {
+    console.log(error);
+  }
+}));
 
 module.exports = {
   AuthenticationAccount,
