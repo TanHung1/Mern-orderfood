@@ -62,8 +62,8 @@ function MenuComponent() {
             <div class="card-body">
               <h5 class="card-title">{item.nameprod}</h5>
               <p class="card-text">{item.description}</p>
-              <p class="card-price">{item.price}</p>
-              <p class="card-price">{item.category}</p>
+              <p class="card-price">{item.price}đ</p>
+
               <button
                 class="btn btn-primary"
                 onClick={() => handleAddToCart(item)}
@@ -76,9 +76,9 @@ function MenuComponent() {
       );
     });
   };
-
   return (
-    <div>
+    <>
+      <h1 class="menu-header">Thực Đơn Món Ăn</h1>
       <div className="category-buttons">
         <button onClick={handleShowAllClick}>All</button>
         <button
@@ -107,11 +107,10 @@ function MenuComponent() {
           Side
         </button>
       </div>
-      <div className="" style={{ color: "black" }}>
-        Sản phẩm hiện đang có trong giỏ hàng: {cartItemCount}
+      <div>
+        <div className="cards">{renders()}</div>
       </div>
-      <div className="cards">{renders()}</div>
-    </div>
+    </>
   );
 }
 

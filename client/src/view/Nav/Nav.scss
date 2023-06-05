@@ -1,46 +1,99 @@
-/* Add a black background color to the top navigation */
-.topnav {
-    background-color: #333;
-    overflow: hidden;
-    padding: 15px;
-    display: flex;
-    
-    justify-content: space-between;
-}
+.navbar {
+  background-color: #fff;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  padding: 10px 20px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+  .navbar-brand {
+    font-size: 24px;
+    font-weight: bold;
+    color: #f44336;
+  }
 
-/* Style the links inside the navigation bar */
-.topnav a {
+  .navbar-nav {
+    .nav-item {
+      margin-right: 20px;
 
-    text-align: center;
-    color: #f2f2f2;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-size: 28px;
-}
+      .nav-link {
+        font-size: 18px;
+        color: #666;
+        text-transform: uppercase;
+        border-bottom: 2px solid transparent;
+        transition: border-color 0.3s ease-in-out;
 
-/* Change the color of links on hover */
-.topnav a:hover {
-    background-color: #ddd;
-    color: black;
-}
+        &:hover,
+        &.active {
+          color: #f44336;
+          border-color: #f44336;
+        }
+      }
 
-/* Add a color to the active/current link */
-.topnav a.active {
-    background-color: #ffbe33;
-    color: white;
-}
-// .cart-count {
-//     color: #fff;
-//     background-color: red;
-//     border-radius: 50%;
-//     font-size: 0.8rem;
-//     font-weight: bold;
-//     padding: 0.2rem 0.4rem;
-//     position: absolute;
-//     top: 0;
-//     right: -0.8rem;
-//   }
+      .dropdown {
+        .nav-link {
+          position: relative;
 
-.nav-top{
-    position: fixed;
+          &::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            right: -10px;
+            transform: translateY(-50%);
+            border: 6px solid transparent;
+            border-left-color: #666;
+          }
+
+          &:hover::after {
+            border-left-color: #f44336;
+          }
+        }
+
+        .dropdown-menu {
+          background-color: #fff;
+          border: none;
+          box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+          border-radius: 10px;
+          padding: 10px;
+
+          .dropdown-item {
+            font-size: 16px;
+            color: #666;
+            text-transform: capitalize;
+            margin-bottom: 10px;
+            transition: color 0.3s ease-in-out;
+
+            &:hover,
+            &.active {
+              color: #f44336;
+            }
+          }
+        }
+      }
+    }
+  }
+  li{
+    cursor: pointer;
+  }
+  form {
+    margin-left: auto;
+
+    .fa-solid {
+      font-size: 24px;
+      color: #666;
+      margin-right: 20px;
+      transition: color 0.3s ease-in-out;
+
+      &:hover {
+        color: #f44336;
+      }
+    }
+
+    .cart-count {
+      font-size: 14px;
+      font-weight: bold;
+      margin-left: 5px;
+      color: #f44336;
+    }
+  }
 }

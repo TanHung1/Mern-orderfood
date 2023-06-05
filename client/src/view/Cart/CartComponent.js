@@ -43,9 +43,10 @@ function CartComponent() {
       return (
         <div key={item._id}>
           <div>
+            <h5 class="card-title">{item.nameprod}</h5>
             <h5>{item.name}</h5>
             <img src={item.image} alt={item.name} style={{ width: "10%" }} />
-            <p>Price: {item.price}</p>
+            <p>Price: {item.price}đ</p>
             <div className="detail">
               <button onClick={() => handleDecreaseQuantity(item)}>-</button>
               <h5>{item.quantity}</h5>
@@ -69,18 +70,18 @@ function CartComponent() {
 
   return (
     <div className="cart-container">
-      <h2>Your Cart</h2>
+      <h2>Giỏ hàng của bạn</h2>
       {cartItems.length === 0 ? (
-        <p>Your cart is empty</p>
+        <p>Giở hàng của bạn đang trống</p>
       ) : (
         <div>
           {renders()}
-          <p>Total: {getTotalPrice()}</p>
+          <p>Total: {getTotalPrice()}đ</p>
           <Link
             className="text-decoration-none btn btn-sm btn-success"
             to={"/checkout"}
           >
-            Proceed to Checkout
+            Tiến hành đặt hàng
           </Link>
         </div>
       )}

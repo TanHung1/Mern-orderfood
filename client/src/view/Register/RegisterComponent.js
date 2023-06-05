@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
+
 function RegisterComponent() {
   const [username, namechange] = useState("");
   const [password, passwordchange] = useState("");
@@ -72,14 +73,13 @@ function RegisterComponent() {
           </div>
           <div className="right-register">
             <div className="info-register">
+              <h3 className="register-header">Đăng ký</h3>
               <form onSubmit={handlesubmit}>
-                <h3>Đăng ký</h3>
-
                 <input
                   value={username}
                   onChange={(e) => namechange(e.target.value)}
                   type="text"
-                  placeholder="nhập họ và tên"
+                  placeholder="Nhập họ và tên"
                 />
                 <input
                   value={phonenumber}
@@ -100,18 +100,18 @@ function RegisterComponent() {
                 />
 
                 <button type="submit" className="submit">
-                  Register
+                  Đăng ký
                 </button>
                 <hr />
                 <h6>Hoặc tiếp tục với</h6>
                 <button className="login-facebook">
-                  <i class="fa-brands fa-facebook"></i> Đăng nhập bằng facebook
+                  <i class="fa-brands fa-facebook"></i> Đăng nhập bằng Facebook
                 </button>
                 <button className="login-google">
-                  <i class="fa-brands fa-google"></i>Đăng nhập bằng google
+                  <i class="fa-brands fa-google"></i>Đăng nhập bằng Google
                 </button>
-                <p>
-                  Bạn đã có tài khoản?
+                <p className="register-login-text">
+                  Bạn đã có tài khoản?{" "}
                   <NavLink to="/login" activeClassName="active">
                     <a href="/login" className="go-login">
                       Đăng nhập
