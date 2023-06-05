@@ -53,12 +53,39 @@ class AccountControler {
         { expiresIn: "48h" }
       );
 
+<<<<<<< HEAD
       if (user && vallidPassword) {
         res.status(200).json({ token, user });
       }
     } catch (error) {
       res.status(500).json(error);
       console.log(error);
+=======
+            const token = jwt.sign(
+                { userId: user._id },
+                process.env.jwt_access_token,
+                { expiresIn: "48h" }
+            );
+
+            if (user && vallidPassword) {
+                res.status(200).json({ token, user })
+            }
+
+        } catch (error) {
+            res.status(500).json(error)
+            console.log(error)
+        }
+
+    };
+
+    //[post] /api/account/auth/google
+    authGoogle = async (req, res) =>{
+        console.log('auth google', req.user)
+        // const token = encodedToken(req.user._id)
+        // console.log(token)
+        // res.setHeader('Authorization', token);
+        // return res.status(200).json({success: true})
+>>>>>>> 1361d9c672cacb1c8fc2b9e8c1b306d07a935cc3
     }
   };
 
