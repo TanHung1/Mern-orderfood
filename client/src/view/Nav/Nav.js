@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import "./Nav.scss";
-import { useState, useEffect } from "react";
-import { NavLink, Link, useLocation, useNavigate } from "react-router-dom";
 
 function Nav() {
   const [cartItemCount, setCartItemCount] = useState(0);
+  const [isNavOpen, setIsNavOpen] = useState(false);
+
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -15,7 +16,7 @@ function Nav() {
       0
     );
     setCartItemCount(itemCount);
-  }, [cartItemCount]);
+  }, []);
 
   useEffect(() => {
     if (location.pathname === "/my-account/edit") {
@@ -27,26 +28,68 @@ function Nav() {
   }, [location, navigate]);
 
   return (
-    <div>
-      <div className="topnav">
-        <div className="nav-left">
-          <NavLink to="/" activeClassName="active" exact={true}>
-            Home
-          </NavLink>
-          <NavLink to="/menu" activeClassName="active">
-            Menu
-          </NavLink>
-          <NavLink to="/about" activeClassName="active">
-            About
-          </NavLink>
-          <NavLink to="/admin" activeClassName="active">
-            Admin
-          </NavLink>
-          <NavLink to="/Staff/manage-bill" activeClassName="active">
-            Staff
-          </NavLink>
-        </div>
-        <div className="nav-right">
+    <nav
+      className="navbar navbar-expand-lg navbar-light"
+      style={{ backgroundColor: "#ffd700" }}
+    >
+      <NavLink className="navbar-brand" to="/">
+        Navbar
+      </NavLink>
+      <button
+        className="navbar-toggler"
+        type="button"
+        onClick={() => setIsNavOpen(!isNavOpen)}
+      >
+        <span className="navbar-toggler-icon"></span>
+      </button>
+
+      <div
+        className={`collapse navbar-collapse ${isNavOpen ? "show" : ""}`}
+        id="navbarSupportedContent"
+      >
+        <ul className="navbar-nav mr-auto">
+          <li className="nav-item">
+            <NavLink className="nav-link" activeClassName="active" exact to="/">
+              Home
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink className="nav-link" activeClassName="active" to="/menu">
+              Menu
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink className="nav-link" activeClassName="active" to="/about">
+              About
+            </NavLink>
+          </li>
+          <li className="nav-item dropdown">
+            <a
+              className="nav-link dropdown-toggle"
+              href="/"
+              id="navbarDropdown"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Admin
+            </a>
+            <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li>
+                <NavLink className="dropdown-item" to="/manage-food">
+                  Quản lý thức ăn
+                </NavLink>
+              </li>
+              <li>
+                <NavLink className="dropdown-item" to="/Staff/manage-bill">
+                  Quản lý hóa đơn
+                </NavLink>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <form className="form-inline my-2 my-lg-0">
           <NavLink to="/cart" activeClassName="active">
             <i className="fa-solid fa-cart-shopping">
               {cartItemCount > 0 && (
@@ -57,9 +100,9 @@ function Nav() {
           <NavLink to="/my-account/edit" activeClassName="active">
             <i className="fa-solid fa-user"></i>
           </NavLink>
-        </div>
+        </form>
       </div>
-    </div>
+    </nav>
   );
 }
 

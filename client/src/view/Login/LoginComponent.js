@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
-
+import about from "../../assets/about-img.png";
+import { NavLink } from "react-router-dom";
+import "./LoginComponent.scss";
 const LoginComponent = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -40,22 +42,54 @@ const LoginComponent = () => {
   const isFormValid = email && password;
   return (
     <div>
-      <h1>Đăng nhập</h1>
-      {error && <p>{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <label>Tên đăng nhập:</label>
-        <input type="text" value={email} onChange={handleEmailChange} />
-        <label>Mật khẩu:</label>
-        <input
-          type="password"
-          value={password}
-          onChange={handlePasswordChange}
-        />
+      <section class="login">
+        <div class="login_box">
+          <div class="left-login">
+            <img src={about} class="img-login" />
+            <div class="left-text"></div>
+          </div>
+          <div class="right-login">
+            <div class="info-login">
+              <h3 class="login-header">Đăng nhập</h3>
+              {error && <p>{error}</p>}
+              <form onSubmit={handleSubmit}>
+                <input
+                  value={email}
+                  onChange={handleEmailChange}
+                  placeholder="Địa chỉ email của bạn"
+                />
 
-        <button type="submit" disabled={!isFormValid}>
-          Đăng nhập
-        </button>
-      </form>
+                <input
+                  value={password}
+                  onChange={handlePasswordChange}
+                  type="password"
+                  placeholder="Mật khẩu"
+                />
+
+                <button type="submit" class="submit" disabled={!isFormValid}>
+                  Đăng nhập
+                </button>
+              </form>
+              <hr />
+              <h6>Hoặc đăng nhập với</h6>
+              <button class="login-facebook">
+                <i class="fa-brands fa-facebook"></i> Đăng nhập bằng Facebook
+              </button>
+              <button class="login-google">
+                <i class="fa-brands fa-google"></i> Đăng nhập bằng Google
+              </button>
+              <p class="login-register-text">
+                Bạn chưa có tài khoản?{" "}
+                <NavLink to="/register" activeClassName="active">
+                  <a href="/register" class="go-register">
+                    Đăng ký
+                  </a>
+                </NavLink>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

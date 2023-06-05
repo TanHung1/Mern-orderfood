@@ -5,26 +5,51 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
 function MyAccountEdit() {
-  const [personalInfo, setPersonalInfo] = useState(null);
+  const [customerName, setCustomerName] = useState("");
+  const [customerAddress, setCustomerAddress] = useState("");
+  const [customerPhone, setCustomerPhone] = useState("");
+  const [customerEmail, setCustomerEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const accessToken = localStorage.getItem("token");
+  const dataUser = JSON.parse(accessToken);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    axios
-      .get("http://localhost:5000/api/personalinfo", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        setPersonalInfo(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    if (accessToken) {
+      setCustomerName(dataUser.user.username);
+      setCustomerAddress(dataUser.user.address);
+      setCustomerPhone(dataUser.user.phonenumber);
+      setCustomerEmail(dataUser.user.email);
+    }
   }, []);
+
   const handleLogout = () => {
     localStorage.removeItem("token");
-    window.location.pathname = "/"; // Chuyển hướng đến trang đăng nhập khi đăng xuất
+    window.location.pathname = "/login";
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.patch(
+        `http://localhost:5000/api/account/${dataUser.user._id}/update-account`,
+        {
+          username: customerName,
+          phonenumber: customerPhone,
+          address: customerAddress,
+          email: customerEmail,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      setMessage(response.data.message);
+    } catch (error) {
+      console.error(error);
+      setMessage("Cập nhật thông tin thất bại. Vui lòng thử lại.");
+    }
   };
   return (
     <section className="my-account-wrapper">
@@ -35,7 +60,7 @@ function MyAccountEdit() {
               <div className="header-info">
                 <h2>
                   XIN CHÀO,
-                  <br /> HƯNG
+                  <br /> {customerName}
                 </h2>
                 <p>
                   <NavLink onClick={handleLogout}>Đăng xuất</NavLink>
@@ -61,61 +86,50 @@ function MyAccountEdit() {
         <div className="right-history">
           <div className="previous-oders-right">
             <h3>THÔNG TIN CÁ NHÂN</h3>
-            {personalInfo && (
-              <div>
-                <p>Họ và tên: {personalInfo.fullName}</p>
-                <p>Email: {personalInfo.email}</p>
-                <p>Địa chỉ: {personalInfo.address}</p>
-                <p>Số điện thoại: {personalInfo.phone}</p>
-              </div>
-            )}
-            <form>
+            <form onSubmit={handleSubmit}>
               <div class="form-group">
-                <label htmlFor="name">ID:</label>
-                <input type="number" name="id" className="form-control" v />
-              </div>
-              <div class="form-group">
-                <label for="exampleFormControlFile1">Họ tên</label>
+                <label for="exampleInputEmail1">Họ và tên</label>
                 <input
                   type="text"
                   class="form-control"
-                  id="exampleFormControlFile1"
-                  name="NameCustumer"
+                  id="exampleInputEmail1"
+                  aria-describedby="emailHelp"
+                  value={customerName}
+                  onChange={(e) => setCustomerName(e.target.value)}
                 />
               </div>
               <div class="form-group">
-                <label for="exampleFormControlSelect2">Số điện thoại</label>
+                <label for="exampleInputEmail1">Địa chỉ giao hàng</label>
                 <input
                   type="text"
                   class="form-control"
-                  id="exampleFormControlFile1"
-                  name="BookingDate"
+                  id="exampleInputEmail1"
+                  aria-describedby="emailHelp"
+                  value={customerAddress}
+                  onChange={(e) => setCustomerAddress(e.target.value)}
                 />
               </div>
               <div class="form-group">
-                <label for="exampleFormControlSelect2">Email</label>
+                <label for="exampleInputEmail1">Số điện thoại</label>
                 <input
                   type="text"
                   class="form-control"
-                  id="exampleFormControlFile1"
-                  name="DeliveryDate"
-                />
-              </div>
-              <div class="form-group">
-                <label for="exampleFormControlTextarea1">Địa chỉ</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="exampleFormControlFile1"
+                  id="exampleInputEmail1"
+                  aria-describedby="emailHelp"
+                  value={customerPhone}
+                  onChange={(e) => setCustomerPhone(e.target.value)}
                 />
               </div>
 
               <div class="form-group">
-                <label for="exampleFormControlTextarea1">Ngày sinh</label>
+                <label for="exampleInputEmail1">Địa chỉ email</label>
                 <input
-                  type="date"
+                  type="email"
                   class="form-control"
-                  id="exampleFormControlFile1"
+                  id="exampleInputEmail1"
+                  aria-describedby="emailHelp"
+                  value={customerEmail}
+                  onChange={(e) => setCustomerEmail(e.target.value)}
                 />
               </div>
               <button type="submit" class="btn btn-primary">

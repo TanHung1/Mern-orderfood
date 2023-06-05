@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
+import "./CheckOut.scss";
 const CheckOut = () => {
-
   const [cart, setCart] = useState([]);
   const [customerName, setCustomerName] = useState("");
   const [customerAddress, setCustomerAddress] = useState("");
@@ -18,7 +17,6 @@ const CheckOut = () => {
 
   const handlePayment = async () => {
     try {
-      
       if (!accessToken) {
         alert("Bạn cần đăng nhập để tiếp tục đặt hàng.");
         return;
@@ -63,7 +61,7 @@ const CheckOut = () => {
           <h5>
             <img src={item.image} style={{ width: "10%" }} />
           </h5>
-          <p style={{ color: "black" }}>Price: {item.price}</p>
+          <p style={{ color: "black" }}>Price: {item.price}đ</p>
           <div className="detail">
             <h5>Quantity: {item.quantity}</h5>
           </div>
@@ -79,54 +77,57 @@ const CheckOut = () => {
       {cart.length === 0 ? (
         <p>Đơn hàng của bạn đang trống</p>
       ) : (
-        <div>
-          {renders()}
-          <p>
-            Tổng tiền:{" "}
-            {cart.reduce(
-              (total, item) => total + item.price * item.quantity,
-              0
-            )}
-          </p>
-          <div>
+        <div className="checkout">
+          <div className="checkout-info">
             <h3>Thông tin khách hàng</h3>
-            <label>
-              Họ tên:
+            <div className="form-group">
+              <label>Họ tên:</label>
               <input
                 type="text"
                 value={customerName}
                 onChange={(e) => setCustomerName(e.target.value)}
               />
-            </label>
-            <br />
-            <label>
-              Địa chỉ:
+            </div>
+            <div className="form-group">
+              <label>Địa chỉ:</label>
               <input
                 type="text"
                 value={customerAddress}
                 onChange={(e) => setCustomerAddress(e.target.value)}
               />
-            </label>
-            <br />
-            <label>
-              Điện thoại:
+            </div>
+            <div className="form-group">
+              <label>Điện thoại:</label>
               <input
                 type="text"
                 value={customerPhone}
                 onChange={(e) => setCustomerPhone(e.target.value)}
               />
-            </label>
-            <br />
-            <label>
-              Email:
+            </div>
+            <div className="form-group">
+              <label>Email:</label>
               <input
                 type="text"
                 value={customerEmail}
                 onChange={(e) => setCustomerEmail(e.target.value)}
               />
-            </label>
+            </div>
+            <div className="form-group">
+              <label>Tiến hành đặt hàng</label>
+              <button onClick={handlePayment}>Đặt hàng</button>
+            </div>
           </div>
-          <button onClick={handlePayment}>Đặt hàng</button>
+          <div className="checkout-items">
+            {renders()}
+            <p>
+              Tổng tiền:{" "}
+              {cart.reduce(
+                (total, item) => total + item.price * item.quantity,
+                0
+              )}
+              đ
+            </p>
+          </div>
         </div>
       )}
     </div>
