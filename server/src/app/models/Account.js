@@ -20,7 +20,6 @@ const Account = new Schema(
         
         phonenumber: {
             type: String,
-            require: true,
             unique : true,
         },
 

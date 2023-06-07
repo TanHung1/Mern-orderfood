@@ -59,9 +59,9 @@ class AdminController {
 
     // [put] api/admin/:id/update-product
     updateProduct(req, res) {
-        Product.updateOne({ _id: req.params.id })
+        Product.updateOne({ _id: req.params.id }, req.body)
             .then(() =>
-                res.status(200).json(Product)
+                res.status(200).json({messages:'success'}),
             )
             .catch((err) => (
                 res.status(500).json(err)
@@ -253,6 +253,17 @@ class AdminController {
             res.status(500).json(error)
             console.log(error)
         }
+    };
+
+    // [delete] /admin/:id/delete-order
+    deleteOrder(req, res) {
+        Order.delete({ _id: req.params.id })
+            .then(
+                res.status(200).json({messages: success})
+            )
+            .catch((err) => (
+                res.status(500).json(err)
+            ))
     };
 
 }

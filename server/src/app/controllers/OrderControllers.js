@@ -43,7 +43,7 @@ class OrderController {
         }
     }
 
-    //[get]/api/customers/myorder
+    //[get]/api/customers/:id/myorder
     myOrder = async (req, res) => {
         try {
             const orders = await Order.find({ user: req.user._id });

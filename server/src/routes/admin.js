@@ -1,7 +1,5 @@
 const express = require('express');
 const router = express.Router();
-
-const { AuthenticationAdmin } = require('../app/middleware/Authentication');
 const AdminControllers = require('../app/controllers/AdminControllers');
 
 //production routes
@@ -13,6 +11,7 @@ router.delete('/:id/delete-product', AdminControllers.deleteProduct);
 router.patch('/:id/restore-product', AdminControllers.restoreProduct);
 router.delete('/:id/forcedelete-product', AdminControllers.forcedeleteProduct);
 router.get('/allorders', AdminControllers.getAllOrders)
+router.delete('/:id/delete-order', AdminControllers.deleteOrder);
 
 router.get('/stored-customer', AdminControllers.storedCustomers);
 //staff routes
