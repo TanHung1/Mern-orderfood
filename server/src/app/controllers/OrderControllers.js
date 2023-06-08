@@ -1,4 +1,4 @@
-const Order = require('../models/Order');
+const Order = require("../models/Order");
 
 class OrderController {
 
@@ -32,7 +32,7 @@ class OrderController {
             })
             await newOrder.save();
             res.status(200).json({
-                message: 'Success',
+                message: "Success",
                 newOrder,
             })
 

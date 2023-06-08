@@ -1,4 +1,4 @@
-const mongoose = require('mongoose'); 
+const mongoose = require("mongoose"); 
 
 const Schema = mongoose.Schema;
 
@@ -65,8 +65,15 @@ const Order = new Schema(
             default: 0,
         },
 
-        deliveredAt: {
-            type: Date
+        shippingDate:
+        {
+            type: Date,
+            default: Date.now(),
+        },
+
+        deliveredDate: {
+            type: Date,
+            default: Date.now()
         },
 
         createdAt: {
@@ -77,7 +84,7 @@ const Order = new Schema(
 
     {
         versionKey: false,
-        collection: 'orders',
+        collection: "orders",
         timestamps: true,
     }
 
@@ -86,4 +93,4 @@ const Order = new Schema(
 
 
 
-module.exports = mongoose.model('orders', Order);
+module.exports = mongoose.model("orders", Order);

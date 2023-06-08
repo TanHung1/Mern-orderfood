@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
-const slug = require('mongoose-slug-updater');
-const mongooseDelete = require('mongoose-delete');
+const slug = require("mongoose-slug-updater");
+const mongooseDelete = require("mongoose-delete");
 
 const Schema = mongoose.Schema;
 
@@ -23,7 +23,7 @@ const Product = new Schema(
 );
 
 mongoose.plugin(slug);
-Product.plugin(mongooseDelete, {overrideMethods: 'all'});
+Product.plugin(mongooseDelete, {overrideMethods: "all"});
 
 
-module.exports = mongoose.model('products', Product);
+module.exports = mongoose.model("products", Product);

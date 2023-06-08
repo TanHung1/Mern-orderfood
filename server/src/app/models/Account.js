@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const mongooseDelete = require('mongoose-delete');
+const mongoose = require("mongoose");
+const mongooseDelete = require("mongoose-delete");
 
 const Schema = mongoose.Schema;
 
@@ -45,8 +45,8 @@ const Account = new Schema(
 
         loginType: {
             type: String,
-            enum: ['local', 'google', 'facebook'],
-            default: 'local',
+            enum: ["local", "google", "facebook"],
+            default: "local",
         },
 
         sex: {
@@ -63,7 +63,7 @@ const Account = new Schema(
 
         role: {
             type: String,
-            default: 'customer'
+            default: "customer"
         }
     },
 
@@ -74,6 +74,6 @@ const Account = new Schema(
     }
 );
 
-Account.plugin(mongooseDelete, {overrideMethods: 'all'});
+Account.plugin(mongooseDelete, {overrideMethods: "all"});
 
-module.exports = mongoose.model('accounts', Account);
+module.exports = mongoose.model("accounts", Account);

@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const Account = require("../models/Account");
-const GooglePlusTokenStrategy = require('passport-google-plus-token');
+const GooglePlusTokenStrategy = require("passport-google-plus-token");
 const passport = require("passport");
 const env = require("dotenv");
 
@@ -44,12 +44,12 @@ passport.use(new GooglePlusTokenStrategy({
 
 }, async (accessToken, refreshToken, profile, done) => {
   try {
-    // console.log('accessToken: ' , accessToken);
-    // console.log('refreshToken: ', refreshToken);
-    // console.log('profile: ' , profile);
+    // console.log("accessToken: " , accessToken);
+    // console.log("refreshToken: ", refreshToken);
+    // console.log("profile: " , profile);
 
     const user = await Account.findOne({
-      loginType: 'google',
+      loginType: "google",
       authGoogleID: profile.id,
 
     });
@@ -59,7 +59,7 @@ passport.use(new GooglePlusTokenStrategy({
     }
     else{
       const newAccount = new Account({
-        loginType: 'google',
+        loginType: "google",
         email: profile.emails[0].value,
         authGoogleID: profile.id,
       })

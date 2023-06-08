@@ -7,10 +7,10 @@ const { AuthenticationAccount, checkRole } = require("../app/middleware/Authenti
 
 function route(app) {
   app.use("/api/product", productRouter);
-  app.use("/api/admin", AuthenticationAccount, checkRole('admin'), adminRourter);
+  app.use("/api/admin", AuthenticationAccount, checkRole("admin"), adminRourter);
   app.use("/api/account", accountRouter);
   app.use("/api/order", AuthenticationAccount, orderRouter);
-  app.use("/api/staff", AuthenticationAccount, checkRole('staff'), staffRouter);
+  app.use("/api/staff", AuthenticationAccount, checkRole("staff"), staffRouter);
 }
 
 module.exports = route;
