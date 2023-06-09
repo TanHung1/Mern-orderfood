@@ -29,6 +29,9 @@ const Order = new Schema(
     product: {
       type: [items],
     },
+    customer_id: {
+      type: String
+    },
 
     username: {
       type: String,
