@@ -34,32 +34,32 @@ class AccountControler {
   // login = async (req, res, next) => {
   //   const identifier = req.body.identifier;
   //   let user;
-  
+
   //   if (/^\d+$/.test(identifier)) {
   //     user = await Account.findOne({ phonenumber: identifier });
   //   } else {
   //     user = await Account.findOne({ email: identifier });
   //   }
-  
+
   //   if (!user) {
   //     return res.status(403).json("Sai thông tin đăng nhập");
   //   }
-  
+
   //   const vallidPassword = await bcrypt.compare(
   //     req.body.password,
   //     user.password
   //   );
-  
+
   //   if (!vallidPassword) {
   //     return res.status(403).json("Sai mật khẩu");
   //   }
-  
+
   //   const token = jwt.sign(
   //     { userId: user._id },
   //     process.env.jwt_access_token,
   //     { expiresIn: "48h" }
   //   );
-  
+
   //   res.status(200).json({ token, user });
   // };
   login = async (req, res, next) => {
@@ -84,18 +84,15 @@ class AccountControler {
         { expiresIn: "48h" }
       );
       if (user && vallidPassword) {
-        return res.status(200).json({ token, user })
+        return res.status(200).json({ token, user });
       }
-
     } catch (error) {
       return res.status(500).json(error)
       // console.log(error)
     }
-
   };
-  
 
-   //[put] api/account/:id/update-account
+  //[put] api/account/:id/update-account
   updateAccount(req, res) {
     Account.updateOne({ _id: req.params.id }, req.body)
       .then(() => res.status(200).send("oke"))
@@ -108,8 +105,6 @@ class AccountControler {
     res.setHeader("Authorization", token);
     return res.status(200).json({ success: true });
   };
- 
-
 }
 
 module.exports = new AccountControler();
