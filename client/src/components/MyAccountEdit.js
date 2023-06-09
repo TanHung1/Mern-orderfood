@@ -23,7 +23,13 @@ function MyAccountEdit() {
   }, []);
 
   const handleLogout = () => {
+    // Xóa thông tin đăng nhập khỏi localStorage
     localStorage.removeItem("token");
+
+    // Xóa giỏ hàng khỏi localStorage
+    localStorage.removeItem("cart");
+
+    // Chuyển hướng đến trang đăng nhập
     window.location.pathname = "/login";
   };
 

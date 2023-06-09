@@ -31,43 +31,12 @@ class AccountControler {
   };
 
   //[post] api/account/login
-  // login = async (req, res, next) => {
-  //   const identifier = req.body.identifier;
-  //   let user;
-
-  //   if (/^\d+$/.test(identifier)) {
-  //     user = await Account.findOne({ phonenumber: identifier });
-  //   } else {
-  //     user = await Account.findOne({ email: identifier });
-  //   }
-
-  //   if (!user) {
-  //     return res.status(403).json("Sai thông tin đăng nhập");
-  //   }
-
-  //   const vallidPassword = await bcrypt.compare(
-  //     req.body.password,
-  //     user.password
-  //   );
-
-  //   if (!vallidPassword) {
-  //     return res.status(403).json("Sai mật khẩu");
-  //   }
-
-  //   const token = jwt.sign(
-  //     { userId: user._id },
-  //     process.env.jwt_access_token,
-  //     { expiresIn: "48h" }
-  //   );
-
-  //   res.status(200).json({ token, user });
-  // };
   login = async (req, res, next) => {
     try {
-      const user = await Account.findOne({ phonenumber: req.body.phonenumber });
+      const user = await Account.findOne({ email: req.body.email });
 
       if (!user) {
-        return res.status(403).json("Sai số dien thoai");
+        res.status(403).json("Sai email");
       }
       const vallidPassword = await bcrypt.compare(
         req.body.password,
@@ -75,7 +44,7 @@ class AccountControler {
       );
 
       if (!vallidPassword) {
-        return res.status(403).json("Sai mật khẩu");
+        res.status(403).json("Sai mật khẩu");
       }
 
       const token = jwt.sign(
@@ -83,13 +52,22 @@ class AccountControler {
         process.env.jwt_access_token,
         { expiresIn: "48h" }
       );
+
       if (user && vallidPassword) {
-        return res.status(200).json({ token, user });
+        res.status(200).json({ token, user });
       }
     } catch (error) {
       res.status(500).json(error);
       console.log(error);
     }
+  };
+
+  //[post] /api/account/auth/google
+  authGoogle = async (req, res) => {
+    const token = encodedToken(req.user._id);
+    console.log(token);
+    res.setHeader("Authorization", token);
+    return res.status(200).json({ success: true });
   };
 
   //[put] api/account/:id/update-account
@@ -98,13 +76,6 @@ class AccountControler {
       .then(() => res.status(200).send("oke"))
       .catch((err) => res.status(500).json(err));
   }
-  //[post] /api/account/auth/google
-  authGoogle = async (req, res) => {
-    const token = encodedToken(req.user._id);
-    console.log(token);
-    res.setHeader("Authorization", token);
-    return res.status(200).json({ success: true });
-  };
 }
 
 module.exports = new AccountControler();
