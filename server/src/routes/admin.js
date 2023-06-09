@@ -6,11 +6,11 @@ const AdminControllers = require("../app/controllers/AdminControllers");
 router.post("/create-product", AdminControllers.createProduct);
 router.get("/stored-product", AdminControllers.storedProducts);
 router.get("/trash-product", AdminControllers.trashProducts);
-router.put("/:id/update-product",AdminControllers.updateProduct);
+router.put("/:id/update-product", AdminControllers.updateProduct);
 router.delete("/:id/delete-product", AdminControllers.deleteProduct);
 router.patch("/:id/restore-product", AdminControllers.restoreProduct);
 router.delete("/:id/forcedelete-product", AdminControllers.forcedeleteProduct);
-router.get("/allorders", AdminControllers.getAllOrders)
+router.get("/allorders", AdminControllers.getAllOrders);
 router.delete("/:id/delete-order", AdminControllers.deleteOrder);
 
 router.get("/stored-customer", AdminControllers.storedCustomers);

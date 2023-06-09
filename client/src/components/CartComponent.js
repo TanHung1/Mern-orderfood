@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../styles/CartComponent.scss";
-import "../actions/actions";
-import { useSelector, useDispatch } from "react-redux";
+
 function CartComponent() {
   const [cartItems, setCartItems] = useState([]);
-  const store = useSelector((state) => state.cartReducer);
-  console.log(store.cartItems, "sttttt");
 
-  const dispatch = useDispatch();
   useEffect(() => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
     setCartItems(cart);
@@ -43,7 +39,7 @@ function CartComponent() {
   };
 
   const renders = () => {
-    return store.cartItems.map((item) => {
+    return cartItems.map((item) => {
       return (
         <div key={item._id}>
           <div>
@@ -66,7 +62,7 @@ function CartComponent() {
 
   const getTotalPrice = () => {
     let totalPrice = 0;
-    store.cartItems.forEach((item) => {
+    cartItems.forEach((item) => {
       totalPrice += item.price * item.quantity;
     });
     return totalPrice;
@@ -75,18 +71,12 @@ function CartComponent() {
   return (
     <div className="cart-container">
       <h2>Giỏ hàng của bạn</h2>
-      {store.cartItems.length === 0 ? (
+      {cartItems.length === 0 ? (
         <p>Giở hàng của bạn đang trống</p>
       ) : (
         <div>
           {renders()}
-          <p>
-            Total:{" "}
-            {getTotalPrice().toLocaleString("US-en", {
-              style: "currency",
-              currency: "VND",
-            })}
-          </p>
+          <p>Total: {getTotalPrice()}đ</p>
           <Link
             className="text-decoration-none btn btn-sm btn-success"
             to={"/checkout"}

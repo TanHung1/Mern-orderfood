@@ -67,7 +67,7 @@ function ManageBill() {
               <tbody>
                 {data.orders?.map((d, i) => (
                   <tr key={i}>
-                    <td className="admin-content">{i + 1}</td>
+                    <td className="admin-content">{d._id}</td>
                     <td className="admin-content">{d.username}</td>
                     <td className="admin-content">{d.createdAt}</td>
                     <td className="admin-content">
@@ -78,9 +78,7 @@ function ManageBill() {
 
                     <td className="admin-content">{d.phonenumber}</td>
 
-                    <td className="admin-content">
-                      {d.totalPrice.toLocaleString()}&#8363;
-                    </td>
+                    <td className="admin-content">{d.totalPrice}đ</td>
                     <td className="admin-content">{d.status}</td>
                     <td className="admin-content">
                       <Link

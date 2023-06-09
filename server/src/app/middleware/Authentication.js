@@ -19,7 +19,7 @@ const AuthenticationAccount = async (req, res, next) => {
     if (!user) {
       return res.status(403).json("Không tìm thấy người dùng");
     }
-    
+
     req.user = user;
     next();
   } catch (error) {
@@ -38,39 +38,41 @@ const checkRole = (role) => {
   };
 };
 
-passport.use(new GooglePlusTokenStrategy({
-  clientID: "113981226682-vk1qqh65b4d0j2l5ag62k455s69dvkes.apps.googleusercontent.com",
-  clientSecret: "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",
+passport.use(
+  new GooglePlusTokenStrategy(
+    {
+      clientID:
+        "113981226682-vk1qqh65b4d0j2l5ag62k455s69dvkes.apps.googleusercontent.com",
+      clientSecret: "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",
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      try {
+        // console.log("accessToken: " , accessToken);
+        // console.log("refreshToken: ", refreshToken);
+        // console.log("profile: " , profile);
 
-}, async (accessToken, refreshToken, profile, done) => {
-  try {
-    // console.log("accessToken: " , accessToken);
-    // console.log("refreshToken: ", refreshToken);
-    // console.log("profile: " , profile);
+        const user = await Account.findOne({
+          loginType: "google",
+          authGoogleID: profile.id,
+        });
 
-    const user = await Account.findOne({
-      loginType: "google",
-      authGoogleID: profile.id,
-
-    });
-
-    if (user){
-      done(null,user);
+        if (user) {
+          done(null, user);
+        } else {
+          const newAccount = new Account({
+            loginType: "google",
+            email: profile.emails[0].value,
+            authGoogleID: profile.id,
+          });
+          await newAccount.save();
+          done(newAccount);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
-    else{
-      const newAccount = new Account({
-        loginType: "google",
-        email: profile.emails[0].value,
-        authGoogleID: profile.id,
-      })
-      await newAccount.save();
-      done(newAccount);
-    }   
-
-  } catch (error) {
-    console.log(error);
-  }
-}));
+  )
+);
 
 module.exports = {
   AuthenticationAccount,
