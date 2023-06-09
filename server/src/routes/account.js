@@ -12,6 +12,6 @@ router.post(
   passport.authenticate("google-plus-token"),
   AccountControllers.authGoogle
 );
-router.post("/:id/update-account", AccountControllers.updateAccount);
+router.put("/:id/update-account", AccountControllers.updateAccount);
 
 module.exports = router;
