@@ -27,11 +27,11 @@ function ManageBill() {
       .catch((err) => console.log(err));
     console.log(data);
   }, []); // add empty dependency array to run only once
-  function handleDelete(id) {
+  function handleDelete(_id) {
     const confirm = window.confirm("Bạn có muốn xóa?");
     if (confirm) {
       axios
-        .delete("http://localhost:3030/bills/" + id, {
+        .delete(`http://localhost:5000/api/admin/${_id}/delete-order/`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
             "Content-Type": "application/json",

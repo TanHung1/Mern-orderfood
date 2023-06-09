@@ -1,5 +1,6 @@
 const { mongooesToObject, mutipleMongooseToObject } = require("../../util/mongoose");
 const Order = require("../models/Order");
+const mongoose = require("mongoose");
 
 class OrderController {
   //[post] /api/order/neworder
@@ -11,6 +12,7 @@ class OrderController {
         customerAddress,
         customerPhone,
         customerEmail,
+        customerID,
       } = req.body;
 
       const totalPrice = cart.reduce(
@@ -19,6 +21,7 @@ class OrderController {
       );
 
       const newOrder = new Order({
+        customer_id: customerID,
         username: customerName,
         phonenumber: customerPhone,
         email: customerEmail,
@@ -41,17 +44,20 @@ class OrderController {
   };
 
   //[get]/api/order/:id/myorder
-  myOrder = async (req, res) =>{
-    try {
-      const orders = await Order.find({_id: req.params.customer_id});
-      res.status(200).json({
-        order: mutipleMongooseToObject(orders),
+  myOrder = async (req, res) => {
+    Order.findById({_id: req.params.id})
+      .then((product) => {
+        console.log(product);
+        res.status(200).json({
+         product
+        });
       })
-    } catch (error) {
-      res.status(500).json(error);
-      console.log(error);      
-    }
-  };
+      .catch((err) => {
+        console.log(err)
+        res.status(500).json(err);
+      });
+  }
 
 }
 module.exports = new OrderController();
+

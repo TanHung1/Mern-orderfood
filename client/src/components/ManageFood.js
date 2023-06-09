@@ -16,7 +16,7 @@ function ManageFood() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/product/")
+      .get("http://localhost:5000/api/admin/stored-product")
       .then((res) => setData(res.data))
       .catch((err) => console.log(err));
   }, []);
@@ -53,6 +53,7 @@ function ManageFood() {
         .then((res) => {
           alert(" Xóa thành công");
           console.log(_id);
+          navigate("/manage-food")
         });
     }
   }

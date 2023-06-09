@@ -23,44 +23,75 @@ class AccountControler {
         role,
       });
       await newAccount.save();
-      res.status(200).json(newAccount);
+      return res.status(200);
     } catch (error) {
-      res.status(500).json(error);
+      return res.status(500).json(error);
       console.log(error);
     }
   };
 
   //[post] api/account/login
   login = async (req, res, next) => {
-    try {
-      const user = await Account.findOne({ email: req.body.email });
-
-      if (!user) {
-        res.status(403).json("Sai email");
-      }
-      const vallidPassword = await bcrypt.compare(
-        req.body.password,
-        user.password
-      );
-
-      if (!vallidPassword) {
-        res.status(403).json("Sai mật khẩu");
-      }
-
-      const token = jwt.sign(
-        { userId: user._id },
-        process.env.jwt_access_token,
-        { expiresIn: "48h" }
-      );
-
-      if (user && vallidPassword) {
-        res.status(200).json({ token, user });
-      }
-    } catch (error) {
-      return res.status(500).json(error)
-      // console.log(error)
+    const identifier = req.body.identifier;
+    let user;
+  
+    if (/^\d+$/.test(identifier)) {
+      user = await Account.findOne({ phonenumber: identifier });
+    } else {
+      user = await Account.findOne({ email: identifier });
     }
+  
+    if (!user) {
+      return res.status(403).json("Sai thông tin đăng nhập");
+    }
+  
+    const vallidPassword = await bcrypt.compare(
+      req.body.password,
+      user.password
+    );
+  
+    if (!vallidPassword) {
+      return res.status(403).json("Sai mật khẩu");
+    }
+  
+    const token = jwt.sign(
+      { userId: user._id },
+      process.env.jwt_access_token,
+      { expiresIn: "48h" }
+    );
+  
+    res.status(200).json({ token, user});
   };
+  // login = async (req, res, next) => {
+  //   try {
+  //     const user = await Account.findOne({ email: req.body.email });
+
+  //     if (!user) {
+  //       return res.status(403).json("Sai email");
+  //     }
+  //     const vallidPassword = await bcrypt.compare(
+  //       req.body.password,
+  //       user.password
+  //     );
+
+  //     if (!vallidPassword) {
+  //       return res.status(403).json("Sai mật khẩu");
+  //     }
+
+  //     const token = jwt.sign(
+  //       { userId: user._id },
+  //       process.env.jwt_access_token,
+  //       { expiresIn: "48h" }
+  //     );
+
+  //     if (user && vallidPassword) {
+  //       return res.status(200).json({ token, user });
+  //     }
+  //   } catch (error) {
+  //     return res.status(500).json(error)
+  //     // console.log(error)
+  //   }
+  // };
 
   //[post] /api/account/auth/google
   authGoogle = async (req, res) => {
@@ -73,7 +104,16 @@ class AccountControler {
   //[put] api/account/:id/update-account
   updateAccount(req, res) {
     Account.updateOne({ _id: req.params.id }, req.body)
-      .then(() => res.status(200).send("oke"))
+      .then(()=>{
+        let user= req.body;
+        const token = jwt.sign(
+          { userId: user._id },
+          process.env.jwt_access_token,
+          { expiresIn: "48h" }
+        )
+        res.status(200).json({message: 'Access token', token})
+      })
+      
       .catch((err) => res.status(500).json(err));
   }
 }

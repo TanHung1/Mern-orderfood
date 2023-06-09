@@ -4,6 +4,6 @@ const { AuthenticationAccount } = require("../app/middleware/Authentication");
 const router = express.Router();
 
 router.get("/:id/myorder",AuthenticationAccount, OrderController.myOrder)
-router.post("/neworder",AuthenticationAccount, OrderController.newOrder)
+router.post("/neworder", OrderController.newOrder)
 
 module.exports = router;
