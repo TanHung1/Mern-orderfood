@@ -30,7 +30,7 @@ function MyAccountEdit() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.patch(
+      const response = await axios.put(
         `http://localhost:5000/api/account/${dataUser.user._id}/update-account`,
         {
           username: customerName,
@@ -46,9 +46,21 @@ function MyAccountEdit() {
         }
       );
       setMessage(response.data.message);
+      alert("Cap nhat thanh cong");
+
+      // Cập nhật thông tin khách hàng trong localStorage
+      const updatedUser = {
+        ...dataUser.user,
+        username: customerName,
+        phonenumber: customerPhone,
+        address: customerAddress,
+        email: customerEmail,
+      };
+      localStorage.setItem("token", JSON.stringify({ user: updatedUser }));
     } catch (error) {
       console.error(error);
       setMessage("Cập nhật thông tin thất bại. Vui lòng thử lại.");
+      alert("Cap nhat that bai");
     }
   };
   return (

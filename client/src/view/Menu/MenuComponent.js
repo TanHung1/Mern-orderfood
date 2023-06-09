@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 function MenuComponent() {
   const [data, setData] = useState([]);
   const [cartItemCount, setCartItemCount] = useState(0);
+  console.log(cartItemCount,'count')
   const [selectedCategory, setSelectedCategory] = useState("");
   // Thêm state cho "Hiển thị tất cả"
   const [showAll, setShowAll] = useState(false);
@@ -27,12 +28,14 @@ function MenuComponent() {
     );
     setCartItemCount(itemCount);
   }, []);
-
+  const user = localStorage.getItem('token')
+  console.log(user)
   const handleAddToCart = (product) => {
     const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+    console.log(cartItems,'ádsad')
     const index = cartItems.findIndex((item) => item._id === product._id);
     if (index !== -1) {
-      cartItems[index].quantity++;
+      alert('có sản phẩm')
     } else {
       cartItems.push({ ...product, quantity: 1 });
     }

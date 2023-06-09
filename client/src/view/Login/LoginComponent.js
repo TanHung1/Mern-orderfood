@@ -4,18 +4,17 @@ import about from "../../assets/about-img.png";
 import { NavLink } from "react-router-dom";
 import "./LoginComponent.scss";
 const LoginComponent = () => {
-  const [email, setEmail] = useState("");
+  const [phonenumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
   const handleEmailChange = (event) => {
-    setEmail(event.target.value);
+    setPhoneNumber(event.target.value);
   };
 
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
   };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError(null);
@@ -23,9 +22,10 @@ const LoginComponent = () => {
     try {
       const response = await axios.post(
         "http://localhost:5000/api/account/login",
-        { email, password }
+        { phonenumber, password }
       );
-      console.log(email, password);
+      console.log(phonenumber, password);
+  
       localStorage.setItem("token", JSON.stringify(response.data));
 
       window.location.href = "/";
@@ -39,7 +39,7 @@ const LoginComponent = () => {
       }
     }
   };
-  const isFormValid = email && password;
+  const isFormValid = phonenumber && password;
   return (
     <div>
       <section class="login">
@@ -54,7 +54,7 @@ const LoginComponent = () => {
               {error && <p>{error}</p>}
               <form onSubmit={handleSubmit}>
                 <input
-                  value={email}
+                  value={phonenumber}
                   onChange={handleEmailChange}
                   placeholder="Địa chỉ email của bạn"
                 />

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "./CheckOut.scss";
 const CheckOut = () => {
   const [cart, setCart] = useState([]);
@@ -9,16 +10,26 @@ const CheckOut = () => {
   const [customerEmail, setCustomerEmail] = useState("");
   const accessToken = localStorage.getItem("token");
   const dataUser = JSON.parse(accessToken);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
     setCart(cartItems);
+
+    const accessToken = localStorage.getItem("token");
+    const dataUser = JSON.parse(accessToken);
+    if (accessToken) {
+      setCustomerName(dataUser.user.username);
+      setCustomerAddress(dataUser.user.address);
+      setCustomerPhone(dataUser.user.phonenumber);
+      setCustomerEmail(dataUser.user.email);
+    }
   }, []);
 
   const handlePayment = async () => {
     try {
       if (!accessToken) {
         alert("Bạn cần đăng nhập để tiếp tục đặt hàng.");
+        navigate("/login");
         return;
       }
       console.log(accessToken);
@@ -84,7 +95,7 @@ const CheckOut = () => {
               <label>Họ tên:</label>
               <input
                 type="text"
-                value={customerName}
+                value={dataUser ? dataUser.user.username : customerName}
                 onChange={(e) => setCustomerName(e.target.value)}
               />
             </div>
