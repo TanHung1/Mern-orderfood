@@ -22,7 +22,7 @@ const CheckOut = () => {
     const accessToken = localStorage.getItem("token");
 
     if (accessToken) {
-      setCustomerName(dataUser.user.username);
+      setCustomerName("");
       setCustomerAddress(dataUser.user.address);
       setCustomerPhone(dataUser.user.phonenumber);
       setCustomerEmail(dataUser.user.email);
@@ -46,6 +46,7 @@ const CheckOut = () => {
           customerAddress,
           customerPhone: dataUser.user.phonenumber,
           customerEmail: dataUser.user.email,
+          customerID: dataUser.user._id,
         },
         {
           headers: {

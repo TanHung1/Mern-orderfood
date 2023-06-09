@@ -14,10 +14,6 @@ const Account = new Schema(
       require: true,
     },
 
-    fullname: {
-      type: String,
-    },
-
     phonenumber: {
       type: String,
       unique: true,

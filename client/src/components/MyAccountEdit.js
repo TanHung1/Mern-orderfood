@@ -11,14 +11,17 @@ function MyAccountEdit() {
   const [customerEmail, setCustomerEmail] = useState("");
   const [message, setMessage] = useState("");
   const accessToken = localStorage.getItem("token");
+  console.log(accessToken?.user,'abcd')
+  
   const dataUser = JSON.parse(accessToken);
+  console.log(dataUser?.token,'abd')
 
   useEffect(() => {
     if (accessToken) {
-      setCustomerName(dataUser.user.username);
-      setCustomerAddress(dataUser.user.address);
-      setCustomerPhone(dataUser.user.phonenumber);
-      setCustomerEmail(dataUser.user.email);
+      setCustomerName(dataUser.user?.username);
+      setCustomerAddress(dataUser.user?.address);
+      setCustomerPhone(dataUser.user?.phonenumber);
+      setCustomerEmail(dataUser.user?.email);
     }
   }, []);
 
@@ -37,7 +40,7 @@ function MyAccountEdit() {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/account/${dataUser.user._id}/update-account`,
+        `http://localhost:5000/api/account/${dataUser?.user?._id}/update-account`,
         {
           username: customerName,
           phonenumber: customerPhone,
@@ -46,7 +49,7 @@ function MyAccountEdit() {
         },
         {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${dataUser?.token}`,
             "Content-Type": "application/json",
           },
         }
@@ -56,13 +59,13 @@ function MyAccountEdit() {
 
       // Cập nhật thông tin khách hàng trong localStorage
       const updatedUser = {
-        ...dataUser.user,
+        ...dataUser?.user,
         username: customerName,
         phonenumber: customerPhone,
         address: customerAddress,
         email: customerEmail,
       };
-      localStorage.setItem("token", JSON.stringify({ user: updatedUser }));
+      localStorage.setItem("token", JSON.stringify({ user: updatedUser,token:dataUser?.token }));
     } catch (error) {
       console.error(error);
       setMessage("Cập nhật thông tin thất bại. Vui lòng thử lại.");

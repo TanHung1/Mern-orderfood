@@ -1,10 +1,12 @@
 import "../styles/MenuComponent.scss";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-
+import { Button, notification } from 'antd';
 function MenuComponent() {
+
   const [data, setData] = useState([]);
   const [cartItemCount, setCartItemCount] = useState(0);
+  const [open,setOpen] = useState(false)
   console.log(cartItemCount,'count')
   const [selectedCategory, setSelectedCategory] = useState("");
   // Thêm state cho "Hiển thị tất cả"
@@ -37,6 +39,9 @@ function MenuComponent() {
     if (index !== -1) {
       alert('có sản phẩm')
     } else {
+      notification.success({
+        message:'đặt hàng thành công',
+      })
       cartItems.push({ ...product, quantity: 1 });
     }
     localStorage.setItem("cart", JSON.stringify(cartItems));
@@ -58,16 +63,18 @@ function MenuComponent() {
       : data.products || [];
 
     return productsToRender.map((item, index) => {
+      console.log(item.nameprod?.substring(0,10))
       return (
         <div key={index}>
           <div class="card">
-            <img class="" src={item.image} alt="Card image cap" />
+            <img style={{width:"100%",height:250}} class="" src={item.image} alt="Card image cap" />
             <div class="card-body">
-              <h5 class="card-title">{item.nameprod}</h5>
+              <h5 class="card-title" style={{fontSize:15,width:'100%'}}>{item.nameprod?.length > 10 ? `${item.nameprod?.slice(0, 30)}...` : item.nameprod}</h5>
               <p class="card-text">{item.description}</p>
               <p class="card-price">{item.price}đ</p>
 
               <button
+              style={{marginBottom:20}}
                 class="btn btn-primary"
                 onClick={() => handleAddToCart(item)}
               >
@@ -110,9 +117,19 @@ function MenuComponent() {
           Side
         </button>
       </div>
-      <div>
+      <button onClick={()=>{
+        if(open){
+          setOpen(false)
+        }else{
+          setOpen(true)
+        }
+      }} className>
+        click
+      </button>
+      {open?null:<div>
         <div className="cards">{renders()}</div>
-      </div>
+      </div>}
+      
     </>
   );
 }

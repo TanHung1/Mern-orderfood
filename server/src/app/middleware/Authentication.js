@@ -2,8 +2,8 @@ const jwt = require("jsonwebtoken");
 const Account = require("../models/Account");
 const GooglePlusTokenStrategy = require("passport-google-plus-token");
 const passport = require("passport");
-const env = require("dotenv");
-
+const dotenv = require("dotenv");
+dotenv.config();
 const AuthenticationAccount = async (req, res, next) => {
   const authHeader = req.header("Authorization");
   const accessToken = authHeader && authHeader.split(" ")[1];

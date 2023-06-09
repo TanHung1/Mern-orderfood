@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import "../styles/Nav.scss";
 import pizza from "../assets/logoPizza.png";
-import { useSelector } from "react-redux";
 function Nav() {
   const [cartItemCount, setCartItemCount] = useState(0);
   console.log(cartItemCount);
@@ -11,7 +10,8 @@ function Nav() {
   const location = useLocation();
   const navigate = useNavigate();
   const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
-  console.log(cartItems);
+  const user = JSON.parse(localStorage.getItem("token")) ||[]
+  // console.log(user.user.role    ,'user');
   const totalAmount = () => {
     return cartItems.reduce((total, item) => {
       return total + item.quantity++;
@@ -22,14 +22,14 @@ function Nav() {
     setCartItemCount(totalAmount());
   }, [cartItemCount]);
 
-  useEffect(() => {
-    if (location.pathname === "/my-account/edit") {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        navigate("/login");
-      }
-    }
-  }, [location, navigate]);
+  // useEffect(() => {
+  //   if (location.pathname === "/my-account/edit") {
+  //     const token = localStorage.getItem("token");
+  //     if (!token) {
+  //       navigate("/login");
+  //     }
+  //   }
+  // }, [location, navigate]);
 
   return (
     <nav
@@ -67,8 +67,9 @@ function Nav() {
               About
             </NavLink>
           </li>
+              {user?.user?.role !='admin'?null:
           <li className="nav-item dropdown">
-            <a
+          <a
               className="nav-link dropdown-toggle"
               href="/"
               id="navbarDropdown"
@@ -79,6 +80,7 @@ function Nav() {
             >
               Admin
             </a>
+          
             <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
               <li>
                 <NavLink className="dropdown-item" to="/manage-food">
@@ -91,7 +93,7 @@ function Nav() {
                 </NavLink>
               </li>
             </ul>
-          </li>
+          </li>}
         </ul>
         <form className="form-inline my-2 my-lg-0">
           <NavLink to="/cart" activeClassName="active">
@@ -101,9 +103,15 @@ function Nav() {
               )}
             </i>
           </NavLink>
-          <NavLink to="/my-account/edit" activeClassName="active">
-            <i className="fa-solid fa-user"></i>
-          </NavLink>
+          
+
+          {!user?.user?  <NavLink  to="/login" activeClassName="active">
+            <i  className="fa-solid fa-user"></i>
+          </NavLink>:  <NavLink  to="/my-account/edit" activeClassName="active">
+            <i  className="fa-solid fa-user"></i>
+          </NavLink>}
+        
+         
         </form>
       </div>
     </nav>

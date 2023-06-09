@@ -4,12 +4,12 @@ import about from "../assets/about-img.png";
 import { NavLink } from "react-router-dom";
 import "../styles/LoginComponent.scss";
 const LoginComponent = () => {
-  const [phonenumber, setPhoneNumber] = useState("");
+  const [identifier, setidentifier] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
   const handleEmailChange = (event) => {
-    setPhoneNumber(event.target.value);
+    setidentifier(event.target.value);
   };
 
   const handlePasswordChange = (event) => {
@@ -22,11 +22,11 @@ const LoginComponent = () => {
     try {
       const response = await axios.post(
         "http://localhost:5000/api/account/login",
-        { phonenumber, password }
+        { identifier, password }
       );
-      console.log(phonenumber, password);
+      console.log(identifier, password);
   
-      localStorage.setItem("token", JSON.stringify(response.data));
+      localStorage.setItem("token" , JSON.stringify(response.data));
 
       window.location.href = "/";
       console.log(response);
@@ -39,7 +39,7 @@ const LoginComponent = () => {
       }
     }
   };
-  const isFormValid = phonenumber && password;
+  const isFormValid = identifier && password;
   return (
     <div>
       <section class="login">
@@ -54,9 +54,9 @@ const LoginComponent = () => {
               {error && <p>{error}</p>}
               <form onSubmit={handleSubmit}>
                 <input
-                  value={phonenumber}
+                  value={identifier}
                   onChange={handleEmailChange}
-                  placeholder="Địa chỉ email của bạn"
+                  placeholder="Địa chỉ email hoặc số điện thoại của bạn"
                 />
 
                 <input
