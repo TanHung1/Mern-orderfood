@@ -1,4 +1,4 @@
-const Order = require('../models/Order');
+const Order = require("../models/Order");
 
 class OrderController {
 
@@ -32,7 +32,7 @@ class OrderController {
             })
             await newOrder.save();
             res.status(200).json({
-                message: 'Success',
+                message: "Success",
                 newOrder,
             })
 
@@ -43,7 +43,7 @@ class OrderController {
         }
     }
 
-    //[get]/api/customers/myorder
+    //[get]/api/customers/:id/myorder
     myOrder = async (req, res) => {
         try {
             const orders = await Order.find({ user: req.user._id });

@@ -1,35 +1,34 @@
-const Product = require('../models/Product');
-const User = require('../models/Account');
-const { mutipleMongooseToObject } = require('../../util/mongoose');
-const Order = require('../models/Order');
+const Product = require("../models/Product");
+const User = require("../models/Account");
+const { mutipleMongooseToObject } = require("../../util/mongoose");
+const Order = require("../models/Order");
 
-class AdminController { 
+class AdminController {
     //[post] /api/admin/create-product
     createProduct = async (req, res) => {
         try {
-          const {
-            nameprod,
-            image,
-            category,
-            price
-          } = req.body;
-           
-          const product = new Product({
-            nameprod,
-            image,
-            category,
-            price,
+            const {
+                nameprod,
+                image,
+                category,
+                price
+            } = req.body;
+
+            const product = new Product({
+                nameprod,
+                image,
+                category,
+                price,
             });
-          await product.save();
-          res.status(200).send(product);
-      
+            await product.save();
+            res.status(200).send(product);
+
         }
         catch (err) {
-          res.status(500).json(err);
-          console.log(err);
+            res.status(500).json(err);
+            console.log(err);
         }
-      };
-
+    };
 
     // [get] /api/admin/stored-product
     storedProducts(req, res, next) {
@@ -59,9 +58,9 @@ class AdminController {
 
     // [put] api/admin/:id/update-product
     updateProduct(req, res) {
-        Product.updateOne({ _id: req.params.id })
+        Product.updateOne({ _id: req.params.id }, req.body)
             .then(() =>
-                res.status(200).json(Product)
+                res.status(200).json({ messages: "success" }),
             )
             .catch((err) => (
                 res.status(500).json(err)
@@ -84,24 +83,24 @@ class AdminController {
 
         Product.restore({ _id: req.params.id })
             .then(() =>
-                res.status(200).send('oke'))
+                res.status(200).send("oke"))
             .catch((err) =>
                 res.status(500).json(err),
             );
     };
 
-    // [delete] api/admin/:id/forcedeletProduct
+    // [delete] api/admin/:id/forcedelet-product
     forcedeleteProduct(req, res, next) {
         Product.deleteOne({ _id: req.params.id })
             .then(
-                res.status(200).send('oke')
+                res.status(200).send("oke")
             )
-            .catch((err) => 
+            .catch((err) =>
                 res.status(500).json(err),
             );
     };
 
-//-------------------------------STAFF------------------    
+    //-------------------------------STAFF------------------    
 
     // [get] /api/admin/stored-staff
     storedStaffs(req, res, next) {
@@ -157,7 +156,7 @@ class AdminController {
 
         Staff.restore({ _id: req.params.id })
             .then(() =>
-                res.status(200).send('oke'))
+                res.status(200).send("oke"))
             .catch((err) => (
                 res.status(500).json(err)
             ))
@@ -167,7 +166,7 @@ class AdminController {
     forcedeleteStaff(req, res, next) {
         Staff.deleteOne({ _id: req.params.id })
             .then(
-                res.status(200).send('oke')
+                res.status(200).send("oke")
             )
             .catch((err) => (
                 console.log(err),
@@ -175,9 +174,9 @@ class AdminController {
             ))
     };
 
-//---------CUSTOMER-----
+    //---------CUSTOMER-----
     //[get] /api/admin/stored-customers/
-    storedCustomers = async(req, res) => {
+    storedCustomers = async (req, res) => {
         Promise.all([Customer.find({}), Customer.countDocumentsDeleted()])
             .then(([customers, deleteCount]) =>
                 res.json({
@@ -187,11 +186,11 @@ class AdminController {
             )
             .catch((err) =>
                 res.status(401).json(err),
-            );        
+            );
     };
 
     // [get] api/admin/trash-customers/
-    trashCustomer(req, res){
+    trashCustomer(req, res) {
         Customer.findDeleted({})
             .then(customers =>
                 res.json({
@@ -199,38 +198,38 @@ class AdminController {
                 }))
             .catch((err) =>
                 res.status(500).json(err)
-            )    
+            )
     };
 
     // [delete] api/admin/:id/delete-customers/
     deleteCustomer(req, res) {
-        Customer.delete({_id: req.params.id})
+        Customer.delete({ _id: req.params.id })
             .then(() =>
-                res.status(200).send('oke')
-            )
-            .catch((err)=>
-                res.status(500).json(err)
-            )
-    };
-
-    // [patch] api/admin/restore-customers/
-    restoreCustomer(res, req){
-        Customer.restore({_id: req.params.id})
-            .then(() => 
-                res.status(200).send('oke')
+                res.status(200).send("oke")
             )
             .catch((err) =>
                 res.status(500).json(err)
             )
     };
 
-    // [delete] api/admin/forcedelete-customers/
-    forcedeleteCustomer(req, res){
-        Customer.deleteOne({_id:req.params.id})
-            .then(() => 
-                res.status(200).send('oke')
+    // [patch] api/admin//restore-customers/
+    restoreCustomer(res, req) {
+        Customer.restore({ _id: req.params.id })
+            .then(() =>
+                res.status(200).send("oke")
             )
-            .catch((err) => 
+            .catch((err) =>
+                res.status(500).json(err)
+            )
+    };
+
+    // [delete] api/admin/:id/forcedelete-customers/
+    forcedeleteCustomer(req, res) {
+        Customer.deleteOne({ _id: req.params.id })
+            .then(() =>
+                res.status(200).send("oke")
+            )
+            .catch((err) =>
                 res.status(500).json(err)
             )
     };
@@ -253,6 +252,51 @@ class AdminController {
             res.status(500).json(error)
             console.log(error)
         }
+    };
+
+    // [get] api/admin/trash-orders/
+    trashOrders(req, res) {
+        Order.findDeleted({})
+            .then(orders =>
+                res.json({
+                    orders: mutipleMongooseToObject(orders)
+                }))
+            .catch((err) =>
+                res.status(500).json(err)
+            )
+    };
+
+    // [delete] api/admin/:id/delete-order/
+    deleteOrder(req, res) {
+        Order.delete({ _id: req.params.id })
+            .then(() =>
+                res.status(200).json({ messages: "success" })
+            )
+            .catch((err) =>
+                res.status(500).json(err)
+            )
+    };
+
+    // [patch] api/admin/:id/restore-order/
+    restoreOrder(res, req) {
+        Order.restore({ _id: req.params.id })
+            .then(() =>
+                res.status(200).json({ messages: "success" })
+            )
+            .catch((err) =>
+                res.status(500).json(err)
+            )
+    };
+
+    // [delete] api/admin/:id/forcedelete-order/
+    forcedeleteOrder(req, res) {
+        Customer.deleteOne({ _id: req.params.id })
+            .then(() =>
+                res.status(200).json({ messages: "success" })
+            )
+            .catch((err) =>
+                res.status(500).json(err)
+            )
     };
 
 }

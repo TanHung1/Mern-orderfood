@@ -29,13 +29,45 @@ class AccountControler {
       console.log(error);
     }
   };
+
   //[post] api/account/login
+  // login = async (req, res, next) => {
+  //   const identifier = req.body.identifier;
+  //   let user;
+
+  //   if (/^\d+$/.test(identifier)) {
+  //     user = await Account.findOne({ phonenumber: identifier });
+  //   } else {
+  //     user = await Account.findOne({ email: identifier });
+  //   }
+
+  //   if (!user) {
+  //     return res.status(403).json("Sai thông tin đăng nhập");
+  //   }
+
+  //   const vallidPassword = await bcrypt.compare(
+  //     req.body.password,
+  //     user.password
+  //   );
+
+  //   if (!vallidPassword) {
+  //     return res.status(403).json("Sai mật khẩu");
+  //   }
+
+  //   const token = jwt.sign(
+  //     { userId: user._id },
+  //     process.env.jwt_access_token,
+  //     { expiresIn: "48h" }
+  //   );
+
+  //   res.status(200).json({ token, user });
+  // };
   login = async (req, res, next) => {
     try {
-      const user = await Account.findOne({ email: req.body.email });
+      const user = await Account.findOne({ phonenumber: req.body.phonenumber });
 
       if (!user) {
-        res.status(403).json("Sai email");
+        return res.status(403).json("Sai số dien thoai");
       }
       const vallidPassword = await bcrypt.compare(
         req.body.password,
@@ -43,7 +75,7 @@ class AccountControler {
       );
 
       if (!vallidPassword) {
-        res.status(403).json("Sai mật khẩu");
+        return res.status(403).json("Sai mật khẩu");
       }
 
       const token = jwt.sign(
@@ -52,7 +84,7 @@ class AccountControler {
         { expiresIn: "48h" }
       );
       if (user && vallidPassword) {
-        res.status(200).json({ token, user });
+        return res.status(200).json({ token, user });
       }
     } catch (error) {
       res.status(500).json(error);

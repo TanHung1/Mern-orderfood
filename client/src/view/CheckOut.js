@@ -14,15 +14,6 @@ const CheckOut = () => {
   useEffect(() => {
     const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
     setCart(cartItems);
-
-    const accessToken = localStorage.getItem("token");
-    const dataUser = JSON.parse(accessToken);
-    if (accessToken) {
-      setCustomerName(dataUser.user.username);
-      setCustomerAddress(dataUser.user.address);
-      setCustomerPhone(dataUser.user.phonenumber);
-      setCustomerEmail(dataUser.user.email);
-    }
   }, []);
 
   const handlePayment = async () => {
@@ -95,7 +86,7 @@ const CheckOut = () => {
               <label>Họ tên:</label>
               <input
                 type="text"
-                value={dataUser ? dataUser.user.username : customerName}
+                value={customerName}
                 onChange={(e) => setCustomerName(e.target.value)}
               />
             </div>
