@@ -1,27 +1,26 @@
 import React from "react";
 
-import "./App.scss";
-import HomeComponent from "./Home/HomeComponent";
-import MenuComponent from "./Menu/MenuComponent";
-import AboutComponent from "./About/AboutComponent";
-import LoginComponent from "./Login/LoginComponent";
-import CartComponent from "./Cart/CartComponent";
-import RegisterComponent from "./Register/RegisterComponent";
-import MyAccountEdit from "./My-Account/My-Account-Edit/MyAccountEdit";
-import PreviousOders from "./My-Account/My-Account-Edit/PreviousOrders";
-import CheckOut from "./checkout/CheckOut";
-import DishComponent from "./dish/DishComponent";
-import AdminHome from "./Admin/AdminHome";
-import AdminCustumer from "./Admin/ManageCustumer/AdminCustumer";
-import ManageStaff from "./Admin/ManageStaff/ManageStaff";
-import ManageFood from "./Admin/ManageFood/ManageFood";
-import EditFood from "./Admin/ManageFood/EditFood";
-import EditStaff from "./Admin/ManageStaff/EditStaff";
-import EditCustumer from "./Admin/ManageCustumer/EditCustumer";
-import ManageBill from "./Admin/ManageBill/ManageBill";
-import EditBill from "./Admin/ManageBill/EditBill";
+import HomeComponent from "../view/HomeComponent";
+import MenuComponent from "../view/MenuComponent";
+import AboutComponent from "./../view/AboutComponent";
+import LoginComponent from "../view/LoginComponent";
+import CartComponent from "../components/CartComponent";
+import RegisterComponent from "../view/RegisterComponent";
+import MyAccountEdit from "../components/MyAccountEdit";
+import PreviousOders from "../components/PreviousOrders";
+import CheckOut from "../view/CheckOut";
+import DishComponent from "../components/DishComponent";
+import AdminHome from "../components/AdminHome";
+import AdminCustumer from "../components/AdminCustumer";
+import ManageStaff from "../components/ManageStaff";
+import ManageFood from "../components/ManageFood";
+import EditFood from "../components/EditFood";
+import EditStaff from "../components/EditStaff";
+import EditCustumer from "../components/EditCustumer";
+import ManageBill from "../components/ManageBill";
+import EditBill from "../components/EditBill";
 
-import Nav from "./Nav/Nav";
+import Nav from "../view/Nav";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
