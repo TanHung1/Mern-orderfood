@@ -1,3 +1,4 @@
+const { mongooesToObject, mutipleMongooseToObject } = require("../../util/mongoose");
 const Order = require("../models/Order");
 
 class OrderController {
@@ -39,15 +40,18 @@ class OrderController {
     }
   };
 
-  //[get]/api/customers/:id/myorder
-  myOrder = async (req, res) => {
+  //[get]/api/order/:id/myorder
+  myOrder = async (req, res) =>{
     try {
-      const orders = await Order.find({ user: req.user._id });
-      res.status(200).json(orders);
+      const orders = await Order.find({_id: req.params.customer_id});
+      res.status(200).json({
+        order: mutipleMongooseToObject(orders),
+      })
     } catch (error) {
       res.status(500).json(error);
-      console.log(error);
+      console.log(error);      
     }
   };
+
 }
 module.exports = new OrderController();

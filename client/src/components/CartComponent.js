@@ -40,8 +40,9 @@ function CartComponent() {
 
   const renders = () => {
     return cartItems.map((item) => {
+      console.log(item,'abadada')
       return (
-        <div key={item._id}>
+      item.user?"" : <div key={item._id}>
           <div>
             <h5 class="card-title">{item.nameprod}</h5>
             <h5>{item.name}</h5>

@@ -67,7 +67,7 @@ function ManageBill() {
               <tbody>
                 {data.orders?.map((d, i) => (
                   <tr key={i}>
-                    <td className="admin-content">{d._id}</td>
+                    <td className="admin-content">{i+1}</td>
                     <td className="admin-content">{d.username}</td>
                     <td className="admin-content">{d.createdAt}</td>
                     <td className="admin-content">

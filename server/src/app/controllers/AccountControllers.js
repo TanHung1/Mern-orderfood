@@ -57,8 +57,8 @@ class AccountControler {
         res.status(200).json({ token, user });
       }
     } catch (error) {
-      res.status(500).json(error);
-      console.log(error);
+      return res.status(500).json(error)
+      // console.log(error)
     }
   };
 
