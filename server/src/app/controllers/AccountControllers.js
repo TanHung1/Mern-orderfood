@@ -88,8 +88,8 @@ class AccountControler {
       }
 
     } catch (error) {
-      res.status(500).json(error)
-      console.log(error)
+      return res.status(500).json(error)
+      // console.log(error)
     }
 
   };
