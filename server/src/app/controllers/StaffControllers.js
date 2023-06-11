@@ -4,6 +4,19 @@ const { mutipleMongooseToObject } = require("../../util/mongoose");
 const moment = require("moment");
 
 class StaffController {
+  //[get] /api/:id/orderDetail
+  orderDetail(req, res, next) {
+    Order.findOne({ _id: req.params.id })
+      .then((order) => {
+        res.status(200).json({
+          order: mongooesToObject(order),
+        });
+      })
+      .catch((err) => {
+        res.status(500).json(err);
+      });
+  }
+
   // [put] /api/staff/:id/update-status-order
   updateStatusOrder = async (req, res) => {
     try {

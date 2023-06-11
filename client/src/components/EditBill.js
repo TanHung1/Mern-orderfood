@@ -1,126 +1,95 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+const accessToken = localStorage.getItem("token");
+const dataUser = JSON.parse(accessToken);
+const token = {
+  headers: {
+    Authorization: `Bearer ${dataUser?.token}`,
+        "Content-Type": "application/json",
+  }
+}
+function EditBill() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [order, setOrder] = useState({});
+  const [status, setStatus] = useState("");
 
-import { useEffect, useState } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
-function EditBill()  { 
-    const { id } = useParams();
-    const [inputData, setInputData] = useState({
-        id: id,
-        NameCustumer: '',
-        BookingDate: '',
-        DeliveryDate: '',
-        Place: '',
-        Payment: '',
-        TotalMoney: '',
-        Status: ''
-    })
-    const navigate = useNavigate();
+  // Set your access token here
+  const accessToken = "YOUR_ACCESS_TOKEN_HERE";
 
-    useEffect(() => {
-        axios.get('http://localhost:3030/bills/' + id)
-            .then(res => setInputData(res.data))
-            .catch(err => console.log(err))
-    }, [])
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5000/api/admin/order/${id}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        setOrder(res.data);
+        setStatus(res.data.status);
+      })
+      .catch((err) => console.log(err));
+  }, [id]);
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        axios.put('http://localhost:3030/bills/' + id, inputData)
-            .then(res => {
-                alert("cap nhat thanh cong")
-                navigate('/Staff/manage-bill')
-            })
-    }
-        return (
-            <section className="account-admin-wrapper ">
-                <div className="account-food-content">
+  const handleStatusChange = (e) => {
+    setStatus(e.target.value);
+  };
 
-                    <div className="nav-info-menu">
-                        <div>
-                            <div className="left-food-content">
-                                <div className="header-info">
-                                    <h2>XIN CHÀO,<br /> HƯNG</h2>
-                                    <p><a href="">Đăng xuất</a></p>
-                                </div>
-                                <ul >
-                                    <li><a href="/manage-staff" className="link">Quản ký Hóa đơn</a></li>
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .patch(
+        `http://localhost:5000/api/admin/update-status-order/${id}`,
+        { status },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((res) => {
+        alert("Cập nhật trạng thái đơn hàng thành công!");
+        navigate("/manage-bill");
+      })
+      .catch((err) => console.log(err));
+  };
 
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="right-history">
-                        <div className="admin-right ">
-                            <h3>CẬP NHẬT MÓN ĂN</h3>
-                            <Link to={"/staff/manage-bill"} className="link">Trở về</Link>
-                           
-                        <form onSubmit={handleSubmit}>
-                            <div class="form-group">
-                                 <label htmlFor="name">Mã đơn hàng:</label>
-                        <input type="number" name='id' className='form-control' value={inputData.id}
-                                         />
-                             </div>
-                                <div class="form-group">
-                                    <label for="exampleFormControlFile1">Khách hàng</label>
-                                    <input type="text" class="form-control" id="exampleFormControlFile1" name="NameCustumer"
-                                          value={inputData.NameCustumer}
-                            onChange={e => setInputData({ ...inputData, NameCustumer: e.target.value })} />
-                                    
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleFormControlSelect2">Ngày đặt</label>
-                                    <input type="date" class="form-control" id="exampleFormControlFile1" 
-                                        name="BookingDate"
-                                          value={inputData.BookingDate}
-                            onChange={e => setInputData({ ...inputData, BookingDate: e.target.value })} />
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleFormControlSelect2">Ngày giao</label>
-                                    <input type="date" class="form-control" id="exampleFormControlFile1" 
-                                         name="DeliveryDate"
-                                          value={inputData.DeliveryDate}
-                            onChange={e => setInputData({ ...inputData, DeliveryDate: e.target.value })} />
-                                    
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleFormControlTextarea1">Nơi giao</label>
-                                    <input type="text" class="form-control" id="exampleFormControlFile1" 
-                                         name="Place"
-                                          value={inputData.Place}
-                            onChange={e => setInputData({ ...inputData, Place: e.target.value })} />
-                                </div>
+  return (
+    <div>
+      <h3>Chỉnh Sửa Trạng Thái Đơn Hàng</h3>
+      <div>
+        <p>ID đơn hàng: {order._id}</p>
+        <p>Người đặt: {order.username}</p>
+        <p>
+          Tên món:{" "}
+          {order.product && order.product.map((p) => p.nameprod).join(", ")}
+        </p>
+        <p>
+          Tổng giá: {order.totalPrice && order.totalPrice.toLocaleString()}
+          &#8363;
+        </p>
+      </div>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="status">Trạng Thái:</label>
+          <select
+            id="status"
+            name="status"
+            value={status}
+            onChange={handleStatusChange}
+          >
+            <option value="Đã đặt hàng">Đã đặt hàng</option>
+            <option value="Đang giao hàng">Đang giao hàng</option>
+            <option value="Đã giao hàng">Đã giao hàng</option>
+          </select>
+        </div>
+        <button type="submit">Cập nhật trạng thái</button>
+      </form>
+    </div>
+  );
+}
 
-                                <div class="form-group">
-                                    <label for="exampleFormControlTextarea1">Hình thức thanh toán</label>
-                                    <select class="form-control" onChange={e => setInputData({...inputData, Payment: e.target.value})}>
-                                        <option >Lựa chọn</option>
-                                        <option>Tiền mặt</option>
-                                        <option>Chuyển khoản</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleFormControlTextarea1">Tổng tiền</label>
-                                    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="giá tiền" 
-                                          name="TotalMoney"
-                                          value={inputData.TotalMoney}
-                            onChange={e => setInputData({ ...inputData, TotalMoney: e.target.value })} />
-                                    
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleFormControlTextarea1">Trang thái</label>
-                                    <select class="form-control" onChange={e => setInputData({...inputData, Status: e.target.value})}>
-                                        <option >Lựa chọn</option>
-                                        <option>Đang giao</option>
-                                        <option>Đã giao</option>
-                                    </select>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Cập nhật</button>
-                            </form>
-
-                        </div>
-                    </div>
-                </div>
-            </section>
-        )
-    }
 export default EditBill;

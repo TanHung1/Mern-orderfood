@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-
+import "../styles/EditFood.scss";
+const accessToken = localStorage.getItem("token");
+const dataUser = JSON.parse(accessToken);
+const token = {
+  headers: {
+    Authorization: `Bearer ${dataUser?.token}`,
+        "Content-Type": "application/json",
+  }
+}
 function EditFood() {
   const { _id } = useParams();
   const navigate = useNavigate();
@@ -31,7 +39,7 @@ function EditFood() {
   const handleEditFood = (event) => {
     event.preventDefault();
     axios
-      .put(`http://localhost:5000/api/admin/${_id}/update-product`, inputData)
+      .put(`http://localhost:5000/api/admin/${_id}/update-product`, inputData, token)
       .then((res) => {
         alert("Chỉnh sửa món ăn thành công");
         navigate("/manage-food");
@@ -42,13 +50,24 @@ function EditFood() {
         alert("Chỉnh sửa món ăn thất bại");
       });
   };
-
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        setInputData((prevState) => ({ ...prevState, image: reader.result }));
+      };
+    }
+  };
   return (
     <div>
-      <h2>Chỉnh sửa món ăn</h2>
+      <h2 className="h2-editFood">Chỉnh sửa món ăn</h2>
       <form onSubmit={handleEditFood}>
         <div className="form-group">
-          <label htmlFor="nameprod">Tên món</label>
+          <label htmlFor="nameprod" className="label-editFood">
+            Tên món
+          </label>
           <input
             type="text"
             className="form-control"
@@ -65,7 +84,9 @@ function EditFood() {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="price">Giá</label>
+          <label htmlFor="price" className="label-editFood">
+            Giá
+          </label>
           <input
             type="text"
             className="form-control"
@@ -82,24 +103,27 @@ function EditFood() {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="image">Hình ảnh</label>
+          <label htmlFor="image" className="label-editFood">
+            Hình ảnh
+          </label>
           <input
-            type="text"
-            className="form-control"
-            id="image"
+            type="file" // Sử dụng input với type là "file"
             name="image"
-            value={inputData.image}
-            onChange={(e) =>
-              setInputData((prevState) => ({
-                ...prevState,
-                image: e.target.value,
-              }))
-            }
-            placeholder="Nhập đường dẫn hình ảnh"
+            accept="image/*" // Giới hạn kiểu file cho phép được chọn là các định dạng hình ảnh
+            onChange={handleImageChange}
+            class="form-control"
+            id="exampleFormControlInput1"
           />
+          {inputData.image && ( // Nếu đã chọn ảnh thì hiển thị ảnh đó
+            <img
+              src={inputData.image}
+              alt="Preview"
+              className="preview-image"
+            />
+          )}
         </div>
         <div className="form-group">
-          <label htmlFor="category" className="lb-edit-staff">
+          <label htmlFor="category" className="label-editFood">
             Loại
           </label>
           <select

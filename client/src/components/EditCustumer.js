@@ -2,7 +2,14 @@ import axios from "axios";
 import React from "react";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-
+const accessToken = localStorage.getItem("token");
+const dataUser = JSON.parse(accessToken);
+const token = {
+  headers: {
+    Authorization: `Bearer ${dataUser?.token}`,
+        "Content-Type": "application/json",
+  }
+}
 function EditCustumer()  {
     const { id } = useParams();
 

@@ -78,7 +78,7 @@ class AdminController {
 
   // [get] /api/admin/stored-staff
   storedStaffs(req, res, next) {
-    Promise.all([User.find({}), Staff.countDocumentsDeleted()])
+    Promise.all([User.find({}), User.countDocumentsDeleted({role: 'staff'})])
       .then(([staffs, deleteCount]) =>
         res.json({
           deleteCount,
@@ -129,7 +129,7 @@ class AdminController {
   //---------CUSTOMER-----
   //[get] /api/admin/stored-customers/
   storedCustomers = async (req, res) => {
-    Promise.all([Customer.find({}), Customer.countDocumentsDeleted()])
+    Promise.all([Customer.find({}), Customer.countDocumentsDeleted({role: 'customer'})])
       .then(([customers, deleteCount]) =>
         res.json({
           deleteCount,

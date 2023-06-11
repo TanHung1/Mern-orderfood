@@ -45,18 +45,22 @@ class OrderController {
 
   //[get]/api/order/:id/myorder
   myOrder = async (req, res) => {
-    Order.findById({_id: req.params.id})
-      .then((product) => {
-        console.log(product);
-        res.status(200).json({
-         product
-        });
-      })
-      .catch((err) => {
-        console.log(err)
-        res.status(500).json(err);
+    try {
+      const orders = await Order.find();
+      let totalAmount = 0;
+      orders.forEach((order) => {
+        totalAmount += order.totalPrice;
       });
-  }
+
+      res.status(200).json({
+        orders: mutipleMongooseToObject(orders),
+        totalAmount,
+      });
+    } catch (error) {
+      res.status(500).json(error);
+      console.log(error);
+    }
+  };
 
 }
 module.exports = new OrderController();

@@ -1,6 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../styles/PreviousOders.scss";
+const accessToken = localStorage.getItem("token");
+const dataUser = JSON.parse(accessToken);
+const token = {
+  headers: {
+    Authorization: `Bearer ${dataUser?.token}`,
+        "Content-Type": "application/json",
+  }
+}
 function PreviousOders() {
   return (
     <section className="my-account-wrapper">

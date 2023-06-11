@@ -17,7 +17,7 @@ class ProductController {
   };
 
   //[get] /api/product/:id
-  detail(req, res, next) {
+  productDetail(req, res, next) {
     Product.findOne({ _id: req.params.id })
       .then((product) => {
         res.status(200).json({

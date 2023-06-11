@@ -98,7 +98,7 @@
   
         input[type="text"], select {
           width: 100%;
-          padding: 10px;
+         
           border-radius: 5px;
           border: 1px solid #ccc;
           font-size: 16px;
@@ -147,4 +147,9 @@
   }
   .food-table{
     width: 100%;
+  }
+
+
+  .preview-image{
+    width: 30%;
   }

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/ManageFood.scss";
+import Footer from "../view/Footer";
 const accessToken = localStorage.getItem("token");
 const dataUser = JSON.parse(accessToken);
 const token = {
@@ -10,6 +11,7 @@ const token = {
         "Content-Type": "application/json",
   }
 }
+
 function ManageFood() {
   const [inputData, setInputData] = useState({
     nameprod: "",
@@ -17,17 +19,39 @@ function ManageFood() {
     image: "",
     category: "",
   });
+  const [image, setImage] = useState(null);
   const [data, setData] = useState([]);
   const [dialogActive, setDialogActive] = useState(false);
   const navigate = useNavigate();
+  const [deletedProduct, setDeletedProduct] = useState(null);
+  const [addedProduct, setAddedProduct] = useState(null);
+  const [formValues, setFormValues] = useState({
+    nameprod: "",
+    price: "",
+    image: "",
+    category: "",
+  });
 
   useEffect(() => {
     axios
       .get("http://localhost:5000/api/admin/stored-product",token )
       .then((res) => setData(res.data))
       .catch((err) => console.log(err));
-  }, []);
+  }, [deletedProduct, addedProduct]);
 
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    // Kiểm tra file có tồn tại không
+    if (file) {
+      // Nếu có thì định dạng file thành định dạng cho phép
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        setInputData((prevState) => ({ ...prevState, image: reader.result }));
+        setImage(reader.result);
+      };
+    }
+  };
   const handleAddFood = (event) => {
     event.preventDefault();
     axios
@@ -38,6 +62,7 @@ function ManageFood() {
       .then((res) => {
         alert("Thêm món ăn thành công");
         navigate("/manage-food");
+        setAddedProduct(res.data._id);
       })
       .catch((err) => {
         console.log(err);
@@ -53,6 +78,12 @@ function ManageFood() {
   const handleCloseDialog = (event) => {
     event.preventDefault();
     setDialogActive(false);
+    setFormValues({
+      nameprod: "",
+      price: "",
+      image: "",
+      category: "",
+    });
   };
 
   function handleDelete(_id) {
@@ -65,7 +96,7 @@ function ManageFood() {
         .then((res) => {
           alert(" Xóa thành công");
           console.log(_id);
-          navigate("/manage-food")
+          setDeletedProduct(_id);
         });
     }
   }
@@ -111,7 +142,7 @@ function ManageFood() {
                       htmlFor="exampleFormControlInput1"
                       className="text-lable"
                     >
-                      name food
+                      Tên món ăn
                     </label>
                     <input
                       type="text"
@@ -129,31 +160,36 @@ function ManageFood() {
                       htmlFor="exampleFormControlFile1"
                       className="text-lable"
                     >
-                      Img
+                      Hình ảnh
                     </label>
                     <input
-                      type="text"
+                      type="file"
                       className="form-control"
                       name="image"
-                      placeholder="nhập anh"
+                      accept="image/*"
                       id="exampleFormControlFile1"
-                      onChange={(e) =>
-                        setInputData({ ...inputData, image: e.target.value })
-                      }
+                      onChange={handleImageChange}
                     />
+                    {image && ( // Nếu đã chọn ảnh thì hiển thị ảnh đó
+                      <img
+                        src={image}
+                        alt="Preview"
+                        className="preview-image"
+                      />
+                    )}
                   </div>
                   <div className="form-group">
                     <label
                       htmlFor="exampleFormControlSelect2"
                       className="text-lable"
                     >
-                      Giá
+                      Giá tiền
                     </label>
                     <input
                       type="text"
                       className="form-control"
                       name="price"
-                      placeholder="nhập gia"
+                      placeholder="nhập giá tiền"
                       id="exampleFormControlFile1"
                       onChange={(e) =>
                         setInputData({ ...inputData, price: e.target.value })
@@ -165,7 +201,7 @@ function ManageFood() {
                       htmlFor="exampleFormControlTextarea1"
                       className="text-lable"
                     >
-                      Loại
+                      Loại món ăn
                     </label>
                     <select
                       className="form-control"
@@ -182,7 +218,7 @@ function ManageFood() {
                   </div>
 
                   <button type="submit" className="btn btn-primary">
-                    Submit
+                    Thêm món
                   </button>
                 </form>
               </div>
@@ -212,7 +248,7 @@ function ManageFood() {
                       />
                     </td>
                     <td className="food-content">
-                      {d.price.toLocaleString()}&#8363;
+                      {d.price && d.price.toLocaleString()}&#8363;
                     </td>
                     <td className="food-content">{d.category}</td>
                     <td className="food-content">

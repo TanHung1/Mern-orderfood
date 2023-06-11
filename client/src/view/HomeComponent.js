@@ -1,6 +1,6 @@
 import React from "react";
 import "../styles/HomeComponent.scss";
-import { withRouter } from "react-router";
+
 import MenuComponent from "../view/MenuComponent";
 import AboutComponent from "../view/AboutComponent";
 import o1 from "../assets/o1.jpg";

@@ -3,6 +3,14 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import "../styles/EditStaff.scss";
+const accessToken = localStorage.getItem("token");
+const dataUser = JSON.parse(accessToken);
+const token = {
+  headers: {
+    Authorization: `Bearer ${dataUser?.token}`,
+        "Content-Type": "application/json",
+  }
+}
 function EditStaff() {
   const { id } = useParams();
   const [inputData, setInputData] = useState({
