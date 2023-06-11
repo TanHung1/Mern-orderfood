@@ -12,9 +12,10 @@ db.connect();
 
 const port = 5000;
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false, limmit: '2mb' }));
+app.use(bodyParser.json({limit: '2mb'}));
 app.use(methodOverride("_method"));
+
 
 // route init
 route(app);

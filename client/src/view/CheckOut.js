@@ -31,7 +31,7 @@ const CheckOut = () => {
     const accessToken = localStorage.getItem("token");
 
     if (accessToken) {
-      setCustomerName("");
+      setCustomerName(dataUser.user.username);
       setCustomerAddress(dataUser.user.address);
       setCustomerPhone(dataUser.user.phonenumber);
       setCustomerEmail(dataUser.user.email);
@@ -58,8 +58,8 @@ const CheckOut = () => {
           customerPhone: dataUser.user.phonenumber,
           customerEmail: dataUser.user.email,
           customerID: dataUser.user._id,
-        },
-        token
+        },token
+        
       );
 
       Modal.success({
@@ -133,8 +133,7 @@ const CheckOut = () => {
               <label>Điện thoại:</label>
               <input
                 type="text"
-                value={customerPhone}
-                onChange={(e) => setCustomerPhone(e.target.value)}
+                value={customerPhone}onChange={(e) => setCustomerPhone(e.target.value)}
               />
             </div>
             <div className="form-group">
