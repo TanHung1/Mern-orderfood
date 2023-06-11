@@ -40,19 +40,21 @@ function CartComponent() {
 
   const renders = () => {
     return cartItems.map((item) => {
-      console.log(item,'abadada')
-      return (
-      item.user?"" : <div key={item._id}>
+      console.log(item, "abadada");
+      return item.user ? (
+        ""
+      ) : (
+        <div key={item._id}>
           <div>
             <h5 class="card-title">{item.nameprod}</h5>
             <h5>{item.name}</h5>
             <img src={item.image} alt={item.name} style={{ width: "10%" }} />
-            <p>Price: {item.price}đ</p>
+            <p>Giá: {item.price.toLocaleString()}&#8363;</p>
             <div className="detail">
               <button onClick={() => handleDecreaseQuantity(item)}>-</button>
               <h5>{item.quantity}</h5>
               <button onClick={() => handleIncreaseQuantity(item)}>+</button>
-              <button onClick={() => handleRemoveItem(item)}>Remove</button>
+              <button onClick={() => handleRemoveItem(item)}>Xóa</button>
             </div>
           </div>
           <hr />
@@ -77,7 +79,7 @@ function CartComponent() {
       ) : (
         <div>
           {renders()}
-          <p>Total: {getTotalPrice()}đ</p>
+          <p>Tổng tiền: {getTotalPrice().toLocaleString()}&#8363;</p>
           <Link
             className="text-decoration-none btn btn-sm btn-success"
             to={"/checkout"}

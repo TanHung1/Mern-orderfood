@@ -19,6 +19,7 @@ import EditStaff from "../components/EditStaff";
 import EditCustumer from "../components/EditCustumer";
 import ManageBill from "../components/ManageBill";
 import EditBill from "../components/EditBill";
+import Footer from "../view/Footer";
 
 import Nav from "../view/Nav";
 
@@ -71,6 +72,7 @@ function App() {
             </Route>
           </Routes>
         </header>
+        <Footer />
       </div>
     </BrowserRouter>
   );

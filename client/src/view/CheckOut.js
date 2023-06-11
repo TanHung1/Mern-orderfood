@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../styles/CheckOut.scss";
+import { Modal } from "antd";
+
 const CheckOut = () => {
   const [cart, setCart] = useState([]);
   const [customerName, setCustomerName] = useState("");
@@ -32,11 +34,13 @@ const CheckOut = () => {
   const handlePayment = async () => {
     try {
       if (!accessToken) {
-        alert("Bạn cần đăng nhập để tiếp tục đặt hàng.");
-        navigate("/login");
+        Modal.warning({
+          title: "Thông báo",
+          content: "Bạn cần đăng nhập để tiếp tục đặt hàng.",
+          onOk: () => navigate("/login"),
+        });
         return;
       }
-      console.log(accessToken);
 
       const response = await axios.post(
         "http://localhost:5000/api/order/neworder",
@@ -55,17 +59,26 @@ const CheckOut = () => {
           },
         }
       );
-      alert("Thanh toán thành công!", response);
-      console.log(cart);
-      localStorage.removeItem("cart");
-      setCart([]);
-      setCustomerName("");
-      setCustomerAddress("");
-      setCustomerPhone("");
-      setCustomerEmail("");
+
+      Modal.success({
+        title: "Thông báo",
+        content: "Thanh toán thành công!",
+        onOk: () => {
+          console.log(cart);
+          localStorage.removeItem("cart");
+          setCart([]);
+          setCustomerName("");
+          setCustomerAddress("");
+          setCustomerPhone("");
+          setCustomerEmail("");
+        },
+      });
     } catch (error) {
       console.error(error);
-      alert("Thanh toán thất bại. Vui lòng thử lại sau.");
+      Modal.error({
+        title: "Thông báo",
+        content: "Thanh toán thất bại. Vui lòng thử lại sau.",
+      });
     }
   };
 
@@ -77,9 +90,11 @@ const CheckOut = () => {
           <h5>
             <img src={item.image} style={{ width: "10%" }} />
           </h5>
-          <p style={{ color: "black" }}>Price: {item.price}đ</p>
+          <p style={{ color: "black" }}>
+            Giá: {item.price.toLocaleString()}&#8363;
+          </p>
           <div className="detail">
-            <h5>Quantity: {item.quantity}</h5>
+            <h5>Số lượng: {item.quantity}</h5>
           </div>
           <hr />
         </div>
@@ -137,11 +152,10 @@ const CheckOut = () => {
             {renders()}
             <p>
               Tổng tiền:{" "}
-              {cart.reduce(
-                (total, item) => total + item.price * item.quantity,
-                0
-              )}
-              đ
+              {cart
+                .reduce((total, item) => total + item.price * item.quantity, 0)
+                .toLocaleString()}
+              &#8363;
             </p>
           </div>
         </div>

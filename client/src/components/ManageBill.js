@@ -4,11 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import axios from "axios";
 function ManageBill() {
-  const [inputData, setInputData] = useState({
-    username: "",
-    phonenumber: "",
-    email: "",
-  });
   const [data, setData] = useState([]);
   const navigate = useNavigate();
 
@@ -67,7 +62,7 @@ function ManageBill() {
               <tbody>
                 {data.orders?.map((d, i) => (
                   <tr key={i}>
-                    <td className="admin-content">{i+1}</td>
+                    <td className="admin-content">{i + 1}</td>
                     <td className="admin-content">{d.username}</td>
                     <td className="admin-content">{d.createdAt}</td>
                     <td className="admin-content">
@@ -78,19 +73,21 @@ function ManageBill() {
 
                     <td className="admin-content">{d.phonenumber}</td>
 
-                    <td className="admin-content">{d.totalPrice}đ</td>
+                    <td className="admin-content">
+                      {d.totalPrice.toLocaleString()}&#8363;
+                    </td>
                     <td className="admin-content">{d.status}</td>
                     <td className="admin-content">
                       <Link
                         className="text-decoration-none btn btn-sm btn-success"
-                        to={`/manage-bill/edit/${d.id}`}
+                        to={`/manage-bill/edit/${d._id}`}
                       >
                         <i class="fa-solid fa-pen-to-square"></i>
                       </Link>
 
                       <button
                         className="text-decoration-none btn btn-sm btn-danger"
-                        onClick={(e) => handleDelete(d.id)}
+                        onClick={(e) => handleDelete(d._id)}
                       >
                         <i class="fa-solid fa-trash"></i>{" "}
                       </button>
