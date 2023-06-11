@@ -40,7 +40,7 @@ function MenuComponent() {
       alert('có sản phẩm')
     } else {
       notification.success({
-        message:'đặt hàng thành công',
+        message:'Thêm sản phẩm thành công',
       })
       cartItems.push({ ...product, quantity: 1 });
     }
@@ -63,15 +63,14 @@ function MenuComponent() {
       : data.products || [];
 
     return productsToRender.map((item, index) => {
-      console.log(item.nameprod?.substring(0,10))
       return (
         <div key={index}>
           <div class="card">
             <img style={{width:"100%",height:250}} class="" src={item.image} alt="Card image cap" />
             <div class="card-body">
-              <h5 class="card-title" style={{fontSize:15,width:'100%'}}>{item.nameprod?.length > 10 ? `${item.nameprod?.slice(0, 30)}...` : item.nameprod}</h5>
+              <h5 class="card-title" style={{fontSize:15,width:'100%'}}>{item.nameprod?.length > 10 ? `${item.nameprod?.slice(0, 35)}...` : item.nameprod}</h5>
               <p class="card-text">{item.description}</p>
-              <p class="card-price">{item.price}đ</p>
+              <p class="card-price">{item.price.toLocaleString()}&#8363;</p>
 
               <button
               style={{marginBottom:20}}

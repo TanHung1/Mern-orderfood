@@ -2,7 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/ManageFood.scss";
-
+const accessToken = localStorage.getItem("token");
+const dataUser = JSON.parse(accessToken);
+const token = {
+  headers: {
+    Authorization: `Bearer ${dataUser?.token}`,
+        "Content-Type": "application/json",
+  }
+}
 function ManageFood() {
   const [inputData, setInputData] = useState({
     nameprod: "",
@@ -16,7 +23,7 @@ function ManageFood() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/admin/stored-product")
+      .get("http://localhost:5000/api/admin/stored-product",token )
       .then((res) => setData(res.data))
       .catch((err) => console.log(err));
   }, []);
@@ -24,7 +31,10 @@ function ManageFood() {
   const handleAddFood = (event) => {
     event.preventDefault();
     axios
-      .post("http://localhost:5000/api/admin/create-product", inputData)
+      .post("http://localhost:5000/api/admin/create-product", 
+      inputData,
+      token      
+      )
       .then((res) => {
         alert("Thêm món ăn thành công");
         navigate("/manage-food");
@@ -49,7 +59,9 @@ function ManageFood() {
     const confirm = window.confirm("Bạn có muốn xóa?");
     if (confirm) {
       axios
-        .delete(`http://localhost:5000/api/admin/${_id}/delete-product`)
+        .delete(`http://localhost:5000/api/admin/${_id}/delete-product`,
+        token
+        )
         .then((res) => {
           alert(" Xóa thành công");
           console.log(_id);

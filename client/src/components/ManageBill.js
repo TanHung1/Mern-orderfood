@@ -3,6 +3,14 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import axios from "axios";
+const accessToken = localStorage.getItem("token");
+const dataUser = JSON.parse(accessToken);
+const token = {
+  headers: {
+    Authorization: `Bearer ${dataUser?.token}`,
+        "Content-Type": "application/json",
+  }
+}
 function ManageBill() {
   const [inputData, setInputData] = useState({
     username: "",
@@ -13,16 +21,10 @@ function ManageBill() {
   const navigate = useNavigate();
 
   // Set your access token here
-  const accessToken = "YOUR_ACCESS_TOKEN_HERE";
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/admin/allorders", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-      })
+      .get("http://localhost:5000/api/admin/allorders", token)
       .then((res) => setData(res.data))
       .catch((err) => console.log(err));
     console.log(data);
@@ -31,12 +33,7 @@ function ManageBill() {
     const confirm = window.confirm("Bạn có muốn xóa?");
     if (confirm) {
       axios
-        .delete(`http://localhost:5000/api/admin/${_id}/delete-order/`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
-          },
-        })
+        .delete(`http://localhost:5000/api/admin/${_id}/delete-order/`, token)
         .then((res) => {
           alert(" Xóa thành công");
         });

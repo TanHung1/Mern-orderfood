@@ -4,6 +4,14 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import axios from "axios";
+const accessToken = localStorage.getItem("token");
+const dataUser = JSON.parse(accessToken)
+const token = {
+  headers: {
+    Authorization: `Bearer ${dataUser?.token}`,
+        "Content-Type": "application/json", 
+  }
+}
 function ManageStaff() {
   const [inputData, setInputData] = useState({
     username: "",
@@ -16,14 +24,14 @@ function ManageStaff() {
   const navigate = useNavigate();
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/account")
+      .get("http://localhost:5000/api/admin/stored-staff", token)
       .then((res) => setData(res.data))
       .catch((err) => console.log(err));
   });
   const handleSubmit = (event) => {
     event.preventDefault();
     axios
-      .post("http://localhost:5000/api/admin/create-product", inputData)
+      .post("http://localhost:5000/api/admin/create-product", inputData, token)
       .then((res) => {
         alert("Thêm món ăn thành công");
         navigate("/manage-food");
