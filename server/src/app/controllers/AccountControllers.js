@@ -42,7 +42,7 @@ class AccountControler {
     }
   
     if (!user) {
-      return res.status(403).json("Sai thông tin đăng nhập");
+      return res.status(403).json({error:"Sai thông tin đăng nhập"});
     }
   
     const vallidPassword = await bcrypt.compare(
@@ -51,7 +51,7 @@ class AccountControler {
     );
   
     if (!vallidPassword) {
-      return res.status(403).json("Sai mật khẩu");
+      return res.status(403).json({error:"Sai mật khẩu"});
     }
   
     const token = jwt.sign(
@@ -60,7 +60,7 @@ class AccountControler {
       { expiresIn: "48h" }
     );
   
-    res.status(200).json({ token, user});
+    res.status(200).json({success:"dang nhap thanh cong", token, user});
   };
   // login = async (req, res, next) => {
   //   try {
@@ -92,7 +92,7 @@ class AccountControler {
   //     // console.log(error)
   //   }
   // };
-
+  
   //[post] /api/account/auth/google
   authGoogle = async (req, res) => {
     const token = encodedToken(req.user._id);

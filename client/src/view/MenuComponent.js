@@ -38,10 +38,21 @@ function MenuComponent() {
     if (index !== -1) {
       notification.warning({
         message: "Đã có sản phẩm này trong giỏ hàng",
+        style: {
+          marginTop: 50,
+          position:'relative',  
+          bottom:350,
+          left:0
+        },
+        placement: 'bottomRight'
       });
     } else {
       notification.success({
         message:'Thêm sản phẩm thành công',
+        style: {
+          marginTop: 50,
+        },
+        placement: 'bottomRight'
       })
       cartItems.push({ ...product, quantity: 1 });
     }

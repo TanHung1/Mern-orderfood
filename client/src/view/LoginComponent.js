@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
 import about from "../assets/about-img.png";
-import { NavLink } from "react-router-dom";
+import { NavLink, useRoutes } from "react-router-dom";
+import {notification} from 'antd'
 import "../styles/LoginComponent.scss";
 const LoginComponent = () => {
+
   const [identifier, setidentifier] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
@@ -25,18 +27,32 @@ const LoginComponent = () => {
         { identifier, password }
       );
       console.log(identifier, password);
-  
       localStorage.setItem("token" , JSON.stringify(response.data));
 
-      window.location.href = "/";
+    
       console.log(response);
-      alert("thanh cong", localStorage);
+      notification.success({
+        message:response?.data?.success,
+        style:{
+          marginTop:50,
+      
+        },
+      })
+   
+      setTimeout(()=>{
+        window.location.href = "/";
+      },200)
+      // alert(response?.data?.success
+      //   , localStorage);
+  
     } catch (error) {
-      if (error.response) {
-        setError(error.response.data.message);
-      } else {
-        setError("Đã xảy ra lỗi khi đăng nhập. Vui lòng thử lại sau.");
-      }
+      notification.error({
+        message:error.response?.data?.error,
+        style:{
+          marginTop:50
+        }
+      })
+
     }
   };
   const isFormValid = identifier && password;

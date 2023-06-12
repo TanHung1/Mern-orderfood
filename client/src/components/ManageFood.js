@@ -275,6 +275,7 @@ function ManageFood() {
           </div>
         </div>
       </div>
+      <Footer/>
     </section>
   );
 }

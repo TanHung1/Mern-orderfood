@@ -4,6 +4,6 @@ const router = express.Router();
 
 router.get("/all-orders", StaffControllers.getAllOrders);
 router.get("/:id/order-detail", StaffControllers.orderDetail);
-router.post("/update-status-order/:id", StaffControllers.updateStatusOrder);
+router.put("/update-status-order/:id", StaffControllers.updateStatusOrder);
 
 module.exports = router;

@@ -13,19 +13,14 @@ function EditBill() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [order, setOrder] = useState({});
+  console.log(order)
   const [status, setStatus] = useState("");
 
   // Set your access token here
-  const accessToken = "YOUR_ACCESS_TOKEN_HERE";
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/admin/order/${id}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-      })
+      .get(`http://localhost:5000/api/staff/${id}/order-detail`, token)
       .then((res) => {
         setOrder(res.data);
         setStatus(res.data.status);
@@ -40,19 +35,14 @@ function EditBill() {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .patch(
-        `http://localhost:5000/api/admin/update-status-order/${id}`,
+      .put(
+        `http://localhost:5000/api/staff/update-status-order/${id}`,
         { status },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
-          },
-        }
+        token
       )
       .then((res) => {
         alert("Cập nhật trạng thái đơn hàng thành công!");
-        navigate("/manage-bill");
+        navigate(`/Staff/manage-bill`);
       })
       .catch((err) => console.log(err));
   };
@@ -61,14 +51,14 @@ function EditBill() {
     <div>
       <h3>Chỉnh Sửa Trạng Thái Đơn Hàng</h3>
       <div>
-        <p>ID đơn hàng: {order._id}</p>
-        <p>Người đặt: {order.username}</p>
+        <p>ID đơn hàng: {order?.order?._id}</p>
+        <p>Người đặt: {order?.order?.username}</p>
         <p>
           Tên món:{" "}
-          {order.product && order.product.map((p) => p.nameprod).join(", ")}
+          {order?.order?.product.map((p) => p.nameprod).join(", ")}
         </p>
         <p>
-          Tổng giá: {order.totalPrice && order.totalPrice.toLocaleString()}
+          Tổng giá: {order?.order?.totalPrice && order?.order?.totalPrice.toLocaleString()}
           &#8363;
         </p>
       </div>
@@ -81,9 +71,11 @@ function EditBill() {
             value={status}
             onChange={handleStatusChange}
           >
-            <option value="Đã đặt hàng">Đã đặt hàng</option>
-            <option value="Đang giao hàng">Đang giao hàng</option>
-            <option value="Đã giao hàng">Đã giao hàng</option>
+            <option defaultValue="">{order?.order?.status}</option>
+            <option value="Đang chuẩn bị món">Đang chuẩn bị món</option>
+            <option value="Đang giao">Đang giao</option>
+            <option value="Đã hoàn thành giao đơn hàng">Đã hoàn thành giao đơn hàng</option>
+            <option value="Đơn hàng bị hủy">Đơn hàng bị hủy</option>
           </select>
         </div>
         <button type="submit">Cập nhật trạng thái</button>

@@ -17,7 +17,7 @@ function route(app) {
   );
   app.use("/api/account", accountRouter);
   app.use("/api/order",AuthenticationAccount, orderRouter);
-  app.use("/api/staff",AuthenticationAccount, checkRole('staff'), staffRouter);
+  app.use("/api/staff",AuthenticationAccount, checkRole('admin'), staffRouter);
 }
 
 module.exports = route;

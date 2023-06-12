@@ -14,7 +14,6 @@ function MyAccountEdit() {
   console.log(accessToken?.user,'abcd')
   
   const dataUser = JSON.parse(accessToken);
-  console.log(dataUser?.token,'abd')
 
   useEffect(() => {
     if (accessToken) {
