@@ -55,7 +55,7 @@ function EditBill() {
         <p>Người đặt: {order?.order?.username}</p>
         <p>
           Tên món:{" "}
-          {order?.order?.product.map((p) => p.nameprod).join(", ")}
+          {order?.order?.product.map((p) => <p>{p.nameprod}</p>)}
         </p>
         <p>
           Tổng giá: {order?.order?.totalPrice && order?.order?.totalPrice.toLocaleString()}
