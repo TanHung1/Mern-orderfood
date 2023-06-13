@@ -1,87 +1,100 @@
 import React, { useState } from "react";
 import axios from "axios";
-import about from "../assets/about-img.png";
+import f6 from "../assets/f6.png";
 import { NavLink } from "react-router-dom";
+import { Form, Input, Button, Modal, Alert } from "antd";
 import "../styles/LoginComponent.scss";
+
 const LoginComponent = () => {
-  const [identifier, setidentifier] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
 
-  const handleEmailChange = (event) => {
-    setidentifier(event.target.value);
-  };
-
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async (values) => {
     setError(null);
 
     try {
       const response = await axios.post(
         "http://localhost:5000/api/account/login",
-        { identifier, password }
+        values
       );
-      console.log(identifier, password);
-  
-      localStorage.setItem("token" , JSON.stringify(response.data));
 
-      window.location.href = "/";
-      console.log(response);
-      alert("thanh cong", localStorage);
+      localStorage.setItem("token", JSON.stringify(response.data));
+
+      setSuccess(true);
     } catch (error) {
-      if (error.response) {
-        setError(error.response.data.message);
+      if (error.response && error.response.status === 401) {
+        setError("Tài khoản hoặc mật khẩu không hợp lệ. Vui lòng thử lại.");
       } else {
-        setError("Đã xảy ra lỗi khi đăng nhập. Vui lòng thử lại sau.");
+        setError("Tài khoản hoặc mật khẩu không hợp lệ. Vui lòng thử lại.");
       }
     }
   };
-  const isFormValid = identifier && password;
+
+  const handleOk = () => {
+    setSuccess(false);
+    window.location.href = "/";
+  };
+
+  const handleCancel = () => {
+    setSuccess(false);
+  };
+
   return (
     <div>
-      <section class="login">
-        <div class="login_box">
-          <div class="left-login">
-            <img src={about} class="img-login" />
-            <div class="left-text"></div>
+      <section className="login">
+        <div className="login_box">
+          <div className="left-login">
+            <img src={f6} className="img-login" />
+            <div className="left-text"></div>
           </div>
-          <div class="right-login">
-            <div class="info-login">
-              <h3 class="login-header">Đăng nhập</h3>
-              {error && <p>{error}</p>}
-              <form onSubmit={handleSubmit}>
-                <input
-                  value={identifier}
-                  onChange={handleEmailChange}
-                  placeholder="Địa chỉ email hoặc số điện thoại của bạn"
-                />
-
-                <input
-                  value={password}
-                  onChange={handlePasswordChange}
-                  type="password"
-                  placeholder="Mật khẩu"
-                />
-
-                <button type="submit" class="submit" disabled={!isFormValid}>
+          <div className="right-login">
+            <div className="info-login">
+              <h3 className="login-header">Đăng nhập</h3>
+              {error && <Alert message={error} type="error" showIcon />}
+              <Form onFinish={handleSubmit} validateTrigger="onSubmit">
+                <Form.Item
+                  name="identifier"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Vui lòng nhập tài khoản!",
+                    },
+                  ]}
+                  validateStatus={error ? "error" : ""}
+                  errorMessage={error ? error : ""}
+                >
+                  <Input placeholder="Địa chỉ email hoặc số điện thoại của bạn" />
+                </Form.Item>
+                <Form.Item
+                  name="password"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Vui lòng nhập mật khẩu!",
+                    },
+                  ]}
+                  validateStatus={error ? "error" : ""}
+                  errorMessage={error ? error : ""}
+                >
+                  <Input.Password placeholder="Mật khẩu" />
+                </Form.Item>
+                <Button type="primary" htmlType="submit" className="submit">
                   Đăng nhập
-                </button>
-              </form>
+                </Button>
+              </Form>
               <hr />
               <h6>Hoặc đăng nhập với</h6>
-              <button class="login-facebook">
-                <i class="fa-brands fa-facebook"></i> Đăng nhập bằng Facebook
+              <button className="login-facebook">
+                <i className="fa-brands fa-facebook"></i> Đăng nhập bằng
+                Facebook
               </button>
-              <button class="login-google">
-                <i class="fa-brands fa-google"></i> Đăng nhập bằng Google
+              <button className="login-google">
+                <i className="fa-brands fa-google"></i> Đăng nhập bằng Google
               </button>
-              <p class="login-register-text">
+              <p className="login-register-text">
                 Bạn chưa có tài khoản?{" "}
                 <NavLink to="/register" activeClassName="active">
-                  <a href="/register" class="go-register">
+                  <a href="/register" className="go-register">
                     Đăng ký
                   </a>
                 </NavLink>
@@ -90,6 +103,14 @@ const LoginComponent = () => {
           </div>
         </div>
       </section>
+      <Modal
+        title="Đăng nhập thành công"
+        visible={success}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <p>Bạn đã đăng nhập thành công!</p>
+      </Modal>
     </div>
   );
 };

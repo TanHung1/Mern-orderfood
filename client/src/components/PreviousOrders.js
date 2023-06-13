@@ -1,128 +1,104 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import "../styles/PreviousOders.scss";
-const accessToken = localStorage.getItem("token");
-const dataUser = JSON.parse(accessToken);
-const token = {
-  headers: {
-    Authorization: `Bearer ${dataUser?.token}`,
-        "Content-Type": "application/json",
-  }
-}
-function PreviousOders() {
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { Table, Tag } from "antd";
+import { NavLink, Link } from "react-router-dom";
+
+const { Column } = Table;
+
+const PreviousOrders = ({ customerId }) => {
+  const [orders, setOrders] = useState([]);
+  const [customerName, setCustomerName] = useState("");
+
+  const accessToken = localStorage.getItem("token");
+  const dataUser = JSON.parse(accessToken);
+  const userId = dataUser?.user?._id;
+
+  const token = {
+    headers: {
+      Authorization: `Bearer ${dataUser?.token}`,
+      "Content-Type": "application/json",
+    },
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("cart");
+    window.location.pathname = "/login";
+  };
+
+  useEffect(() => {
+    if (accessToken) {
+      setCustomerName(dataUser.user?.username);
+    }
+  }, []);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/order/${userId}/myorder`,
+          token
+        );
+        console.log(
+          "Dữ liệu các đơn hàng đã đặt của người dùng:",
+          response.data.orders
+        ); // Hiển thị dữ liệu các đơn hàng đã đặt của người dùng
+
+        setOrders(response.data.orders);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchOrders();
+  }, [customerId]);
+
   return (
-    <section className="my-account-wrapper">
-      <div className="my-account-content">
-        <div className="nav-info-menu">
-          <div>
-            <div className="left-previousOders-content">
-              <div className="header-info">
-                <h2>
-                  XIN CHÀO,
-                  <br /> HƯNG
-                </h2>
-                <p>
-                  <a href="">Đăng xuất</a>
-                </p>
-              </div>
-              <ul>
-                <li>
-                  {" "}
-                  <Link to={"/my-account/previous-orders"} className="link">
-                    Lịch sử đặt hàng
-                  </Link>
-                </li>
-                <li>
-                  {" "}
-                  <Link to={"/my-account/edit"} className="link">
-                    Chi tiết tài khoản
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div className="right-history">
-          <div className="previous-oders-right">
-            <h3>LỊCH SỬ DƠN HÀNG</h3>
-            <table className="pervious-oders-table">
-              <tr>
-                <th className="previous-oders-header">Mã đơn hàng</th>
-                <th className="previous-oders-header">Thông tin sản phẩm</th>
-                <th className="previous-oders-header">Giá</th>
-                <th className="previous-oders-header">Ngày đặt hàng</th>
-                <th className="previous-oders-header">Trạng thái</th>
-              </tr>
-
-              <tr>
-                <td className="previous-oders-content">001</td>
-                <td className="previous-oders-content">
-                  Hamburger siêu to khổng lồ
-                </td>
-                <td className="previous-oders-content">200.000đ</td>
-                <td className="previous-oders-content">12-04-2023</td>
-                <td className="previous-oders-content">Đang Chờ</td>
-              </tr>
-              <tr>
-                <td className="previous-oders-content">002</td>
-                <td className="previous-oders-content">
-                  Pizza siêu to khổng lồ
-                </td>
-                <td className="previous-oders-content">300.000đ</td>
-                <td className="previous-oders-content">13-04-2023</td>
-                <td className="previous-oders-content">Đang giao</td>
-              </tr>
-              <tr>
-                <td className="previous-oders-content">003</td>
-                <td className="previous-oders-content">
-                  Gà rán siêu to khổng lồ
-                </td>
-                <td className="previous-oders-content">300.000đ</td>
-                <td className="previous-oders-content">14-04-2023</td>
-                <td className="previous-oders-content">Hoàn tất</td>
-              </tr>
-              <tr>
-                <td className="previous-oders-content">003</td>
-                <td className="previous-oders-content">
-                  Gà rán siêu to khổng lồ
-                </td>
-                <td className="previous-oders-content">300.000đ</td>
-                <td className="previous-oders-content">14-04-2023</td>
-                <td className="previous-oders-content">Hoàn tất</td>
-              </tr>
-              <tr>
-                <td className="previous-oders-content">003</td>
-                <td className="previous-oders-content">
-                  Gà rán siêu to khổng lồ
-                </td>
-                <td className="previous-oders-content">300.000đ</td>
-                <td className="previous-oders-content">14-04-2023</td>
-                <td className="previous-oders-content">Hoàn tất</td>
-              </tr>
-              <tr>
-                <td className="previous-oders-content">003</td>
-                <td className="previous-oders-content">
-                  Gà rán siêu to khổng lồ
-                </td>
-                <td className="previous-oders-content">300.000đ</td>
-                <td className="previous-oders-content">14-04-2023</td>
-                <td className="previous-oders-content">Hoàn tất</td>
-              </tr>
-              <tr>
-                <td className="previous-oders-content">003</td>
-                <td className="previous-oders-content">
-                  Gà rán siêu to khổng lồ
-                </td>
-                <td className="previous-oders-content">300.000đ</td>
-                <td className="previous-oders-content">14-04-2023</td>
-                <td className="previous-oders-content">Hoàn tất</td>
-              </tr>
-            </table>
-          </div>
-        </div>
-      </div>
-    </section>
+    <div>
+      <h2>Danh sách đơn hàng</h2>
+      <Link to={"/my-account/edit"} style={{ width: "100%" }}>
+        Trở về
+      </Link>
+      <Table dataSource={orders} rowKey="_id">
+        <Column title="Mã đơn hàng" dataIndex="_id" key="_id" />
+        <Column
+          title="Thông tin đơn hàng"
+          dataIndex="product"
+          render={(product) =>
+            product.map((p) => <div key={p._id}>- {p.nameprod}</div>)
+          }
+        />
+        <Column title="Tổng tiền" dataIndex="totalPrice" key="totalPrice" />
+        <Column title="Địa chỉ" dataIndex="address" key="address" />
+        <Column title="Ngày đặt hàng" dataIndex="createdAt" key="createdAt" />
+        <Column
+          title="Trạng thái"
+          dataIndex="status"
+          key="status"
+          render={(status) => {
+            let color;
+            switch (status) {
+              case "Chưa xác nhận":
+                color = "orange";
+                break;
+              case "Đã xác nhận":
+                color = "green";
+                break;
+              case "Đang giao":
+                color = "blue";
+                break;
+              case "Đã giao":
+                color = "purple";
+                break;
+              default:
+                color = "gray";
+            }
+            return <Tag color={color}>{status}</Tag>;
+          }}
+        />
+      </Table>
+    </div>
   );
-}
+};
 
-export default PreviousOders;
+export default PreviousOrders;

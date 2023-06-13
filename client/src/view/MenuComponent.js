@@ -41,8 +41,8 @@ function MenuComponent() {
       });
     } else {
       notification.success({
-        message:'Thêm sản phẩm thành công',
-      })
+        message: "Thêm sản phẩm thành công",
+      });
       cartItems.push({ ...product, quantity: 1 });
     }
     localStorage.setItem("cart", JSON.stringify(cartItems));
@@ -74,7 +74,11 @@ function MenuComponent() {
               alt="Card image cap"
             />
             <div class="card-body">
-              <h5 class="card-title" style={{fontSize:15,width:'100%'}}>{item.nameprod?.length > 10 ? `${item.nameprod?.slice(0, 35)}...` : item.nameprod}</h5>
+              <h5 class="card-title" style={{ fontSize: 15, width: "100%" }}>
+                {item.nameprod?.length > 10
+                  ? `${item.nameprod?.slice(0, 35)}...`
+                  : item.nameprod}
+              </h5>
               <p class="card-text">{item.description}</p>
               <p class="card-price">{item.price.toLocaleString()}&#8363;</p>
 
@@ -127,23 +131,10 @@ function MenuComponent() {
           Side
         </button>
       </div>
-      <button
-        onClick={() => {
-          if (open) {
-            setOpen(false);
-          } else {
-            setOpen(true);
-          }
-        }}
-        className
-      >
-        click
-      </button>
-      {open ? null : (
-        <div>
-          <div className="cards">{renders()}</div>
-        </div>
-      )}
+
+      <div>
+        <div className="cards">{renders()}</div>
+      </div>
     </>
   );
 }

@@ -8,9 +8,9 @@ const dataUser = JSON.parse(accessToken);
 const token = {
   headers: {
     Authorization: `Bearer ${dataUser?.token}`,
-        "Content-Type": "application/json",
-  }
-}
+    "Content-Type": "application/json",
+  },
+};
 const CheckOut = () => {
   const [cart, setCart] = useState([]);
   const [customerName, setCustomerName] = useState("");
@@ -53,13 +53,13 @@ const CheckOut = () => {
         "http://localhost:5000/api/order/neworder",
         {
           cart,
-          customerName: dataUser.user.username,
+          customerName,
           customerAddress,
-          customerPhone: dataUser.user.phonenumber,
-          customerEmail: dataUser.user.email,
+          customerPhone,
+          customerEmail,
           customerID: dataUser.user._id,
-        },token
-        
+        },
+        token
       );
 
       Modal.success({
@@ -133,7 +133,8 @@ const CheckOut = () => {
               <label>Điện thoại:</label>
               <input
                 type="text"
-                value={customerPhone}onChange={(e) => setCustomerPhone(e.target.value)}
+                value={customerPhone}
+                onChange={(e) => setCustomerPhone(e.target.value)}
               />
             </div>
             <div className="form-group">

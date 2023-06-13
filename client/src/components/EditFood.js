@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
+import { message, Modal } from "antd";
 import "../styles/EditFood.scss";
+
 const accessToken = localStorage.getItem("token");
 const dataUser = JSON.parse(accessToken);
 const token = {
   headers: {
     Authorization: `Bearer ${dataUser?.token}`,
-        "Content-Type": "application/json",
-  }
-}
+    "Content-Type": "application/json",
+  },
+};
+
 function EditFood() {
   const { _id } = useParams();
   const navigate = useNavigate();
@@ -19,6 +22,7 @@ function EditFood() {
     image: "",
     category: "",
   });
+  const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
     axios
@@ -39,17 +43,20 @@ function EditFood() {
   const handleEditFood = (event) => {
     event.preventDefault();
     axios
-      .put(`http://localhost:5000/api/admin/${_id}/update-product`, inputData, token)
+      .put(
+        `http://localhost:5000/api/admin/${_id}/update-product`,
+        inputData,
+        token
+      )
       .then((res) => {
-        alert("Chỉnh sửa món ăn thành công");
-        navigate("/manage-food");
-        console.log(inputData);
+        setIsSuccess(true);
       })
       .catch((err) => {
         console.log(err);
-        alert("Chỉnh sửa món ăn thất bại");
+        message.error("Chỉnh sửa món ăn thất bại");
       });
   };
+
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -60,9 +67,17 @@ function EditFood() {
       };
     }
   };
+
+  const handleOk = () => {
+    setIsSuccess(false);
+    navigate("/manage-food");
+  };
+
   return (
-    <div>
-      <h2 className="h2-editFood">Chỉnh sửa món ăn</h2>
+    <div className="container">
+      <h2 className="h2-editFood mt-4" style={{ paddingTop: "70px" }}>
+        Chỉnh sửa món ăn
+      </h2>
       <form onSubmit={handleEditFood}>
         <div className="form-group">
           <label htmlFor="nameprod" className="label-editFood">
@@ -107,18 +122,18 @@ function EditFood() {
             Hình ảnh
           </label>
           <input
-            type="file" // Sử dụng input với type là "file"
+            type="file"
             name="image"
-            accept="image/*" // Giới hạn kiểu file cho phép được chọn là các định dạng hình ảnh
+            accept="image/*"
             onChange={handleImageChange}
-            class="form-control"
-            id="exampleFormControlInput1"
+            className="form-control-file"
+            id="exampleFormControlFile1"
           />
-          {inputData.image && ( // Nếu đã chọn ảnh thì hiển thị ảnh đó
+          {inputData.image && (
             <img
               src={inputData.image}
               alt="Preview"
-              className="preview-image"
+              className="preview-image mt-2"
             />
           )}
         </div>
@@ -145,10 +160,21 @@ function EditFood() {
             <option value="side">Món ăn kèm</option>
           </select>
         </div>
-        <button type="submit" className="btn btn-primary">
-          Lưu
+        <button
+          type="submit"
+          className="btn btn-primary mt-3"
+          style={{ marginBottom: "50px" }}
+        >
+          Cập nhật
         </button>
       </form>
+      <Modal
+        visible={isSuccess}
+        onOk={handleOk}
+        onCancel={() => setIsSuccess(false)}
+      >
+        <p>Chỉnh sửa món ăn thành công</p>
+      </Modal>
     </div>
   );
 }

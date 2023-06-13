@@ -1,111 +1,130 @@
-import React from "react";
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import { Table, Tag, Popconfirm, message } from "antd";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import "../styles/EditBill.scss";
+
 const accessToken = localStorage.getItem("token");
 const dataUser = JSON.parse(accessToken);
 const token = {
   headers: {
     Authorization: `Bearer ${dataUser?.token}`,
-        "Content-Type": "application/json",
-  }
-}
+    "Content-Type": "application/json",
+  },
+};
+
 function ManageBill() {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
-
-  // Set your access token here
 
   useEffect(() => {
     axios
       .get("http://localhost:5000/api/admin/allorders", token)
       .then((res) => setData(res.data))
       .catch((err) => console.log(err));
-    console.log(data);
-  }, []); // add empty dependency array to run only once
-  function handleDelete(_id) {
-    const confirm = window.confirm("Bạn có muốn xóa?");
-    if (confirm) {
-      axios
-        .delete(`http://localhost:5000/api/admin/${_id}/delete-order/`, token)
-        .then((res) => {
-          alert(" Xóa thành công");
-        });
-    }
-  }
+  }, []);
+
+  const handleDelete = (_id) => {
+    axios
+      .delete(`http://localhost:5000/api/admin/${_id}/delete-order`, token)
+      .then((res) => {
+        message.success("Xóa đơn hàng thành công!");
+        setData(data.filter((d) => d._id !== _id));
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const columns = [
+    {
+      title: "ID",
+      dataIndex: "id",
+      key: "_id",
+      render: (_id, record, index) => <span>{index + 1}</span>,
+    },
+    {
+      title: "Người đặt",
+      dataIndex: "username",
+      key: "username",
+    },
+    {
+      title: "Ngày đặt",
+      dataIndex: "createdAt",
+      key: "createdAt",
+    },
+    {
+      title: "Tên món",
+      dataIndex: "product",
+      key: "product",
+      render: (product) => (
+        <>
+          {product.map((p) => (
+            <div key={p._id}>- {p.nameprod}</div>
+          ))}
+        </>
+      ),
+    },
+    {
+      title: "Số điện thoại",
+      dataIndex: "phonenumber",
+      key: "phonenumber",
+    },
+    {
+      title: "Tổng giá",
+      dataIndex: "totalPrice",
+      key: "totalPrice",
+      render: (totalPrice) => <span>{`${totalPrice.toLocaleString()}₫`}</span>,
+    },
+    {
+      title: "Trạng thái",
+      dataIndex: "status",
+      key: "status",
+      render: (status) => {
+        let color;
+        switch (status) {
+          case "Chưa xác nhận":
+            color = "orange";
+            break;
+          case "Đã xác nhận":
+            color = "green";
+            break;
+          case "Đang giao":
+            color = "blue";
+            break;
+          case "Đã giao":
+            color = "purple";
+            break;
+          default:
+            color = "gray";
+        }
+        return <Tag color={color}>{status}</Tag>;
+      },
+    },
+    {
+      title: "Lựa chọn",
+      key: "action",
+      render: (text, record) => (
+        <span>
+          <Link to={`/manage-bill/edit/${record._id}`}>
+            <EditOutlined /> Sửa
+          </Link>
+          <Popconfirm
+            title="Bạn có chắc muốn xóa đơn hàng này?"
+            onConfirm={() => handleDelete(record._id)}
+            okText="Đồng ý"
+            cancelText="Hủy"
+          ></Popconfirm>
+        </span>
+      ),
+    },
+  ];
 
   return (
-    <section className=" ">
-      <div className="">
-        <div className="">
-          <div className="">
-            <h3>Thông Tin Hóa Đơn</h3>
-
-            <table class="table">
-              <thead>
-                <tr>
-                  <th scope="col">ID</th>
-                  <th scope="col">Người đặt</th>
-                  <th scope="col">Ngày đặt</th>
-                  <th scope="col">Tên món</th>
-
-                  <th scope="col">Số điện thoại</th>
-                  <th scope="col">Tổng giá</th>
-                  <th scope="col">Trạng thái</th>
-                  <th scope="col">Lựa chọn</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data.orders?.map((d, i) => (
-                  <tr key={i}>
-                    <td className="admin-content">{i + 1}</td>
-                    <td className="admin-content">{d.username}</td>
-                    <td className="admin-content">{d.createdAt}</td>
-                    <td className="admin-content">
-                      {d.product.map((p) => (
-                        <div key={p._id}>- {p.nameprod}</div>
-                      ))}
-                    </td>
-
-                    <td className="admin-content">{d.phonenumber}</td>
-
-                    <td className="admin-content">
-                      {d.totalPrice.toLocaleString()}&#8363;
-                    </td>
-                    <td className="admin-content">{d.status}</td>
-                    <td className="admin-content">
-                      <Link
-                        className="text-decoration-none btn btn-sm btn-success"
-                        to={`/manage-bill/edit/${d._id}`}
-                      >
-                        <i class="fa-solid fa-pen-to-square"></i>
-                      </Link>
-
-                      <button
-                        className="text-decoration-none btn btn-sm btn-danger"
-                        onClick={(e) => handleDelete(d._id)}
-                      >
-                        <i class="fa-solid fa-trash"></i>{" "}
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </section>
+    <div className="container mt-4">
+      <h2 className="managebill">Danh sách các hóa đơn</h2>
+      <Table columns={columns} dataSource={data.orders} rowKey="_id" />
+    </div>
   );
-  function handleDelete(id) {
-    const confirm = window.confirm("Bạn có muốn xóa?");
-    if (confirm) {
-      axios.delete("http://localhost:3030/bills/" + id).then((res) => {
-        alert(" Xóa thành công");
-      });
-    }
-  }
 }
 
 export default ManageBill;

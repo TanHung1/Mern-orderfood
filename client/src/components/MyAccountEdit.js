@@ -4,17 +4,19 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
+import { Modal, Button } from "antd";
+
 function MyAccountEdit() {
   const [customerName, setCustomerName] = useState("");
   const [customerAddress, setCustomerAddress] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
   const accessToken = localStorage.getItem("token");
-  console.log(accessToken?.user,'abcd')
-  
+
   const dataUser = JSON.parse(accessToken);
-  console.log(dataUser?.token,'abd')
+  console.log(dataUser?.token, "abd");
 
   useEffect(() => {
     if (accessToken) {
@@ -55,7 +57,7 @@ function MyAccountEdit() {
         }
       );
       setMessage(response.data.message);
-      alert("Cap nhat thanh cong");
+      setModalVisible(true);
 
       // Cập nhật thông tin khách hàng trong localStorage
       const updatedUser = {
@@ -65,13 +67,20 @@ function MyAccountEdit() {
         address: customerAddress,
         email: customerEmail,
       };
-      localStorage.setItem("token", JSON.stringify({ user: updatedUser,token:dataUser?.token }));
+      localStorage.setItem(
+        "token",
+        JSON.stringify({ user: updatedUser, token: dataUser?.token })
+      );
     } catch (error) {
       console.error(error);
       setMessage("Cập nhật thông tin thất bại. Vui lòng thử lại.");
-      alert("Cap nhat that bai");
     }
   };
+
+  const handleModalOk = () => {
+    setModalVisible(false);
+  };
+
   return (
     <section className="my-account-wrapper">
       <div className="my-account-content">
@@ -160,6 +169,16 @@ function MyAccountEdit() {
           </div>
         </div>
       </div>
+      <Modal
+        title="Cập nhật tài khoản thành công"
+        visible={modalVisible}
+        onOk={handleModalOk}
+        footer={[
+          <Button key="ok" type="primary" onClick={handleModalOk}>
+            OK
+          </Button>,
+        ]}
+      ></Modal>
     </section>
   );
 }

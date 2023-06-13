@@ -8,9 +8,9 @@ const dataUser = JSON.parse(accessToken);
 const token = {
   headers: {
     Authorization: `Bearer ${dataUser?.token}`,
-        "Content-Type": "application/json",
-  }
-}
+    "Content-Type": "application/json",
+  },
+};
 
 function ManageFood() {
   const [inputData, setInputData] = useState({
@@ -34,7 +34,7 @@ function ManageFood() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/admin/stored-product",token )
+      .get("http://localhost:5000/api/admin/stored-product", token)
       .then((res) => setData(res.data))
       .catch((err) => console.log(err));
   }, [deletedProduct, addedProduct]);
@@ -55,10 +55,7 @@ function ManageFood() {
   const handleAddFood = (event) => {
     event.preventDefault();
     axios
-      .post("http://localhost:5000/api/admin/create-product", 
-      inputData,
-      token      
-      )
+      .post("http://localhost:5000/api/admin/create-product", inputData, token)
       .then((res) => {
         alert("Thêm món ăn thành công");
         navigate("/manage-food");
@@ -90,9 +87,7 @@ function ManageFood() {
     const confirm = window.confirm("Bạn có muốn xóa?");
     if (confirm) {
       axios
-        .delete(`http://localhost:5000/api/admin/${_id}/delete-product`,
-        token
-        )
+        .delete(`http://localhost:5000/api/admin/${_id}/delete-product`, token)
         .then((res) => {
           alert(" Xóa thành công");
           console.log(_id);
@@ -102,7 +97,7 @@ function ManageFood() {
   }
 
   return (
-    <section className="account-admin-wrapper">
+    <section className="">
       <div className="account-food-content">
         <div className="right-history">
           <div className="admin-right">
