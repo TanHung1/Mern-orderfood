@@ -10,8 +10,6 @@ const AuthenticationAccount = async (req, res, next) => {
   if (!accessToken) {
     return res.status(403).json("Token không tồn tại");
   }
-
-  console.log(accessToken);
   try {
     const decodedToken = jwt.verify(accessToken, process.env.jwt_access_token);
     const user = await Account.findOne({ _id: decodedToken.userId });
@@ -37,19 +35,26 @@ const checkRole = (role) => {
     }
   };
 };
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+  done(null, user);
+});
 
 passport.use(
   new GooglePlusTokenStrategy(
     {
       clientID:
-        "113981226682-vk1qqh65b4d0j2l5ag62k455s69dvkes.apps.googleusercontent.com",
-      clientSecret: "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",
+        "113981226682-qfqqlm0hs2ur8j9o7oj6du7sak3t4p0l.apps.googleusercontent.com",
+      clientSecret: "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",
     },
-    async (accessToken, refreshToken, profile, done) => {
+    async (accessToken, refreshToken, profile, done, next) => {
       try {
-        // console.log("accessToken: " , accessToken);
-        // console.log("refreshToken: ", refreshToken);
-        // console.log("profile: " , profile);
+        console.log("accessToken: " , accessToken);
+        console.log("refreshToken: ", refreshToken);
+        console.log("profile: " , profile);
 
         const user = await Account.findOne({
           loginType: "google",

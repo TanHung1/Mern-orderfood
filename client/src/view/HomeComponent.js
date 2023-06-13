@@ -10,6 +10,7 @@ import f1 from "../assets/f1.png";
 import f3 from "../assets/f3.png";
 import f7 from "../assets/f7.png";
 import f9 from "../assets/f9.png";
+import Footer from "./Footer";
 
 function HomeComponent() {
   return (
@@ -89,6 +90,8 @@ function HomeComponent() {
       <MenuComponent />
 
       <AboutComponent />
+      
+      <Footer/>
     </div>
   );
 }

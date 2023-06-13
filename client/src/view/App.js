@@ -72,7 +72,7 @@ function App() {
             </Route>
           </Routes>
         </header>
-        <Footer />
+   
       </div>
     </BrowserRouter>
   );

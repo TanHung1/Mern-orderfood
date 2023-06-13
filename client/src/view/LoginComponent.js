@@ -1,11 +1,19 @@
 import React, { useState } from "react";
 import axios from "axios";
+
 import f6 from "../assets/f6.png";
-import { NavLink } from "react-router-dom";
+
 import { Form, Input, Button, Modal, Alert } from "antd";
+import about from "../assets/about-img.png";
+import { NavLink, useRoutes } from "react-router-dom";
+import { notification } from "antd";
+
 import "../styles/LoginComponent.scss";
 
 const LoginComponent = () => {
+  const [identifier, setidentifier] = useState("");
+  const [password, setPassword] = useState("");
+
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 

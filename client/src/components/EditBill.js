@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Form, FormGroup, Label, Input, Button } from "reactstrap";
 import { message } from "antd";
 import "../styles/EditBill.scss";
+
 const accessToken = localStorage.getItem("token");
 const dataUser = JSON.parse(accessToken);
 const token = {
@@ -12,6 +13,7 @@ const token = {
     "Content-Type": "application/json",
   },
 };
+
 function EditBill() {
   const [order, setOrder] = useState(null);
   const [username, setUsername] = useState("");
@@ -26,13 +28,12 @@ function EditBill() {
     axios
       .get(`http://localhost:5000/api/admin/order/${_id}`, token)
       .then((res) => {
-        const orderData = res.data;
-        setOrder(orderData);
-        setUsername(orderData.username);
-        setPhoneNumber(orderData.phonenumber);
-        setAddress(orderData.address);
-        setTotalPrice(orderData.totalPrice);
-        setStatus(orderData.status);
+        setOrder(res.data);
+        setUsername(res.data.username);
+        setPhoneNumber(res.data.phonenumber);
+        setAddress(res.data.address);
+        setTotalPrice(res.data.totalPrice);
+        setStatus(res.data.status);
       })
       .catch((err) => console.log(err));
   }, [_id]);

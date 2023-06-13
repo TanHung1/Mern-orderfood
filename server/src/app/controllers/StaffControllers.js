@@ -4,7 +4,7 @@ const { mutipleMongooseToObject } = require("../../util/mongoose");
 const moment = require("moment");
 
 class StaffController {
-  //[get] /api/:id/orderDetail
+  //[get] /api/staff/:id/order-detail
   orderDetail(req, res, next) {
     Order.findOne({ _id: req.params.id })
       .then((order) => {
