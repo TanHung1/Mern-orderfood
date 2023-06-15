@@ -54,17 +54,17 @@ function Nav() {
         <ul className="navbar-nav mr-auto">
           <li className="nav-item">
             <NavLink className="nav-link" activeClassName="active" exact to="/">
-              Home
+              Trang chủ
             </NavLink>
           </li>
           <li className="nav-item">
             <NavLink className="nav-link" activeClassName="active" to="/menu">
-              Menu
+              Thực đơn
             </NavLink>
           </li>
           <li className="nav-item">
             <NavLink className="nav-link" activeClassName="active" to="/about">
-              About
+              Về N o No
             </NavLink>
           </li>
 
@@ -84,7 +84,7 @@ function Nav() {
 
               <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li>
-                  <NavLink className="dropdown-item" to="/manage-food">
+                  <NavLink className="dropdown-item" to="/admin/manage-food">
                     Quản lý thức ăn
                   </NavLink>
                 </li>

@@ -249,7 +249,7 @@ function ManageFood() {
                     <td className="food-content">
                       <Link
                         className="text-decoration-none btn btn-sm btn-success"
-                        to={`/Edit-food/${d._id}`}
+                        to={`/admin/edit-food/${d._id}`}
                         onClick={() => console.log(d)}
                       >
                         <i className="fa-solid fa-pen-to-square"></i>
@@ -270,7 +270,7 @@ function ManageFood() {
           </div>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </section>
   );
 }

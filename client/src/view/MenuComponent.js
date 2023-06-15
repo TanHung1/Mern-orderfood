@@ -10,6 +10,9 @@ function MenuComponent() {
   const [selectedCategory, setSelectedCategory] = useState("");
   // Thêm state cho "Hiển thị tất cả"
   const [showAll, setShowAll] = useState(false);
+  const handleScrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   useEffect(() => {
     fetch("http://localhost:5000/api/product")
@@ -38,17 +41,13 @@ function MenuComponent() {
     if (index !== -1) {
       notification.warning({
         message: "Đã có sản phẩm này trong giỏ hàng",
-        style: {
-          marginTop: 50,
-          position: "relative",
-          bottom: 350,
-          left: 0,
-        },
+        style: {},
         placement: "bottomRight",
       });
     } else {
       notification.success({
         message: "Thêm sản phẩm thành công",
+        placement: "bottomRight",
       });
       cartItems.push({ ...product, quantity: 1 });
     }
@@ -142,6 +141,9 @@ function MenuComponent() {
       <div>
         <div className="cards">{renders()}</div>
       </div>
+      <button className="scroll-to-top" onClick={handleScrollToTop}>
+        <i className="fa fa-arrow-up"></i>
+      </button>
     </>
   );
 }

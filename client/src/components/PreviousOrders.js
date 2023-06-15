@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Table, Tag } from "antd";
 import { NavLink, Link } from "react-router-dom";
-
+import moment from "moment";
+import "moment/locale/vi"; // Nếu muốn hiển thị ngôn ngữ tiếng Việt, có thể import locale này
 const { Column } = Table;
 
 const PreviousOrders = ({ customerId }) => {
@@ -55,7 +56,7 @@ const PreviousOrders = ({ customerId }) => {
 
   return (
     <div>
-      <h2>Danh sách đơn hàng</h2>
+      <h2 className="list-order">Danh sách đơn hàng</h2>
       <Link to={"/my-account/edit"} style={{ width: "100%" }}>
         Trở về
       </Link>
@@ -68,9 +69,19 @@ const PreviousOrders = ({ customerId }) => {
             product.map((p) => <div key={p._id}>- {p.nameprod}</div>)
           }
         />
-        <Column title="Tổng tiền" dataIndex="totalPrice" key="totalPrice" />
+        <Column
+          title="Tổng tiền"
+          dataIndex="totalPrice"
+          key="totalPrice"
+          render={(text) => <span>{Number(text).toLocaleString()}&#8363;</span>}
+        />
         <Column title="Địa chỉ" dataIndex="address" key="address" />
-        <Column title="Ngày đặt hàng" dataIndex="createdAt" key="createdAt" />
+        <Column
+          title="Ngày đặt hàng"
+          dataIndex="createdAt"
+          key="createdAt"
+          render={(createdAt) => moment(createdAt).format("DD/MM/YYYY HH: mm")}
+        />
         <Column
           title="Trạng thái"
           dataIndex="status"

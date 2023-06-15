@@ -56,8 +56,8 @@ function App() {
               path="/admin/manage-account"
               element={<ManageAccount />}
             ></Route>
-            <Route path="/manage-food" element={<ManageFood />}></Route>
-            <Route path="/edit-food/:_id" element={<EditFood />}>
+            <Route path="/admin/manage-food" element={<ManageFood />}></Route>
+            <Route path="/admin/edit-food/:_id" element={<EditFood />}>
               {" "}
             </Route>
             <Route path="/admin/Edit-account/:_id" element={<EditAccount />}>
@@ -67,12 +67,12 @@ function App() {
             <Route path="/Staff/manage-bill" element={<ManageBill />}>
               {" "}
             </Route>
-            <Route path="/manage-bill/edit/:_id" element={<EditBill />}>
+            <Route path="/Staff/manage-bill/edit/:_id" element={<EditBill />}>
               {" "}
             </Route>
           </Routes>
         </header>
-   
+        <Footer />
       </div>
     </BrowserRouter>
   );
