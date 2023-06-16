@@ -8,6 +8,7 @@ import { Modal, Button } from "antd";
 
 function MyAccountEdit() {
   const [customerName, setCustomerName] = useState("");
+  const [FullName, setFullName] = useState("");
   const [customerAddress, setCustomerAddress] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
@@ -70,6 +71,7 @@ function MyAccountEdit() {
         "token",
         JSON.stringify({ user: updatedUser, token: dataUser?.token })
       );
+      setFullName(customerName);
     } catch (error) {
       console.error(error);
       setMessage("Cập nhật thông tin thất bại. Vui lòng thử lại.");
@@ -89,7 +91,7 @@ function MyAccountEdit() {
               <div className="header-info">
                 <h2>
                   XIN CHÀO,
-                  <br /> {customerName}
+                  <br /> {FullName}
                 </h2>
                 <p>
                   <NavLink onClick={handleLogout}>Đăng xuất</NavLink>
