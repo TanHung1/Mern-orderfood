@@ -3,11 +3,11 @@ import "../styles/Footer.scss";
 
 function Footer() {
   return (
-    <footer className="footer" >
+    <footer className="footer">
       <div className="container">
         <div className="row">
           <div className="col-md-4">
-            <h3>About Us</h3>
+            <h3>Về N o No</h3>
             <p>
               Khách hàng của Pizza của chúng tôi có thể tùy chọn các loại
               topping khác nhau để tạo ra một chiếc pizza độc đáo theo sở thích
@@ -17,7 +17,7 @@ function Footer() {
             </p>
           </div>
           <div className="col-md-4">
-            <h3>Contact Us</h3>
+            <h3>Liên hệ</h3>
             <ul>
               <li>
                 Địa chỉ: Đường số 3, CVPM Quang Trung, P. Tân Chánh Hiệp, Q.12,
@@ -34,7 +34,7 @@ function Footer() {
             </ul>
           </div>
           <div className="col-md-4">
-            <h3>Follow Us</h3>
+            <h3>Theo dõi</h3>
             <ul className="social-icons">
               <li>
                 <a href="#">

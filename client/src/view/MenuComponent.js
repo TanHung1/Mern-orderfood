@@ -90,8 +90,9 @@ function MenuComponent() {
                   : item.nameprod}
               </h5>
               <p class="card-text">{item.description}</p>
-              <p class="card-price">{item?.price?.toLocaleString()}&#8363;</p>
-
+              <p class="card-price">
+                {item.price ? item.price.toLocaleString() : ""}&#8363;
+              </p>
               <button
                 style={{ marginBottom: 20 }}
                 class="btn btn-primary"

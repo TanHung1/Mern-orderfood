@@ -70,7 +70,7 @@ function EditFood() {
 
   const handleOk = () => {
     setIsSuccess(false);
-    navigate("/manage-food");
+    navigate("/admin/manage-food");
   };
 
   return (

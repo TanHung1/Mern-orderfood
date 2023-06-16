@@ -12,6 +12,10 @@ const Product = new Schema(
     price: { type: Number },
     rating: { type: Number },
     cmt: { type: String },
+    deleted:{
+      type: Boolean,
+      default: false,
+    },
     slug: { type: String, slug: "nameprod", unique: true, slugPaddingSize: 2 },
   },
   // __v

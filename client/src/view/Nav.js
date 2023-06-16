@@ -4,7 +4,6 @@ import "../styles/Nav.scss";
 import pizza from "../assets/logoPizza.png";
 function Nav() {
   const [cartItemCount, setCartItemCount] = useState(0);
-  console.log(cartItemCount);
   const [isNavOpen, setIsNavOpen] = useState(false);
 
   const location = useLocation();
@@ -67,7 +66,17 @@ function Nav() {
               Về N o No
             </NavLink>
           </li>
-
+          {user?.user?.role != "staff" ? null : (
+            <li className="nav-item">
+              <NavLink
+                className="nav-link"
+                activeClassName="active"
+                to="/Staff/manage-bill"
+              >
+                Nhân viên
+              </NavLink>
+            </li>
+          )}
           {user?.user?.role != "admin" ? null : (
             <li className="nav-item dropdown">
               <a
@@ -89,7 +98,7 @@ function Nav() {
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink className="dropdown-item" to="/Staff/manage-bill">
+                  <NavLink className="dropdown-item" to="/Admin/manage-bill">
                     Quản lý hóa đơn
                   </NavLink>
                 </li>

@@ -4,10 +4,10 @@ import HomeComponent from "../view/HomeComponent";
 import MenuComponent from "../view/MenuComponent";
 import AboutComponent from "./../view/AboutComponent";
 import LoginComponent from "../view/LoginComponent";
-import CartComponent from "../components/CartComponent";
+import CartComponent from "../view/CartComponent";
 import RegisterComponent from "../view/RegisterComponent";
-import MyAccountEdit from "../components/MyAccountEdit";
-import PreviousOders from "../components/PreviousOrders";
+import MyAccountEdit from "./MyAccountEdit";
+import PreviousOders from "../view/PreviousOrders";
 import CheckOut from "../view/CheckOut";
 import DishComponent from "../components/DishComponent";
 import ManageAccount from "../components/ManageAccount";
@@ -15,7 +15,7 @@ import ManageFood from "../components/ManageFood";
 import EditFood from "../components/EditFood";
 import EditAccount from "../components/EditAccount";
 import TrashFood from "../components/TrashFood";
-
+import StaffBill from "../components/StaffBill";
 import ManageBill from "../components/ManageBill";
 import EditBill from "../components/EditBill";
 import Footer from "../view/Footer";
@@ -65,11 +65,16 @@ function App() {
             <Route path="/admin/Edit-account/:_id" element={<EditAccount />}>
               {" "}
             </Route>
-
-            <Route path="/Staff/manage-bill" element={<ManageBill />}>
+            <Route path="/Staff/manage-bill" element={<StaffBill />}>
               {" "}
             </Route>
-            <Route path="/Staff/manage-bill/edit/:_id" element={<EditBill />}>
+            <Route path="/Staff/manage-bill/edit/:_id" element={<StaffBill />}>
+              {" "}
+            </Route>
+            <Route path="/Admin/manage-bill" element={<ManageBill />}>
+              {" "}
+            </Route>
+            <Route path="/Admin/manage-bill/edit/:_id" element={<EditBill />}>
               {" "}
             </Route>
           </Routes>

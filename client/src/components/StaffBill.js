@@ -15,14 +15,13 @@ const token = {
   },
 };
 
-
-function ManageBill() {
+function StaffBill() {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/admin/get-all-orders", token)
+      .get("http://localhost:5000/api/admin/allorders", token)
       .then((res) => setData(res.data))
       .catch((err) => console.log(err));
   }, []);
@@ -89,16 +88,13 @@ function ManageBill() {
             color = "orange";
             break;
           case "Đã xác nhận":
-            color = "purple";
+            color = "green";
             break;
           case "Đang giao":
             color = "blue";
             break;
-          case "Đã hoàn thành giao đơn hàng":
-            color = "green";
-            break;
-          case "Đơn hàng bị hủy":
-            color = "red";
+          case "Đã giao":
+            color = "purple";
             break;
           default:
             color = "gray";
@@ -111,7 +107,7 @@ function ManageBill() {
       key: "action",
       render: (text, record) => (
         <span>
-          <Link to={`/Admin/manage-bill/edit/${record._id}`}>
+          <Link to={`/Staff/manage-bill/edit/${record._id}`}>
             <EditOutlined /> Sửa
           </Link>
           <Popconfirm
@@ -133,4 +129,4 @@ function ManageBill() {
   );
 }
 
-export default ManageBill;
+export default StaffBill;

@@ -16,6 +16,7 @@ class OrderController {
         customerPhone,
         customerEmail,
         customerID,
+        payment,
       } = req.body;
 
       const totalPrice = cart.reduce(
@@ -29,6 +30,7 @@ class OrderController {
         phonenumber: customerPhone,
         email: customerEmail,
         address: customerAddress,
+        payment: payment,
         product: cart.map((item) => {
           return item;
         }),
