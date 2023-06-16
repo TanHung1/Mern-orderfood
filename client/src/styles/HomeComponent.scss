@@ -106,9 +106,25 @@
       }
     }
   }
+  .scroll-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 50%;
+    font-size: 20px;
+  }
   
+  .scroll-to-top:hover {
+    background-color: #555;
+  }
   .container {
-    max-width: 1200px;
+    max-width: 1300px;
     margin: 0 auto;
     padding: 0 20px;
   

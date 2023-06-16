@@ -20,7 +20,7 @@ const token = {
 function ManageFood() {
   const schema = yup
   .object({
-    nameprod: yup.string().required('tên ko được để trống'),
+    nameprod: yup.string().required('Tên ko được để trống'),
 
   })
   .required()
@@ -241,7 +241,7 @@ function ManageFood() {
                 </form>
               </div>
             </div>
-            <Link to="/trash-food">
+            <Link to="/admin/trash-food">
               <div className="trash-dish">
                 <button className="trash-dish-btn">Thùng rác ({data.deleteCount})</button>
               </div>
@@ -277,7 +277,7 @@ function ManageFood() {
                     <td className="food-content">
                       <Link
                         className="text-decoration-none btn btn-sm btn-success"
-                        to={`/Edit-food/${d._id}`}
+                        to={`/admin/edit-food/${d._id}`}
                         onClick={() => console.log(d)}
                       >
                         <i className="fa-solid fa-pen-to-square"></i>
@@ -298,7 +298,6 @@ function ManageFood() {
           </div>
         </div>
       </div>
-      <Footer />
     </section>
   );
 }

@@ -32,12 +32,11 @@ const LoginComponent = () => {
       );
 
       localStorage.setItem("token", JSON.stringify(response.data));
-        if(response?.data){
-          
-          notification.success(response.data.success)
-          setTimeout(()=>{          
+        if(response?.data){          
+          setTimeout(()=>{     
+            message.success("Đăng nhập thành công")     
             window.location.replace("/")
-          },5000)
+          },500)
         }
       setSuccess(true);
     } catch (error) {console.log(error,'tk')

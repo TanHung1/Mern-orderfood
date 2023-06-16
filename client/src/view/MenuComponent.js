@@ -10,6 +10,9 @@ function MenuComponent() {
   const [selectedCategory, setSelectedCategory] = useState("");
   // Thêm state cho "Hiển thị tất cả"
   const [showAll, setShowAll] = useState(false);
+  const handleScrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   useEffect(() => {
     fetch("http://localhost:5000/api/product")
@@ -142,6 +145,9 @@ function MenuComponent() {
       <div>
         <div className="cards">{renders()}</div>
       </div>
+      <button className="scroll-to-top" onClick={handleScrollToTop}>
+        <i className="fa fa-arrow-up"></i>
+      </button>
     </>
   );
 }

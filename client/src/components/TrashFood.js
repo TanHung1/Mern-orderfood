@@ -12,32 +12,35 @@ const token = {
         "Content-Type": "application/json",
     },
 };
-
+console.log(token);
 function TrashFood() {
     const [data, setData] = useState([]);
     const navigate = useNavigate();
     const [deletedProduct, setDeletedProduct] = useState(null);
     const [addedProduct, setAddedProduct] = useState(null);
 
-    const getTrash = async () => {
-        await axios
-            .get("http://localhost:5000/api/admin/trash-product", token)
-            .then((res) => setData(res.data))
-            .catch((err) => console.log(err));
+    const getTrash = async() =>{
+      await axios
+        .get("http://localhost:5000/api/admin/trash-product", token)
+        .then((res) => setData(res.data))
+        .catch((err) => console.log(err));
     }
     useEffect(() => {
         getTrash()
     }, [deletedProduct]);
+    
 
+    const handleRestore= async(_id)=> {
+     const result = await  axios.patch(`http://localhost:5000/api/admin/restore-product/${_id}`, token)
+          .then(() =>{
+            if(result){
+                alert("Khoi phuc thanh cong");
+            }
+          })
+          .catch(err =>{
+            alert("Khoi phuc that bai")
+          })     
 
-    function handleRestore(_id) {
-        axios.patch(`http://localhost:5000/api/admin/restore-product/${_id}`, token)
-            .then(() =>
-                alert("Khoi phuc thanh cong")
-            )
-            .catch(err =>
-                alert("Khoi phuc that bai")
-            )
     }
 
     function handleForceDelete(_id) {
@@ -59,7 +62,7 @@ function TrashFood() {
                 <div className="right-history">
                     <div className="admin-right">
                         <h3 className="list-food">DANH SÁCH MÓN ĂN BỊ XÓA</h3>
-
+                        <Link  to={"/admin/manage-food"}>Tro ve</Link>
                         <table className="food-table">
                             <thead>
                                 <tr>
@@ -112,7 +115,6 @@ function TrashFood() {
                     </div>
                 </div>
             </div>
-            <Footer />
         </section>
     );
 }

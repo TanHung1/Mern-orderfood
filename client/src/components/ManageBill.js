@@ -4,7 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { Table, Tag, Popconfirm, message } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import "../styles/EditBill.scss";
-
+import moment from "moment";
+import "moment/locale/vi";
 const accessToken = localStorage.getItem("token");
 const dataUser = JSON.parse(accessToken);
 const token = {
@@ -52,9 +53,7 @@ function ManageBill() {
       title: "Ngày đặt",
       dataIndex: "createdAt",
       key: "createdAt",
-      // render: (item, index) =>{
-      // return  <span>{item}</span>
-      
+      render: (createdAt) => moment(createdAt).format("DD/MM/YYYY HH: mm"),
     },
     {
       title: "Tên món",
@@ -112,7 +111,7 @@ function ManageBill() {
       key: "action",
       render: (text, record) => (
         <span>
-          <Link to={`/manage-bill/edit/${record._id}`}>
+          <Link to={`/Staff/manage-bill/edit/${record._id}`}>
             <EditOutlined /> Sửa
           </Link>
           <Popconfirm

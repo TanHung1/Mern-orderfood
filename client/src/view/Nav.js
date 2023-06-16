@@ -64,7 +64,7 @@ function Nav() {
           </li>
           <li className="nav-item">
             <NavLink className="nav-link" activeClassName="active" to="/about">
-              Thông tin
+              Về N o No
             </NavLink>
           </li>
 
@@ -84,7 +84,7 @@ function Nav() {
 
               <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li>
-                  <NavLink className="dropdown-item" to="/manage-food">
+                  <NavLink className="dropdown-item" to="/admin/manage-food">
                     Quản lý thức ăn
                   </NavLink>
                 </li>
