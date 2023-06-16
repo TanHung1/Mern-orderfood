@@ -1,6 +1,6 @@
 import React from "react";
 import "../styles/AboutComponent.scss";
-import about from "../assets/about-img.png";
+import about from "../assets/pizza-about.jpg";
 function AboutComponent() {
   return (
     <section className="about-fastfood">

@@ -15,7 +15,7 @@ const token = {
   },
 };
 
-function ManageBill() {
+function StaffBill() {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
 
@@ -107,7 +107,7 @@ function ManageBill() {
       key: "action",
       render: (text, record) => (
         <span>
-          <Link to={`/Admin/manage-bill/edit/${record._id}`}>
+          <Link to={`/Staff/manage-bill/edit/${record._id}`}>
             <EditOutlined /> Sửa
           </Link>
           <Popconfirm
@@ -129,4 +129,4 @@ function ManageBill() {
   );
 }
 
-export default ManageBill;
+export default StaffBill;

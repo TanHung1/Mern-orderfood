@@ -67,7 +67,17 @@ function Nav() {
               Về N o No
             </NavLink>
           </li>
-
+          {user?.user?.role != "staff" ? null : (
+            <li className="nav-item">
+              <NavLink
+                className="nav-link"
+                activeClassName="active"
+                to="/Staff/manage-bill"
+              >
+                Staff
+              </NavLink>
+            </li>
+          )}
           {user?.user?.role != "admin" ? null : (
             <li className="nav-item dropdown">
               <a
@@ -89,7 +99,7 @@ function Nav() {
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink className="dropdown-item" to="/Staff/manage-bill">
+                  <NavLink className="dropdown-item" to="/Admin/manage-bill">
                     Quản lý hóa đơn
                   </NavLink>
                 </li>
