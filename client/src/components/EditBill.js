@@ -24,7 +24,7 @@ function EditBill() {
   const { _id } = useParams();
   const navigate = useNavigate();
 
-  useEffect(() => {
+  useEffect(() =>{
     axios
       .get(`http://localhost:5000/api/admin/order/${_id}`, token)
       .then((res) => {
@@ -49,7 +49,7 @@ function EditBill() {
     };
     axios
       .put(
-        `http://localhost:5000/api/admin/${_id}/update-order`,
+        `http://localhost:5000/api/admin/update-order/${_id}`,
         updatedOrder,
         token
       )
@@ -111,7 +111,8 @@ function EditBill() {
             <option value="Chưa xác nhận">Chưa xác nhận</option>
             <option value="Đã xác nhận">Đã xác nhận</option>
             <option value="Đang giao">Đang giao</option>
-            <option value="Đã giao">Đã giao</option>
+            <option value="Đã hoàn thành giao đơn hàng">Đã hoàn thành giao đơn hàng</option>
+            <option value="Đơn hàng bị hủy">Đơn hàng bị hủy</option>
           </Input>
         </FormGroup>
         <Button color="primary" type="submit" className="btn-editOrder">

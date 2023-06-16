@@ -67,11 +67,11 @@ function HomeComponent() {
                 <img src={o1} alt="Order 1" className="img-home" />
               </div>
               <div className="detail-oder">
-                <h5>Tasty Thursdays</h5>
+                <h5>Giảm Giá</h5>
                 <h6>
-                  <span>20%</span> off
+                  <span>20%</span>
                 </h6>
-                <a href="/menu">Order now</a>
+                <a href="/menu">Đặt hàng ngay</a>
               </div>
             </div>
 
@@ -80,11 +80,11 @@ function HomeComponent() {
                 <img src={o2} alt="Order 2" className="img-home" />
               </div>
               <div className="detail-oder">
-                <h5>Tasty Thursdays</h5>
+                <h5>Giảm Giá</h5>
                 <h6>
-                  <span>20%</span> off
+                  <span>20%</span>
                 </h6>
-                <a href="/menu">Order now</a>
+                <a href="/menu">Đặt hàng ngay</a>
               </div>
             </div>
           </div>

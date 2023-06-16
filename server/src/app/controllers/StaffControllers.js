@@ -4,19 +4,6 @@ const { mutipleMongooseToObject } = require("../../util/mongoose");
 const moment = require("moment");
 
 class StaffController {
-  //[get] /api/staff/:id/order-detail
-  orderDetail(req, res, next) {
-    Order.findOne({ _id: req.params.id })
-      .then((order) => {
-        res.status(200).json({
-          order: mongooesToObject(order),
-        });
-      })
-      .catch((err) => {
-        res.status(500).json(err);
-      });
-  }
-
   // [put] /api/staff/:id/update-status-order
   updateStatusOrder = async (req, res) => {
     try {
@@ -113,23 +100,23 @@ class StaffController {
   //         console.log(error)
   //     }
   // };
-  getAllOrders = async (req, res) => {
-    try {
-      const orders = await Order.find();
-      let totalAmount = 0;
-      orders.forEach((order) => {
-        totalAmount += order.totalPrice;
-      });
+  // getAllOrders = async (req, res) => {
+  //   try {
+  //     const orders = await Order.find();
+  //     let totalAmount = 0;
+  //     orders.forEach((order) => {
+  //       totalAmount += order.totalPrice;
+  //     });
 
-      res.status(200).json({
-        orders: mutipleMongooseToObject(orders),
-        totalAmount,
-      });
-    } catch (error) {
-      res.status(500).json(error);
-      console.log(error);
-    }
-  };
+  //     res.status(200).json({
+  //       orders: mutipleMongooseToObject(orders),
+  //       totalAmount,
+  //     });
+  //   } catch (error) {
+  //     res.status(500).json(error);
+  //     console.log(error);
+  //   }
+  // };
 }
 
 module.exports = new StaffController();

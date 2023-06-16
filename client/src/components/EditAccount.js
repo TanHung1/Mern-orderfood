@@ -48,7 +48,7 @@ function EditAccount() {
     };
     axios
       .put(
-        `http://localhost:5000/api/admin/${_id}/update-account`,
+        `http://localhost:5000/api/admin/update-account/${_id}`,
         updatedAccount
       )
       .then((response) => {

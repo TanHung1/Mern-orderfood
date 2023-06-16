@@ -15,13 +15,14 @@ const token = {
   },
 };
 
+
 function ManageBill() {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/admin/allorders", token)
+      .get("http://localhost:5000/api/admin/get-all-orders", token)
       .then((res) => setData(res.data))
       .catch((err) => console.log(err));
   }, []);
@@ -88,13 +89,16 @@ function ManageBill() {
             color = "orange";
             break;
           case "Đã xác nhận":
-            color = "green";
+            color = "purple";
             break;
           case "Đang giao":
             color = "blue";
             break;
-          case "Đã giao":
-            color = "purple";
+          case "Đã hoàn thành giao đơn hàng":
+            color = "green";
+            break;
+          case "Đơn hàng bị hủy":
+            color = "red";
             break;
           default:
             color = "gray";

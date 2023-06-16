@@ -14,6 +14,7 @@ import ManageAccount from "../components/ManageAccount";
 import ManageFood from "../components/ManageFood";
 import EditFood from "../components/EditFood";
 import EditAccount from "../components/EditAccount";
+import TrashFood from "../components/TrashFood";
 import StaffBill from "../components/StaffBill";
 import ManageBill from "../components/ManageBill";
 import EditBill from "../components/EditBill";
@@ -57,6 +58,7 @@ function App() {
               element={<ManageAccount />}
             ></Route>
             <Route path="/admin/manage-food" element={<ManageFood />}></Route>
+            <Route path="/admin/trash-food" element={<TrashFood />}></Route>
             <Route path="/admin/edit-food/:_id" element={<EditFood />}>
               {" "}
             </Route>

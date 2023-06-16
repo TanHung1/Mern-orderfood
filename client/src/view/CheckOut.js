@@ -17,6 +17,7 @@ const CheckOut = () => {
   const [customerAddress, setCustomerAddress] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
+  const [payment, setPayment] = useState("");
   const accessToken = localStorage.getItem("token");
   const dataUser = JSON.parse(accessToken);
   const navigate = useNavigate();
@@ -57,6 +58,7 @@ const CheckOut = () => {
           customerAddress,
           customerPhone,
           customerEmail,
+          payment,
           customerID: dataUser.user._id,
         },
         token

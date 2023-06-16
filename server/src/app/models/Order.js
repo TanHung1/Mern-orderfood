@@ -55,8 +55,8 @@ const Order = new Schema(
       default: "Chưa xác nhận",
     },
 
-    patdAt: {
-      type: Date,
+    payment:{
+      type: String,
     },
 
     totalPrice: {

@@ -41,13 +41,17 @@ function MenuComponent() {
     if (index !== -1) {
       notification.warning({
         message: "Đã có sản phẩm này trong giỏ hàng",
-        style: {},
-        placement: "bottomRight",
+        style: {
+          marginTop: 50,
+        },
+
       });
     } else {
       notification.success({
         message: "Thêm sản phẩm thành công",
-        placement: "bottomRight",
+        style: {
+          marginTop: 50,
+        },
       });
       cartItems.push({ ...product, quantity: 1 });
     }
@@ -66,8 +70,8 @@ function MenuComponent() {
 
   const renders = () => {
     const productsToRender = selectedCategory
-      ? data.products?.filter((item) => item.category === selectedCategory)
-      : data.products || [];
+      ? data?.products?.filter((item) => item.category === selectedCategory)
+      : data?.products || [];
 
     return productsToRender.map((item, index) => {
       return (
@@ -89,13 +93,12 @@ function MenuComponent() {
               <p class="card-price">
                 {item.price ? item.price.toLocaleString() : ""}&#8363;
               </p>
-
               <button
                 style={{ marginBottom: 20 }}
                 class="btn btn-primary"
                 onClick={() => handleAddToCart(item)}
               >
-                Add to cart
+                Thêm vào giỏ hàng
               </button>
             </div>
           </div>

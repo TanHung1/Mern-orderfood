@@ -46,11 +46,10 @@ passport.deserializeUser(function(user, done) {
 passport.use(
   new GooglePlusTokenStrategy(
     {
-      clientID:
-        "113981226682-qfqqlm0hs2ur8j9o7oj6du7sak3t4p0l.apps.googleusercontent.com",
+      clientID:"113981226682-qfqqlm0hs2ur8j9o7oj6du7sak3t4p0l.apps.googleusercontent.com",
       clientSecret: "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",
     },
-    async (accessToken, refreshToken, profile, done, next) => {
+    async (accessToken, refreshToken, profile, done) => {
       try {
         console.log("accessToken: " , accessToken);
         console.log("refreshToken: ", refreshToken);
@@ -62,8 +61,11 @@ passport.use(
         });
 
         if (user) {
-          done(null, user);
-        } else {
+          return done(null, user);
+        }
+
+        if(!user)
+        {
           const newAccount = new Account({
             loginType: "google",
             email: profile.emails[0].value,

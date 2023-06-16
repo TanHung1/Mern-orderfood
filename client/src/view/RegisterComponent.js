@@ -7,6 +7,7 @@ import { Form, Input, Button, Alert, Modal } from "antd";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
+
 function RegisterComponent() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
@@ -41,7 +42,7 @@ function RegisterComponent() {
 
   const handleModalCancel = () => {
     setModalVisible(false);
-    navigate("/login");
+    navigate("/register");
   };
 
   return (
@@ -64,6 +65,10 @@ function RegisterComponent() {
                       required: true,
                       message: "Vui lòng nhập họ và tên!",
                     },
+                    {
+                      pattern: /^[a-zA-ZÀ-ỹ\s]*$/,
+                      message: "Họ và tên chỉ được chứa chữ cái!",
+                    },
                   ]}
                 >
                   <Input placeholder="Nhập họ và tên" />
@@ -74,6 +79,10 @@ function RegisterComponent() {
                     {
                       required: true,
                       message: "Vui lòng nhập số điện thoại!",
+                    },
+                    {
+                      pattern: /^\d{10}$/,
+                      message: "Số điện thoại phải chứa đủ 10 chữ số",
                     },
                   ]}
                 >

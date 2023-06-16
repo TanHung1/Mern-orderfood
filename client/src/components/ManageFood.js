@@ -3,6 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/ManageFood.scss";
 import Footer from "../view/Footer";
+import { useForm } from "react-hook-form"
+import { yupResolver } from "@hookform/resolvers/yup"
+import * as yup from "yup"
+import { api } from "../util/api";
+
 const accessToken = localStorage.getItem("token");
 const dataUser = JSON.parse(accessToken);
 const token = {
@@ -13,12 +18,27 @@ const token = {
 };
 
 function ManageFood() {
+  const schema = yup
+  .object({
+    nameprod: yup.string().required('Tên ko được để trống'),
+
+  })
+  .required()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  })
+  const onSubmit = (data) => console.log(data)
   const [inputData, setInputData] = useState({
     nameprod: "",
     price: "",
     image: "",
     category: "",
   });
+
   const [image, setImage] = useState(null);
   const [data, setData] = useState([]);
   const [dialogActive, setDialogActive] = useState(false);
@@ -34,7 +54,7 @@ function ManageFood() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/admin/stored-product", token)
+      .get(`${api}api/admin/get-all-products`, token)
       .then((res) => setData(res.data))
       .catch((err) => console.log(err));
   }, [deletedProduct, addedProduct]);
@@ -87,7 +107,7 @@ function ManageFood() {
     const confirm = window.confirm("Bạn có muốn xóa?");
     if (confirm) {
       axios
-        .delete(`http://localhost:5000/api/admin/${_id}/delete-product`, token)
+        .delete(`http://localhost:5000/api/admin/delete-product/${_id}`, token)
         .then((res) => {
           alert(" Xóa thành công");
           console.log(_id);
@@ -131,8 +151,11 @@ function ManageFood() {
                   &times;
                 </a>
                 <h3>Thêm món ăn</h3>
-                <form onSubmit={handleAddFood}>
-                  <div className="form-group">
+                <form onSubmit={handleSubmit(handleAddFood
+                  )}>
+                <input {...register("nameprod")} />
+      <p style={{color:'red'}}>{errors.nameprod?.message}</p>
+                  {/* <div className="form-group">
                     <label
                       htmlFor="exampleFormControlInput1"
                       className="text-lable"
@@ -149,7 +172,7 @@ function ManageFood() {
                         setInputData({ ...inputData, nameprod: e.target.value })
                       }
                     />
-                  </div>
+                  </div> */}
                   <div className="form-group">
                     <label
                       htmlFor="exampleFormControlFile1"
@@ -218,6 +241,11 @@ function ManageFood() {
                 </form>
               </div>
             </div>
+            <Link to="/admin/trash-food">
+              <div className="trash-dish">
+                <button className="trash-dish-btn">Thùng rác ({data.deleteCount})</button>
+              </div>
+            </Link>
             <table className="food-table">
               <thead>
                 <tr>
@@ -270,7 +298,6 @@ function ManageFood() {
           </div>
         </div>
       </div>
-      <Footer />
     </section>
   );
 }

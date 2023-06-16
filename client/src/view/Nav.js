@@ -4,7 +4,6 @@ import "../styles/Nav.scss";
 import pizza from "../assets/logoPizza.png";
 function Nav() {
   const [cartItemCount, setCartItemCount] = useState(0);
-  console.log(cartItemCount);
   const [isNavOpen, setIsNavOpen] = useState(false);
 
   const location = useLocation();
@@ -74,7 +73,7 @@ function Nav() {
                 activeClassName="active"
                 to="/Staff/manage-bill"
               >
-                Staff
+                Nhân viên
               </NavLink>
             </li>
           )}
@@ -89,7 +88,7 @@ function Nav() {
                 aria-haspopup="true"
                 aria-expanded="false"
               >
-                Admin
+                Quản trị viên
               </a>
 
               <ul className="dropdown-menu" aria-labelledby="navbarDropdown">

@@ -44,7 +44,7 @@ function EditFood() {
     event.preventDefault();
     axios
       .put(
-        `http://localhost:5000/api/admin/${_id}/update-product`,
+        `http://localhost:5000/api/admin/update-product/${_id}`,
         inputData,
         token
       )
@@ -70,7 +70,7 @@ function EditFood() {
 
   const handleOk = () => {
     setIsSuccess(false);
-    navigate("/manage-food");
+    navigate("/admin/manage-food");
   };
 
   return (
@@ -96,6 +96,7 @@ function EditFood() {
               }))
             }
             placeholder="Nhập tên món ăn"
+            
           />
         </div>
         <div className="form-group">

@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
-
 import f6 from "../assets/f6.png";
-
-import { Form, Input, Button, Modal, Alert } from "antd";
+import { Form, Input, Button, Modal, Alert, message } from "antd";
 import about from "../assets/about-img.png";
-import { NavLink, useRoutes } from "react-router-dom";
+import { NavLink, useRoutes,useNavigate } from "react-router-dom";
 import { notification } from "antd";
 
 import "../styles/LoginComponent.scss";
@@ -15,10 +13,17 @@ const LoginComponent = () => {
   const [password, setPassword] = useState("");
 
   const [error, setError] = useState(null);
+
+  console.log(error);
   const [success, setSuccess] = useState(false);
+  const navigate = useNavigate();
+
+
 
   const handleSubmit = async (values) => {
+
     setError(null);
+   
 
     try {
       const response = await axios.post(
@@ -27,25 +32,29 @@ const LoginComponent = () => {
       );
 
       localStorage.setItem("token", JSON.stringify(response.data));
-
+        if(response?.data){          
+          setTimeout(()=>{     
+            message.success("Đăng nhập thành công")     
+            window.location.replace("/")
+          },500)
+        }
       setSuccess(true);
-    } catch (error) {
-      if (error.response && error.response.status === 401) {
-        setError("Tài khoản hoặc mật khẩu không hợp lệ. Vui lòng thử lại.");
-      } else {
-        setError("Tài khoản hoặc mật khẩu không hợp lệ. Vui lòng thử lại.");
+    } catch (error) {console.log(error,'tk')
+      if (error.response.data.error) {
+        setError(error.response.data.error)
       }
     }
   };
 
   const handleOk = () => {
     setSuccess(false);
-    window.location.href = "/";
+    navigate("/");
   };
 
-  const handleCancel = () => {
-    setSuccess(false);
-  };
+  // const handleCancel = () => {
+  //   setSuccess(false);
+  //   navigate("/login");
+  // };
 
   return (
     <div>
@@ -58,7 +67,7 @@ const LoginComponent = () => {
           <div className="right-login">
             <div className="info-login">
               <h3 className="login-header">Đăng nhập</h3>
-              {error && <Alert message={error} type="error" showIcon />}
+             
               <Form onFinish={handleSubmit} validateTrigger="onSubmit">
                 <Form.Item
                   name="identifier"
@@ -72,7 +81,11 @@ const LoginComponent = () => {
                   errorMessage={error ? error : ""}
                 >
                   <Input placeholder="Địa chỉ email hoặc số điện thoại của bạn" />
+
+                  {error==="Sai thông tin đăng nhập"? <Alert message={error} type="error" showIcon />:null}
                 </Form.Item>
+
+                
                 <Form.Item
                   name="password"
                   rules={[
@@ -85,8 +98,10 @@ const LoginComponent = () => {
                   errorMessage={error ? error : ""}
                 >
                   <Input.Password placeholder="Mật khẩu" />
+                  {error==="Sai mật khẩu"? <Alert message={error} type="error" showIcon />:null}
                 </Form.Item>
-                <Button type="primary" htmlType="submit" className="submit">
+               
+                <Button  htmlType="submit" className="submit">
                   Đăng nhập
                 </Button>
               </Form>
@@ -111,14 +126,14 @@ const LoginComponent = () => {
           </div>
         </div>
       </section>
-      <Modal
+      {/* <Modal
         title="Đăng nhập thành công"
         visible={success}
         onOk={handleOk}
-        onCancel={handleCancel}
+        cancelButtonProps={false}
       >
         <p>Bạn đã đăng nhập thành công!</p>
-      </Modal>
+      </Modal> */}
     </div>
   );
 };
