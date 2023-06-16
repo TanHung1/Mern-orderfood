@@ -12,12 +12,13 @@ function route(app) {
   app.use("/api/product", productRouter);
   app.use(
     "/api/admin",
-    AuthenticationAccount, checkRole('admin'),  
+    AuthenticationAccount,
+    checkRole("admin"),
     adminRourter
   );
   app.use("/api/account", accountRouter);
-  app.use("/api/order",AuthenticationAccount, orderRouter);
-  app.use("/api/staff",AuthenticationAccount, checkRole('admin'), staffRouter);
+  app.use("/api/order", AuthenticationAccount, orderRouter);
+  app.use("/api/staff", AuthenticationAccount, checkRole("admin"), staffRouter);
 }
 
 module.exports = route;

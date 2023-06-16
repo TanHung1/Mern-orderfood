@@ -10,13 +10,12 @@ import MyAccountEdit from "../components/MyAccountEdit";
 import PreviousOders from "../components/PreviousOrders";
 import CheckOut from "../view/CheckOut";
 import DishComponent from "../components/DishComponent";
-import AdminHome from "../components/AdminHome";
-import AdminCustumer from "../components/AdminCustumer";
-import ManageStaff from "../components/ManageStaff";
+import ManageAccount from "../components/ManageAccount";
 import ManageFood from "../components/ManageFood";
 import EditFood from "../components/EditFood";
-import EditStaff from "../components/EditStaff";
-import EditCustumer from "../components/EditCustumer";
+import EditAccount from "../components/EditAccount";
+import TrashFood from "../components/TrashFood";
+
 import ManageBill from "../components/ManageBill";
 import EditBill from "../components/EditBill";
 import Footer from "../view/Footer";
@@ -53,21 +52,24 @@ function App() {
               {" "}
             </Route>
             <Route path="/dish/:id" element={<DishComponent />}></Route>
-            <Route path="/admin" element={<AdminHome />}></Route>
-            <Route path="/manage-custumer" element={<AdminCustumer />}></Route>
-            <Route path="/manage-staff" element={<ManageStaff />}></Route>
+
+            <Route
+              path="/admin/manage-account"
+              element={<ManageAccount />}
+            ></Route>
             <Route path="/manage-food" element={<ManageFood />}></Route>
+            <Route path="/trash-food" element={<TrashFood />}></Route>
             <Route path="/edit-food/:_id" element={<EditFood />}>
               {" "}
             </Route>
-            <Route path="/Edit-staff/:id" element={<EditStaff />}>
+            <Route path="/admin/Edit-account/:_id" element={<EditAccount />}>
               {" "}
             </Route>
-            <Route path="/Edit-custumer/:id" element={<EditCustumer />}></Route>
+
             <Route path="/Staff/manage-bill" element={<ManageBill />}>
               {" "}
             </Route>
-            <Route path="/manage-bill/edit/:id" element={<EditBill />}>
+            <Route path="/manage-bill/edit/:_id" element={<EditBill />}>
               {" "}
             </Route>
           </Routes>

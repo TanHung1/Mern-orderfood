@@ -78,7 +78,7 @@ class AdminController {
 
   // [get] /api/admin/stored-staff
   storedStaffs(req, res, next) {
-    Promise.all([User.find({}), User.countDocumentsDeleted({role: 'staff'})])
+    Promise.all([User.find({}), User.countDocumentsDeleted({ role: "staff" })])
       .then(([staffs, deleteCount]) =>
         res.json({
           deleteCount,
@@ -125,11 +125,41 @@ class AdminController {
       .then(res.status(200).send("oke"))
       .catch((err) => (console.log(err), res.status(500).json(err)));
   }
-
+  //--------------Account-----------
+  // [get] /api/admin/all-accounts
+  getAllAccounts = async (req, res) => {
+    try {
+      const accounts = await User.find();
+      res.status(200).json(accounts);
+    } catch (error) {
+      res.status(500).json(error);
+      console.log(error);
+    }
+  };
+  // [get] /api/admin/account/:id
+  getAccountById = async (req, res) => {
+    try {
+      const accountId = req.params.id;
+      const account = await User.findById(accountId);
+      res.status(200).json(account);
+    } catch (error) {
+      res.status(500).json(error);
+      console.log(error);
+    }
+  };
+  // [put] /api/admin/:id/update-account
+  updateAccount(req, res) {
+    User.updateOne({ _id: req.params.id }, req.body)
+      .then(() => res.status(200).json({ messages: "success" }))
+      .catch((err) => res.status(500).json(err));
+  }
   //---------CUSTOMER-----
   //[get] /api/admin/stored-customers/
   storedCustomers = async (req, res) => {
-    Promise.all([Customer.find({}), Customer.countDocumentsDeleted({role: 'customer'})])
+    Promise.all([
+      Customer.find({}),
+      Customer.countDocumentsDeleted({ role: "customer" }),
+    ])
       .then(([customers, deleteCount]) =>
         res.json({
           deleteCount,
@@ -170,7 +200,7 @@ class AdminController {
       .then(() => res.status(200).send("oke"))
       .catch((err) => res.status(500).json(err));
   }
-
+  //---------Order--------
   //[get] /api/admin/allorders
   getAllOrders = async (req, res) => {
     try {
@@ -189,7 +219,23 @@ class AdminController {
       console.log(error);
     }
   };
-
+  // [get] /api/admin/order/:id
+  getOrderById = async (req, res) => {
+    try {
+      const orderId = req.params.id;
+      const order = await Order.findById(orderId);
+      res.status(200).json(order);
+    } catch (error) {
+      res.status(500).json(error);
+      console.log(error);
+    }
+  };
+  // [put] api/admin/order/:id/update-order
+  updateOrder(req, res) {
+    Order.updateOne({ _id: req.params.id }, req.body)
+      .then(() => res.status(200).json({ messages: "success" }))
+      .catch((err) => res.status(500).json(err));
+  }
   // [get] api/admin/trash-orders/
   trashOrders(req, res) {
     Order.findDeleted({})

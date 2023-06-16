@@ -10,7 +10,7 @@ function Nav() {
   const location = useLocation();
   const navigate = useNavigate();
   const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
-  const user = JSON.parse(localStorage.getItem("token")) ||[]
+  const user = JSON.parse(localStorage.getItem("token")) || [];
   // console.log(user.user.role    ,'user');
   const totalAmount = () => {
     return cartItems.reduce((total, item) => {
@@ -54,46 +54,53 @@ function Nav() {
         <ul className="navbar-nav mr-auto">
           <li className="nav-item">
             <NavLink className="nav-link" activeClassName="active" exact to="/">
-              Home
+              Trang chủ
             </NavLink>
           </li>
           <li className="nav-item">
             <NavLink className="nav-link" activeClassName="active" to="/menu">
-              Menu
+              Thực đơn
             </NavLink>
           </li>
           <li className="nav-item">
             <NavLink className="nav-link" activeClassName="active" to="/about">
-              About
+              Thông tin
             </NavLink>
           </li>
-              {user?.user?.role !='admin'?null:
-          <li className="nav-item dropdown">
-          <a
-              className="nav-link dropdown-toggle"
-              href="/"
-              id="navbarDropdown"
-              role="button"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              Admin
-            </a>
-          
-            <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li>
-                <NavLink className="dropdown-item" to="/manage-food">
-                  Quản lý thức ăn
-                </NavLink>
-              </li>
-              <li>
-                <NavLink className="dropdown-item" to="/Staff/manage-bill">
-                  Quản lý hóa đơn
-                </NavLink>
-              </li>
-            </ul>
-          </li>}
+
+          {user?.user?.role != "admin" ? null : (
+            <li className="nav-item dropdown">
+              <a
+                className="nav-link dropdown-toggle"
+                href="/"
+                id="navbarDropdown"
+                role="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                Quản trị viên
+              </a>
+
+              <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li>
+                  <NavLink className="dropdown-item" to="/manage-food">
+                    Quản lý thức ăn
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink className="dropdown-item" to="/Staff/manage-bill">
+                    Quản lý hóa đơn
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink className="dropdown-item" to="/admin/manage-account">
+                    Quản lý tài khoản
+                  </NavLink>
+                </li>
+              </ul>
+            </li>
+          )}
         </ul>
         <form className="form-inline my-2 my-lg-0">
           <NavLink to="/cart" activeClassName="active">
@@ -103,15 +110,16 @@ function Nav() {
               )}
             </i>
           </NavLink>
-          
 
-          {!user?.user?  <NavLink  to="/login" activeClassName="active">
-            <i  className="fa-solid fa-user"></i>
-          </NavLink>:  <NavLink  to="/my-account/edit" activeClassName="active">
-            <i  className="fa-solid fa-user"></i>
-          </NavLink>}
-        
-         
+          {!user?.user ? (
+            <NavLink to="/login" activeClassName="active">
+              <i className="fa-solid fa-user"></i>
+            </NavLink>
+          ) : (
+            <NavLink to="/my-account/edit" activeClassName="active">
+              <i className="fa-solid fa-user"></i>
+            </NavLink>
+          )}
         </form>
       </div>
     </nav>

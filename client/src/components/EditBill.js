@@ -1,85 +1,124 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useParams, useNavigate } from "react-router-dom";
+import { Form, FormGroup, Label, Input, Button } from "reactstrap";
+import { message } from "antd";
+import "../styles/EditBill.scss";
+
 const accessToken = localStorage.getItem("token");
 const dataUser = JSON.parse(accessToken);
 const token = {
   headers: {
     Authorization: `Bearer ${dataUser?.token}`,
-        "Content-Type": "application/json",
-  }
-}
+    "Content-Type": "application/json",
+  },
+};
+
 function EditBill() {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const [order, setOrder] = useState({});
-  console.log(order)
+  const [order, setOrder] = useState(null);
+  const [username, setUsername] = useState("");
+  const [phonenumber, setPhoneNumber] = useState("");
+  const [address, setAddress] = useState("");
+  const [totalPrice, setTotalPrice] = useState(0);
   const [status, setStatus] = useState("");
+  const { _id } = useParams();
+  const navigate = useNavigate();
 
-  // Set your access token here
-
-  useEffect(() => {
+  useEffect(() =>{
     axios
-      .get(`http://localhost:5000/api/staff/${id}/order-detail`, token)
+      .get(`http://localhost:5000/api/admin/order/${_id}`, token)
       .then((res) => {
         setOrder(res.data);
+        setUsername(res.data.username);
+        setPhoneNumber(res.data.phonenumber);
+        setAddress(res.data.address);
+        setTotalPrice(res.data.totalPrice);
         setStatus(res.data.status);
       })
       .catch((err) => console.log(err));
-  }, [id]);
-
-  const handleStatusChange = (e) => {
-    setStatus(e.target.value);
-  };
+  }, [_id]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const updatedOrder = {
+      username,
+      phonenumber,
+      address,
+      totalPrice,
+      status,
+    };
     axios
       .put(
-        `http://localhost:5000/api/staff/update-status-order/${id}`,
-        { status },
+        `http://localhost:5000/api/admin/update-order/${_id}`,
+        updatedOrder,
         token
       )
       .then((res) => {
-        alert("Cập nhật trạng thái đơn hàng thành công!");
-        navigate(`/Staff/manage-bill`);
+        console.log(res.data);
+        message.success("Cập nhật thông tin đơn hàng thành công!");
+        navigate("/Staff/manage-bill");
       })
       .catch((err) => console.log(err));
   };
 
+  if (!order) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <div>
-      <h3>Chỉnh Sửa Trạng Thái Đơn Hàng</h3>
-      <div>
-        <p>ID đơn hàng: {order?.order?._id}</p>
-        <p>Người đặt: {order?.order?.username}</p>
-        <p>
-          Tên món:{" "}
-          {order?.order?.product.map((p) => <p>{p.nameprod}</p>)}
-        </p>
-        <p>
-          Tổng giá: {order?.order?.totalPrice && order?.order?.totalPrice.toLocaleString()}
-          &#8363;
-        </p>
-      </div>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="status">Trạng Thái:</label>
-          <select
-            id="status"
-            name="status"
+    <div className="container mt-4">
+      <h2 className="Edit-order">Cập nhật thông tin đơn hàng</h2>
+      <Form onSubmit={handleSubmit}>
+        <FormGroup>
+          <Label>Tên khách hàng:</Label>
+          <Input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label>Số điện thoại:</Label>
+          <Input
+            type="text"
+            value={phonenumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label>Địa chỉ:</Label>
+          <Input
+            type="text"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label>Tổng giá:</Label>
+          <Input
+            type="text"
+            value={totalPrice}
+            onChange={(e) => setTotalPrice(e.target.value)}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label>Trạng thái:</Label>
+          <Input
+            type="select"
             value={status}
-            onChange={handleStatusChange}
+            onChange={(e) => setStatus(e.target.value)}
           >
-            <option defaultValue="">{order?.order?.status}</option>
-            <option value="Đang chuẩn bị món">Đang chuẩn bị món</option>
+            <option value="Chưa xác nhận">Chưa xác nhận</option>
+            <option value="Đã xác nhận">Đã xác nhận</option>
             <option value="Đang giao">Đang giao</option>
             <option value="Đã hoàn thành giao đơn hàng">Đã hoàn thành giao đơn hàng</option>
             <option value="Đơn hàng bị hủy">Đơn hàng bị hủy</option>
-          </select>
-        </div>
-        <button type="submit">Cập nhật trạng thái</button>
-      </form>
+          </Input>
+        </FormGroup>
+        <Button color="primary" type="submit" className="btn-editOrder">
+          Lưu
+        </Button>
+      </Form>
     </div>
   );
 }

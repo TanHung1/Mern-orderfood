@@ -10,9 +10,16 @@ router.put("/:id/update-product", AdminControllers.updateProduct);
 router.delete("/:id/delete-product", AdminControllers.deleteProduct);
 router.patch("/:id/restore-product", AdminControllers.restoreProduct);
 router.delete("/:id/forcedelete-product", AdminControllers.forcedeleteProduct);
-router.get("/allorders", AdminControllers.getAllOrders);
-router.delete("/:id/delete-order", AdminControllers.deleteOrder);
 
+//Order
+router.get("/allorders", AdminControllers.getAllOrders);
+router.get("/order/:id", AdminControllers.getOrderById);
+router.put("/:id/update-order", AdminControllers.updateOrder);
+router.delete("/:id/delete-order", AdminControllers.deleteOrder);
+//Account
+router.get("/all-accounts", AdminControllers.getAllAccounts);
+router.get("/account/:id", AdminControllers.getAccountById);
+router.put("/:id/update-account", AdminControllers.updateAccount);
 router.get("/stored-customer", AdminControllers.storedCustomers);
 //staff routes
 router.get("/stored-staff", AdminControllers.storedStaffs);

@@ -40,20 +40,16 @@ function MenuComponent() {
         message: "Đã có sản phẩm này trong giỏ hàng",
         style: {
           marginTop: 50,
-          position:'relative',  
-          bottom:350,
-          left:0
         },
-        placement: 'bottomRight'
+
       });
     } else {
       notification.success({
-        message:'Thêm sản phẩm thành công',
+        message: "Thêm sản phẩm thành công",
         style: {
           marginTop: 50,
         },
-        placement: 'bottomRight'
-      })
+      });
       cartItems.push({ ...product, quantity: 1 });
     }
     localStorage.setItem("cart", JSON.stringify(cartItems));
@@ -71,8 +67,8 @@ function MenuComponent() {
 
   const renders = () => {
     const productsToRender = selectedCategory
-      ? data.products?.filter((item) => item.category === selectedCategory)
-      : data.products || [];
+      ? data?.products?.filter((item) => item.category === selectedCategory)
+      : data?.products || [];
 
     return productsToRender.map((item, index) => {
       return (
@@ -85,16 +81,20 @@ function MenuComponent() {
               alt="Card image cap"
             />
             <div class="card-body">
-              <h5 class="card-title" style={{fontSize:15,width:'100%'}}>{item.nameprod?.length > 10 ? `${item.nameprod?.slice(0, 35)}...` : item.nameprod}</h5>
+              <h5 class="card-title" style={{ fontSize: 15, width: "100%" }}>
+                {item.nameprod?.length > 10
+                  ? `${item.nameprod?.slice(0, 35)}...`
+                  : item.nameprod}
+              </h5>
               <p class="card-text">{item.description}</p>
-              <p class="card-price">{item.price.toLocaleString()}&#8363;</p>
+              <p class="card-price">{item?.price?.toLocaleString()}&#8363;</p>
 
               <button
                 style={{ marginBottom: 20 }}
                 class="btn btn-primary"
                 onClick={() => handleAddToCart(item)}
               >
-                Add to cart
+                Thêm vào giỏ hàng
               </button>
             </div>
           </div>
@@ -138,23 +138,10 @@ function MenuComponent() {
           Side
         </button>
       </div>
-      <button
-        onClick={() => {
-          if (open) {
-            setOpen(false);
-          } else {
-            setOpen(true);
-          }
-        }}
-        className
-      >
-        click
-      </button>
-      {open ? null : (
-        <div>
-          <div className="cards">{renders()}</div>
-        </div>
-      )}
+
+      <div>
+        <div className="cards">{renders()}</div>
+      </div>
     </>
   );
 }
