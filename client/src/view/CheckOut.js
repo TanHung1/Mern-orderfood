@@ -2,7 +2,35 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../styles/CheckOut.scss";
-import { Modal } from "antd";
+import { Modal, message } from "antd";
+
+import { useForm } from "react-hook-form"
+import { yupResolver } from "@hookform/resolvers/yup"
+import * as yup from "yup"
+
+const schema = yup
+  .object({
+    username: yup
+      .string()
+      .matches(/^[a-zA-ZÀ-ỹ\s]*$/, "Họ và tên chỉ cho phép các ký tự chữ")
+      .required("Không được để trống họ và tên"),
+
+    address: yup.string().required("Không được để trống địa chỉ giao hàng"),
+
+    phonenumber: yup
+      .number()
+      .required("Không được để trống số điện thoại")
+      .typeError("Số điện thoại không hợp lệ")
+      .min(1000000000, "Số điện thoại phải đủ 10 chữ số")
+      .max(9999999999, "Số điện thoại phải đủ 10 chữ số"),
+
+    email: yup
+      .string()
+      .email("Định dạng email không hợp lệ")
+      .required("Không được để trống email"),
+  })
+  .required()
+
 const accessToken = localStorage.getItem("token");
 const dataUser = JSON.parse(accessToken);
 const token = {
@@ -12,6 +40,13 @@ const token = {
   },
 };
 const CheckOut = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  })
   const [cart, setCart] = useState([]);
   const [customerName, setCustomerName] = useState("");
   const [customerAddress, setCustomerAddress] = useState("");
@@ -63,20 +98,16 @@ const CheckOut = () => {
         },
         token
       );
-
-      Modal.success({
-        title: "Thông báo",
-        content: "Thanh toán thành công!",
-        onOk: () => {
-          console.log(cart);
-          localStorage.removeItem("cart");
-          setCart([]);
-          setCustomerName("");
-          setCustomerAddress("");
-          setCustomerPhone("");
-          setCustomerEmail("");
-        },
-      });
+      message.success("Đặt hàng thành công")
+      setTimeout(message.destroy, 2500);
+      setTimeout(() => {
+        localStorage.removeItem("cart");
+        setCart([]);
+        setCustomerName("");
+        setCustomerAddress("");
+        setCustomerPhone("");
+        setCustomerEmail("");
+      }, 500)
     } catch (error) {
       console.error(error);
       Modal.error({
@@ -120,36 +151,47 @@ const CheckOut = () => {
               <input
                 type="text"
                 value={customerName}
+                {...register("username")}
+
                 onChange={(e) => setCustomerName(e.target.value)}
               />
+              <label style={{ color: 'red' }}>{errors.username?.message}</label>
             </div>
             <div className="form-group">
               <label>Địa chỉ:</label>
               <input
                 type="text"
                 value={customerAddress}
+                {...register("address")}
                 onChange={(e) => setCustomerAddress(e.target.value)}
               />
+              <label style={{ color: 'red' }}>{errors.address?.message}</label>
             </div>
             <div className="form-group">
               <label>Điện thoại:</label>
               <input
                 type="text"
                 value={customerPhone}
+                {...register("phonenumber")}
                 onChange={(e) => setCustomerPhone(e.target.value)}
               />
+              <label style={{ color: 'red' }}>{errors.phonenumber?.message}</label>
             </div>
             <div className="form-group">
               <label>Email:</label>
               <input
                 type="text"
                 value={customerEmail}
+                {...register("email")}
+
                 onChange={(e) => setCustomerEmail(e.target.value)}
               />
+              <label style={{ color: 'red' }}>{errors.email?.message}</label>
+
             </div>
             <div className="form-group">
               <label>Tiến hành đặt hàng</label>
-              <button onClick={handlePayment}>Đặt hàng</button>
+              <button onClick={handleSubmit(handlePayment)}>Đặt hàng</button>
             </div>
           </div>
           <div className="checkout-items">

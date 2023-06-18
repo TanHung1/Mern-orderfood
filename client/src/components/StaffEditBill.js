@@ -26,7 +26,7 @@ function StaffEditBill() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/admin/order/${_id}`, token)
+      .get(`http://localhost:5000/api/staff/order/${_id}`, token)
       .then((res) => {
         setOrder(res.data);
         setUsername(res.data.username);
@@ -49,7 +49,7 @@ function StaffEditBill() {
     };
     axios
       .put(
-        `http://localhost:5000/api/admin/${_id}/update-order`,
+        `http://localhost:5000/api/staff/update-status-order/${_id}`,
         updatedOrder,
         token
       )
@@ -61,14 +61,14 @@ function StaffEditBill() {
       .catch((err) => console.log(err));
   };
 
-  if (!order) {
+  if (order) {
     return <div>Loading...</div>;
   }
 
   return (
     <div className="container mt-4">
       <h2 className="Edit-order">Cập nhật thông tin đơn hàng</h2>
-      <Form onSubmit={handleSubmit}>
+    {!order?<div>Loading...</div>:<Form onSubmit={handleSubmit}>
         <FormGroup>
           <Label>Tên khách hàng:</Label>
           <Input
@@ -108,16 +108,17 @@ function StaffEditBill() {
             value={status}
             onChange={(e) => setStatus(e.target.value)}
           >
-            <option value="Chưa xác nhận">Chưa xác nhận</option>
+             <option value="Chưa xác nhận">Chưa xác nhận</option>
             <option value="Đã xác nhận">Đã xác nhận</option>
             <option value="Đang giao">Đang giao</option>
-            <option value="Đã giao">Đã giao</option>
+            <option value="Đã hoàn thành giao đơn hàng">Đã hoàn thành giao đơn hàng</option>
+            <option value="Đơn hàng bị hủy">Đơn hàng bị hủy</option>
           </Input>
         </FormGroup>
         <Button color="primary" type="submit" className="btn-editOrder">
           Lưu
         </Button>
-      </Form>
+      </Form>}  
     </div>
   );
 }

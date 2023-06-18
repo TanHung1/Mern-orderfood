@@ -6,6 +6,8 @@ import Footer from "../view/Footer";
 import { message } from "antd";
 const accessToken = localStorage.getItem("token");
 const dataUser = JSON.parse(accessToken);
+console.log(dataUser?.token
+    ,'token')
 const token = {
     headers: {
         Authorization: `Bearer ${dataUser?.token}`,
@@ -30,16 +32,16 @@ function TrashFood() {
     }, [deletedProduct]);
     
 
-    const handleRestore= async(_id)=> {
-     const result = await  axios.patch(`http://localhost:5000/api/admin/restore-product/${_id}`, token)
-          .then(() =>{
-            if(result){
-                alert("Khoi phuc thanh cong");
-            }
-          })
-          .catch(err =>{
-            alert("Khoi phuc that bai")
-          })     
+    const handleRestore= async(_id,data)=> {
+     const result = await  axios.patch(`http://localhost:5000/api/admin/restore-product/${_id}`,data,token)
+     console.log(result)
+        if (result?.data?.success) {
+            alert("khôi phục thành công")
+            getTrash()
+        }else{
+            alert('khôi phục thất bại')
+        }
+        return result?.data   
 
     }
 
@@ -95,7 +97,7 @@ function TrashFood() {
                                             <button
                                                 className="text-decoration-none btn btn-sm btn-success"
 
-                                                onClick={() => handleRestore(d._id)}
+                                                onClick={() => handleRestore(d._id,d)}
                                             >
                                                 <i className="fa-solid fa-pen-to-square"></i>
                                             </button>

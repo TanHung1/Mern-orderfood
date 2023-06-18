@@ -4,6 +4,32 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Form, FormGroup, Label, Input, Button } from "reactstrap";
 import { message } from "antd";
 import "../styles/EditBill.scss";
+import { useForm } from "react-hook-form"
+import { yupResolver } from "@hookform/resolvers/yup"
+import * as yup from "yup"
+
+const schema = yup
+  .object({
+    username: yup
+      .string()
+      .matches(/^[a-zA-ZÀ-ỹ\s]*$/, "Họ và tên chỉ cho phép các ký tự chữ")
+      .required("Không được để trống họ và tên"),
+
+    address: yup.string().required("Không được để trống địa chỉ giao hàng"),
+
+    phonenumber: yup
+      .number()
+      .required("Không được để trống số điện thoại")
+      .typeError("Số điện thoại không hợp lệ")
+      .min(1000000000, "Số điện thoại phải đủ 10 chữ số")
+      .max(9999999999, "Số điện thoại phải đủ 10 chữ số"),
+
+    email: yup
+      .string()
+      .email("Định dạng email không hợp lệ")
+      .required("Không được để trống email"),
+  })
+  .required()
 
 const accessToken = localStorage.getItem("token");
 const dataUser = JSON.parse(accessToken);
@@ -15,6 +41,13 @@ const token = {
 };
 
 function EditBill() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  })
   const [order, setOrder] = useState(null);
   const [username, setUsername] = useState("");
   const [phonenumber, setPhoneNumber] = useState("");
@@ -24,7 +57,7 @@ function EditBill() {
   const { _id } = useParams();
   const navigate = useNavigate();
 
-  useEffect(() =>{
+  useEffect(() => {
     axios
       .get(`http://localhost:5000/api/admin/order/${_id}`, token)
       .then((res) => {
@@ -38,7 +71,7 @@ function EditBill() {
       .catch((err) => console.log(err));
   }, [_id]);
 
-  const handleSubmit = (e) => {
+  const handleUpdate = (e) => {
     e.preventDefault();
     const updatedOrder = {
       username,
@@ -68,38 +101,39 @@ function EditBill() {
   return (
     <div className="container mt-4">
       <h2 className="Edit-order">Cập nhật thông tin đơn hàng</h2>
-      <Form onSubmit={handleSubmit}>
+      <Form>
         <FormGroup>
           <Label>Tên khách hàng:</Label>
           <Input
             type="text"
             value={username}
+            {...register("username")}
             onChange={(e) => setUsername(e.target.value)}
           />
+          <label style={{ color: 'red' }}>{errors.username?.message}</label>
+
         </FormGroup>
         <FormGroup>
           <Label>Số điện thoại:</Label>
           <Input
             type="text"
             value={phonenumber}
+            {...register("phonenumber")}
             onChange={(e) => setPhoneNumber(e.target.value)}
           />
+          <label style={{ color: 'red' }}>{errors.phonenumber?.message}</label>
+
         </FormGroup>
         <FormGroup>
           <Label>Địa chỉ:</Label>
           <Input
             type="text"
             value={address}
+            {...register("address")}
             onChange={(e) => setAddress(e.target.value)}
           />
-        </FormGroup>
-        <FormGroup>
-          <Label>Tổng giá:</Label>
-          <Input
-            type="text"
-            value={totalPrice}
-            onChange={(e) => setTotalPrice(e.target.value)}
-          />
+          <label style={{ color: 'red' }}>{errors.address?.message}</label>
+
         </FormGroup>
         <FormGroup>
           <Label>Trạng thái:</Label>
@@ -115,7 +149,7 @@ function EditBill() {
             <option value="Đơn hàng bị hủy">Đơn hàng bị hủy</option>
           </Input>
         </FormGroup>
-        <Button color="primary" type="submit" className="btn-editOrder">
+        <Button onClick={handleSubmit(handleUpdate)} color="primary" type="submit" className="btn-editOrder">
           Lưu
         </Button>
       </Form>

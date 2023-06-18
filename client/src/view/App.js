@@ -18,6 +18,7 @@ import TrashFood from "../components/TrashFood";
 import StaffBill from "../components/StaffBill";
 import ManageBill from "../components/ManageBill";
 import EditBill from "../components/EditBill";
+import StaffEditBill from "../components/StaffEditBill";
 import Footer from "../view/Footer";
 
 import Nav from "../view/Nav";
@@ -68,7 +69,7 @@ function App() {
             <Route path="/Staff/manage-bill" element={<StaffBill />}>
               {" "}
             </Route>
-            <Route path="/Staff/manage-bill/edit/:_id" element={<StaffBill />}>
+            <Route path="/Staff/manage-bill/edit/:_id" element={<StaffEditBill />}>
               {" "}
             </Route>
             <Route path="/Admin/manage-bill" element={<ManageBill />}>

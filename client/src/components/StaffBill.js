@@ -17,24 +17,20 @@ const token = {
 
 function StaffBill() {
   const [data, setData] = useState([]);
+  const [order, setOrder] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:5000/api/admin/allorders", token)
-      .then((res) => setData(res.data))
-      .catch((err) => console.log(err));
-  }, []);
+  const result = async () =>{
+    const ressponse =  await  axios
+    .get("http://localhost:5000/api/staff//all-orders", token)
+    .then((res) => setData(res.data))
+    .catch((err) => console.log(err));
 
-  const handleDelete = (_id) => {
-    axios
-      .delete(`http://localhost:5000/api/admin/${_id}/delete-order`, token)
-      .then((res) => {
-        message.success("Xóa đơn hàng thành công!");
-        setData(data.filter((d) => d._id !== _id));
-      })
-      .catch((err) => console.log(err));
-  };
+    return ressponse?.data
+  }
+  useEffect(() => {
+    result()
+  }, []);
 
   const columns = [
     {
@@ -87,13 +83,13 @@ function StaffBill() {
           case "Chưa xác nhận":
             color = "orange";
             break;
-          case "Đã xác nhận":
+          case "Đã hoàn thành giao đơn hàng":
             color = "green";
             break;
           case "Đang giao":
             color = "blue";
             break;
-          case "Đã giao":
+          case "Đã xác nhận":
             color = "purple";
             break;
           default:
@@ -110,12 +106,6 @@ function StaffBill() {
           <Link to={`/Staff/manage-bill/edit/${record._id}`}>
             <EditOutlined /> Sửa
           </Link>
-          <Popconfirm
-            title="Bạn có chắc muốn xóa đơn hàng này?"
-            onConfirm={() => handleDelete(record._id)}
-            okText="Đồng ý"
-            cancelText="Hủy"
-          ></Popconfirm>
         </span>
       ),
     },
@@ -124,7 +114,7 @@ function StaffBill() {
   return (
     <div className="container mt-4">
       <h2 className="managebill">Danh sách các hóa đơn</h2>
-      <Table columns={columns} dataSource={data.orders} rowKey="_id" />
+     <Table columns={columns} dataSource={data.orders} rowKey="_id" />
     </div>
   );
 }

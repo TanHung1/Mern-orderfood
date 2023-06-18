@@ -3,11 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/ManageFood.scss";
 import Footer from "../view/Footer";
-import { useForm } from "react-hook-form"
+import { useForm,Controller,Control } from "react-hook-form"
+
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import { api } from "../util/api";
-
 const accessToken = localStorage.getItem("token");
 const dataUser = JSON.parse(accessToken);
 const token = {
@@ -19,14 +19,18 @@ const token = {
 
 function ManageFood() {
   const schema = yup
-  .object({
-    nameprod: yup.string().required('Tên ko được để trống'),
-
-  })
-  .required()
+    .object({
+      nameprod: yup.string().required('Tên không được để trống'),
+      image: yup.string().required("Không được để trống"),
+      price: yup.string().required("Không được để trống"),
+      category: yup.string().required("Phải chọn món ăn thuộc loại nào")
+    })
+    .required()
   const {
     register,
     handleSubmit,
+    setValue,
+    control,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -40,7 +44,9 @@ function ManageFood() {
   });
 
   const [image, setImage] = useState(null);
+  const [error, setError] = useState(null);
   const [data, setData] = useState([]);
+  const [count,setCount] = useState(1000)
   const [dialogActive, setDialogActive] = useState(false);
   const navigate = useNavigate();
   const [deletedProduct, setDeletedProduct] = useState(null);
@@ -52,6 +58,9 @@ function ManageFood() {
     category: "",
   });
 
+  const hanleCount = () =>{
+    setCount(count+1000)
+  }
   useEffect(() => {
     axios
       .get(`${api}api/admin/get-all-products`, token)
@@ -70,15 +79,17 @@ function ManageFood() {
         setInputData((prevState) => ({ ...prevState, image: reader.result }));
         setImage(reader.result);
       };
+    }else{
+      setImage(error)
     }
   };
   const handleAddFood = (event) => {
-    event.preventDefault();
+  
     axios
       .post("http://localhost:5000/api/admin/create-product", inputData, token)
       .then((res) => {
         alert("Thêm món ăn thành công");
-        navigate("/manage-food");
+        navigate("/admin/manage-food");
         setAddedProduct(res.data._id);
       })
       .catch((err) => {
@@ -151,28 +162,22 @@ function ManageFood() {
                   &times;
                 </a>
                 <h3>Thêm món ăn</h3>
-                <form onSubmit={handleSubmit(handleAddFood
-                  )}>
-                <input {...register("nameprod")} />
-      <p style={{color:'red'}}>{errors.nameprod?.message}</p>
-                  {/* <div className="form-group">
-                    <label
-                      htmlFor="exampleFormControlInput1"
-                      className="text-lable"
-                    >
-                      Tên món ăn
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="nameprod"
-                      placeholder="nhập tên món"
-                      id="exampleFormControlFile1"
-                      onChange={(e) =>
-                        setInputData({ ...inputData, nameprod: e.target.value })
-                      }
-                    />
-                  </div> */}
+                <form onSubmit={handleSubmit(handleAddFood)}>
+                  <label htmlFor="exampleFormControlFile1" className="text-lable">
+                    Tên món ăn
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Nhập tên sản phẩm"
+                    id="exampleFormControlFile1"
+                    {...register("nameprod")}
+                    onChange={(e) =>
+                      setInputData({ ...inputData, nameprod: e.target.value })
+                    }
+                  />
+                  <button onClick={hanleCount}>+</button>
+                  <p style={{ color: 'red' }}>{errors.nameprod?.message}</p>                 
                   <div className="form-group">
                     <label
                       htmlFor="exampleFormControlFile1"
@@ -183,7 +188,7 @@ function ManageFood() {
                     <input
                       type="file"
                       className="form-control"
-                      name="image"
+                      {...register('image')}
                       accept="image/*"
                       id="exampleFormControlFile1"
                       onChange={handleImageChange}
@@ -195,24 +200,27 @@ function ManageFood() {
                         className="preview-image"
                       />
                     )}
+                   {!error? <p style={{ color: 'red' }}>Chưa có hình ảnh</p> :null}
                   </div>
                   <div className="form-group">
-                    <label
+              <label
                       htmlFor="exampleFormControlSelect2"
                       className="text-lable"
                     >
                       Giá tiền
                     </label>
                     <input
-                      type="text"
+                      type="number"
                       className="form-control"
-                      name="price"
-                      placeholder="nhập giá tiền"
+                      {...register('price')}
+                      placeholder="Nhập giá tiền"
                       id="exampleFormControlFile1"
+                      value={count}
                       onChange={(e) =>
                         setInputData({ ...inputData, price: e.target.value })
                       }
                     />
+                    <p style={{ color: 'red' }}>{errors.price?.message}</p>
                   </div>
                   <div className="form-group">
                     <label
@@ -223,6 +231,7 @@ function ManageFood() {
                     </label>
                     <select
                       className="form-control"
+                      {...register('category')}
                       onChange={(e) =>
                         setInputData({ ...inputData, category: e.target.value })
                       }
@@ -234,6 +243,7 @@ function ManageFood() {
                       <option>side</option>
                     </select>
                   </div>
+                    <p style={{ color: 'red' }}>{errors.category==="Loại".message}</p>
 
                   <button type="submit" className="btn btn-primary">
                     Thêm món

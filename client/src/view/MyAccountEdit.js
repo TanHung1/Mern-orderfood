@@ -5,8 +5,42 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
 import { Modal, Button } from "antd";
+import { useForm } from "react-hook-form"
+import { yupResolver } from "@hookform/resolvers/yup"
+import * as yup from "yup"
+
+const schema = yup
+  .object({
+    username: yup
+      .string()
+      .matches(/^[a-zA-ZÀ-ỹ\s]*$/, "Họ và tên chỉ cho phép các ký tự chữ")
+      .required("Không được để trống họ và tên"),
+
+    address: yup.string().required("Không được để trống địa chỉ giao hàng"),
+
+    phonenumber: yup
+      .number()
+      .required("Không được để trống số điện thoại")
+      .typeError("Số điện thoại không hợp lệ")
+      .min(1000000000, "Số điện thoại phải đủ 10 chữ số")
+      .max(9999999999, "Số điện thoại phải đủ 10 chữ số"),
+
+    email: yup
+      .string()
+      .email("Định dạng email không hợp lệ")
+      .required("Không được để trống email"),
+  })
+  .required()
 
 function MyAccountEdit() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  })
+
   const [customerName, setCustomerName] = useState("");
   const [customerAddress, setCustomerAddress] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
@@ -37,8 +71,8 @@ function MyAccountEdit() {
     window.location.pathname = "/login";
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleUpdate = async (e) => {
+    // e.preventDefault();
     try {
       const response = await axios.put(
         `http://localhost:5000/api/account/${dataUser?.user?._id}/update-account`,
@@ -55,8 +89,8 @@ function MyAccountEdit() {
           },
         }
       );
-      setMessage(response.data.message);
-      setModalVisible(true);
+      // setMessage(response.data.message);
+      // setModalVisible(true);
 
       // Cập nhật thông tin khách hàng trong localStorage
       const updatedUser = {
@@ -76,9 +110,9 @@ function MyAccountEdit() {
     }
   };
 
-  const handleModalOk = () => {
-    setModalVisible(false);
-  };
+  // const handleModalOk = () => {
+  //   setModalVisible(false);
+  // };
 
   return (
     <section className="my-account-wrapper">
@@ -115,7 +149,7 @@ function MyAccountEdit() {
         <div className="right-history">
           <div className="previous-oders-right">
             <h3>THÔNG TIN CÁ NHÂN</h3>
-            <form onSubmit={handleSubmit}>
+            <form>
               <div class="form-group">
                 <label for="exampleInputEmail1">Họ và tên</label>
                 <input
@@ -124,8 +158,10 @@ function MyAccountEdit() {
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
                   value={customerName}
+                  {...register("username")}
                   onChange={(e) => setCustomerName(e.target.value)}
                 />
+                <label style={{ color: 'red' }}>{errors.username?.message}</label>
               </div>
               <div class="form-group">
                 <label for="exampleInputEmail1">Địa chỉ giao hàng</label>
@@ -135,9 +171,11 @@ function MyAccountEdit() {
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
                   value={customerAddress}
+                  {...register("address")}
                   onChange={(e) => setCustomerAddress(e.target.value)}
                 />
               </div>
+              <label style={{ color: 'red' }}>{errors.address?.message}</label>
               <div class="form-group">
                 <label for="exampleInputEmail1">Số điện thoại</label>
                 <input
@@ -146,29 +184,35 @@ function MyAccountEdit() {
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
                   value={customerPhone}
+                  {...register("phonenumber")}
                   onChange={(e) => setCustomerPhone(e.target.value)}
                 />
+                <label style={{ color: 'red' }}>{errors.phonenumber?.message}</label>
+
               </div>
 
               <div class="form-group">
                 <label for="exampleInputEmail1">Địa chỉ email</label>
                 <input
-                  type="email"
+                  // type="email"
                   class="form-control"
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
                   value={customerEmail}
+                  {...register("email")}
                   onChange={(e) => setCustomerEmail(e.target.value)}
                 />
+                <label style={{ color: 'red' }}>{errors.email?.message}</label>
+
               </div>
-              <button type="submit" class="btn btn-primary">
+              <button onClick={handleSubmit(handleUpdate)} type="submit" class="btn btn-primary">
                 Cập nhật
               </button>
             </form>
           </div>
         </div>
       </div>
-      <Modal
+      {/* <Modal
         title="Cập nhật tài khoản thành công"
         visible={modalVisible}
         onOk={handleModalOk}
@@ -177,7 +221,7 @@ function MyAccountEdit() {
             OK
           </Button>,
         ]}
-      ></Modal>
+      ></Modal> */}
     </section>
   );
 }

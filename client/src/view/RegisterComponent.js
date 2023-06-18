@@ -29,9 +29,7 @@ function RegisterComponent() {
         setModalVisible(true);
         toast.success("Registered successfully.");
       })
-      .catch((err) => {
-        setError("Failed :" + err.message);
-        toast.error("Failed :" + err.message);
+      .catch((err) => {console.errolog(err);
       });
   };
 
@@ -55,8 +53,7 @@ function RegisterComponent() {
           </div>
           <div className="right-register">
             <div className="info-register">
-              <h3 className="register-header">Đăng ký</h3>
-              {error && <Alert message={error} type="error" showIcon />}
+              <h3 className="register-header">Đăng ký</h3>             
               <Form onFinish={handleSubmit} validateTrigger="onSubmit">
                 <Form.Item
                   name="username"
@@ -87,6 +84,7 @@ function RegisterComponent() {
                   ]}
                 >
                   <Input placeholder="Số điện thoại của bạn" />
+                {error==="Số điện thoại đã tồn tại"? <Alert message={error} type="error" showIcon />:null}
                 </Form.Item>
                 <Form.Item
                   name="email"
@@ -102,6 +100,7 @@ function RegisterComponent() {
                   ]}
                 >
                   <Input placeholder="Địa chỉ email của bạn" />
+                {error === "Email đã tồn tại"? <Alert message={error} type="error" showIcon />:null}
                 </Form.Item>
                 <Form.Item
                   name="password"
@@ -142,7 +141,7 @@ function RegisterComponent() {
           </div>
         </div>
       </section>
-      <Modal
+      {/* <Modal
         title="Đăng ký thành công"
         visible={modalVisible}
         onOk={handleModalOk}
@@ -150,7 +149,7 @@ function RegisterComponent() {
       >
         <p>Tài khoản của bạn đã được đăng ký thành công.</p>
         <p>Vui lòng đăng nhập để tiếp tục sử dụng.</p>
-      </Modal>
+      </Modal> */}
     </div>
   );
 }

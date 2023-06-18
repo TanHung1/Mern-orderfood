@@ -32,9 +32,10 @@ const LoginComponent = () => {
       );
 
       localStorage.setItem("token", JSON.stringify(response.data));
-        if(response?.data){          
+        if(response?.data){ 
+          message.success("Đăng nhập thành công")            
           setTimeout(()=>{     
-            message.success("Đăng nhập thành công")     
+             
             window.location.replace("/")
           },500)
         }
@@ -77,8 +78,8 @@ const LoginComponent = () => {
                       message: "Vui lòng nhập tài khoản!",
                     },
                   ]}
-                  validateStatus={error ? "error" : ""}
-                  errorMessage={error ? error : ""}
+                  // validateStatus={error ? "error" : ""}
+                  // errorMessage={error ? error : ""}
                 >
                   <Input placeholder="Địa chỉ email hoặc số điện thoại của bạn" />
 
@@ -94,8 +95,6 @@ const LoginComponent = () => {
                       message: "Vui lòng nhập mật khẩu!",
                     },
                   ]}
-                  validateStatus={error ? "error" : ""}
-                  errorMessage={error ? error : ""}
                 >
                   <Input.Password placeholder="Mật khẩu" />
                   {error==="Sai mật khẩu"? <Alert message={error} type="error" showIcon />:null}
