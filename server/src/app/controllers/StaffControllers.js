@@ -4,7 +4,7 @@ const { mutipleMongooseToObject } = require("../../util/mongoose");
 const moment = require("moment");
 
 class StaffController {
-  // [put] /api/staff/:id/update-status-order
+  // [put] /api/staff/update-status-order/:id
   updateStatusOrder = async (req, res) => {
     try {
       const order = await Order.findById(req.params.id);

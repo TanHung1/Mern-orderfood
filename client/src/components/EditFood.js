@@ -14,6 +14,8 @@ const token = {
 };
 
 function EditFood() {
+const [data, setData] = useState([]);
+
   const { _id } = useParams();
   const navigate = useNavigate();
   const [inputData, setInputData] = useState({
@@ -39,6 +41,7 @@ function EditFood() {
       })
       .catch((err) => console.log(err));
   }, [_id]);
+
 
   const handleEditFood = (event) => {
     event.preventDefault();
@@ -72,7 +75,6 @@ function EditFood() {
     setIsSuccess(false);
     navigate("/admin/manage-food");
   };
-
   return (
     <div className="container">
       <h2 className="h2-editFood mt-4" style={{ paddingTop: "70px" }}>

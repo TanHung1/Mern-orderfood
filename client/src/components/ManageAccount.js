@@ -33,6 +33,12 @@ function ManageAccount() {
 
   const columns = [
     {
+      title: "ID",
+      dataIndex: "id",
+      key: "_id",
+      render: (_id, record, index) => <span>{index + 1}</span>,
+    },
+    {
       title: "Username",
       dataIndex: "username",
       key: "username",

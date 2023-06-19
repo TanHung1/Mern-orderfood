@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { notification } from "antd";
 import "../styles/CartComponent.scss";
 
 function CartComponent() {
   const [cartItems, setCartItems] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -71,21 +73,34 @@ function CartComponent() {
     return totalPrice;
   };
 
+  const handleCheckout = () => {
+    if (!localStorage.getItem("token")) {
+      notification.warning({
+        message: "Bạn cần đăng nhập để tiếp tục đặt hàng",
+        duration: 2,
+      });
+      navigate("/login");
+    } else {
+      //localStorage.getItem("user");
+      navigate("/checkout");
+    }
+  };
+
   return (
     <div className="cart-container">
       <h2>Giỏ hàng của bạn</h2>
       {cartItems.length === 0 ? (
-        <p>Giở hàng của bạn đang trống</p>
+        <p>Giỏ hàng của bạn đang trống</p>
       ) : (
         <div>
           {renders()}
           <p>Tổng tiền: {getTotalPrice().toLocaleString()}&#8363;</p>
-          <Link
+          <button
             className="text-decoration-none btn btn-sm btn-success"
-            to={"/checkout"}
+            onClick={handleCheckout}
           >
             Tiến hành đặt hàng
-          </Link>
+          </button>
         </div>
       )}
     </div>

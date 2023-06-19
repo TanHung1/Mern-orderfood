@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
-import { Modal, Button } from "antd";
+import { Modal, Button, message } from "antd";
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
@@ -42,10 +42,11 @@ function MyAccountEdit() {
   })
 
   const [customerName, setCustomerName] = useState("");
+  const [FullName, setFullName] = useState("");
   const [customerAddress, setCustomerAddress] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
-  const [message, setMessage] = useState("");
+  // const [message, setMessage] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const accessToken = localStorage.getItem("token");
 
@@ -89,10 +90,6 @@ function MyAccountEdit() {
           },
         }
       );
-      // setMessage(response.data.message);
-      // setModalVisible(true);
-
-      // Cập nhật thông tin khách hàng trong localStorage
       const updatedUser = {
         ...dataUser?.user,
         username: customerName,
@@ -104,9 +101,11 @@ function MyAccountEdit() {
         "token",
         JSON.stringify({ user: updatedUser, token: dataUser?.token })
       );
+      setFullName(customerName);
+      message.success("Cập nhật thành công")
     } catch (error) {
       console.error(error);
-      setMessage("Cập nhật thông tin thất bại. Vui lòng thử lại.");
+      message.error("Cập nhật thông tin thất bại. Vui lòng thử lại.");
     }
   };
 
@@ -123,7 +122,7 @@ function MyAccountEdit() {
               <div className="header-info">
                 <h2>
                   XIN CHÀO,
-                  <br /> {customerName}
+                  <br /> {FullName}
                 </h2>
                 <p>
                   <NavLink onClick={handleLogout}>Đăng xuất</NavLink>

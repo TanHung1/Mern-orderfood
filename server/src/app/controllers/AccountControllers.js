@@ -8,35 +8,38 @@ class AccountControler {
   register = async (req, res, next) => {
     try {      
       const salt = await bcrypt.genSalt(10);
+      const hashedPasword = await bcrypt.hash(req.body.password, salt);
       const {
         username,
         phonenumber,
-        email,
-        hashed = await bcrypt.hash(req.body.password, salt),
+        email,        
         role,
       } = req.body;
 
-      const accountExists = await Account.find({
-        $or: [
-          { email: email },
-          { phonenumber: phonenumber }
-        ]
-      });
-      if (accountExists) {
-        return res.status(403).json({ message: "Email hoặc số điện thoại đã tồn tại" });
+      const phonenumberExists = await Account.findOne({phonenumber: phonenumber})
+      if(phonenumberExists)
+      {
+        return res.status(403).json({ error: "Số điện thoại đã tồn tại"})
       }
+
+      const emailExists = await Account.findOne({email: email});
+      if (emailExists) {
+        return res.status(403).json({ error: "Email đã tồn tại" });
+      }
+
 
       const newAccount = new Account({
         username,
         phonenumber,
         email,
-        password: hashed,
+        password: hashedPasword,
         role,
       });
       await newAccount.save();
-      return res.status(200);
+      return res.status(200).json({message: "oke"});
 
     } catch (error) {
+      console.log(error);
       return res.status(500).json(error);
     }
   };
@@ -83,20 +86,11 @@ class AccountControler {
     return res.status(200).json({ success: true });
   };
 
-  //[put] api/account/:id/update-account
+  //[put] api/account/update-account/:id
   updateAccount(req, res) {
     Account.updateOne({ _id: req.params.id }, req.body)
-      .then(() => {
-        let user = req.body;
-        const token = jwt.sign(
-          { userId: user._id },
-          process.env.jwt_access_token,
-          { expiresIn: "48h" }
-        )
-        res.status(200).json({ message: 'Access token', token })
-      })
-
-      .catch((err) => res.status(500).json(err));
+    .then(() => res.status(200).json({ messages: "success" }))
+    .catch((err) => res.status(500).json(err));
   }
 }
 

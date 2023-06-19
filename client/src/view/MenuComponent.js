@@ -1,7 +1,9 @@
 import "../styles/MenuComponent.scss";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { Button, notification } from "antd";
+import { Link, useNavigate } from "react-router-dom";
+import { Button, notification, message } from "antd";
+
 function MenuComponent() {
   const [data, setData] = useState([]);
   const [cartItemCount, setCartItemCount] = useState(0);
@@ -36,23 +38,11 @@ function MenuComponent() {
   console.log(user);
   const handleAddToCart = (product) => {
     const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
-    console.log(cartItems, "ádsad");
     const index = cartItems.findIndex((item) => item._id === product._id);
     if (index !== -1) {
-      notification.warning({
-        message: "Đã có sản phẩm này trong giỏ hàng",
-        style: {
-          marginTop: 50,
-        },
-
-      });
+      message.warning("Đã có sản phẩm này trong giỏ hàng");
     } else {
-      notification.success({
-        message: "Thêm sản phẩm thành công",
-        style: {
-          marginTop: 50,
-        },
-      });
+      message.success("Thêm sản phẩm thành công")
       cartItems.push({ ...product, quantity: 1 });
     }
     localStorage.setItem("cart", JSON.stringify(cartItems));
@@ -77,19 +67,22 @@ function MenuComponent() {
       return (
         <div key={index}>
           <div class="card">
+            <Link to={`/detail-product/${item._id}`}>
             <img
               style={{ width: "100%", height: 250 }}
               class=""
               src={item.image}
               alt="Card image cap"
             />
+            </Link>
             <div class="card-body">
+              <Link to={`/detail-product/${item._id}`} style={{ textDecoration: 'none' }}>
               <h5 class="card-title" style={{ fontSize: 15, width: "100%" }}>
                 {item.nameprod?.length > 10
                   ? `${item.nameprod?.slice(0, 35)}...`
                   : item.nameprod}
               </h5>
-              <p class="card-text">{item.description}</p>
+              </Link>
               <p class="card-price">
                 {item.price ? item.price.toLocaleString() : ""}&#8363;
               </p>

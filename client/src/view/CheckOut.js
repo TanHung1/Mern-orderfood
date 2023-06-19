@@ -39,6 +39,7 @@ const token = {
     "Content-Type": "application/json",
   },
 };
+
 const CheckOut = () => {
   const {
     register,
@@ -53,9 +54,11 @@ const CheckOut = () => {
   const [customerPhone, setCustomerPhone] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
   const [payment, setPayment] = useState("");
+  const [paymentError, setPaymentError] = useState(false);
   const accessToken = localStorage.getItem("token");
   const dataUser = JSON.parse(accessToken);
   const navigate = useNavigate();
+
   useEffect(() => {
     const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
     setCustomerName(dataUser.user.username);
@@ -74,6 +77,16 @@ const CheckOut = () => {
     }
   }, []);
 
+  const handleCashOnDelivery = () => {
+    setPayment("Thanh toán khi giao hàng");
+    setPaymentError(false);
+  };
+
+  const handleMomoPayment = () => {
+    setPayment("Thanh toán qua momo");
+    setPaymentError(false);
+  };
+
   const handlePayment = async () => {
     try {
       if (!accessToken) {
@@ -82,6 +95,11 @@ const CheckOut = () => {
           content: "Bạn cần đăng nhập để tiếp tục đặt hàng.",
           onOk: () => navigate("/login"),
         });
+        return;
+      }
+
+      if (!payment) {
+        setPaymentError(true);
         return;
       }
 
@@ -188,6 +206,20 @@ const CheckOut = () => {
               />
               <label style={{ color: 'red' }}>{errors.email?.message}</label>
 
+            </div>
+            <div className="form-group">
+              <label>Hình thức thanh toán:</label>
+              <div>
+                <button onClick={handleCashOnDelivery}>
+                  Thanh toán khi giao hàng
+                </button>
+                <button onClick={handleMomoPayment}>Thanh toán qua Momo</button>
+              </div>
+              {paymentError && (
+                <p style={{ color: "red" }}>
+                  Vui lòng chọn hình thức thanh toán
+                </p>
+              )}{" "}
             </div>
             <div className="form-group">
               <label>Tiến hành đặt hàng</label>

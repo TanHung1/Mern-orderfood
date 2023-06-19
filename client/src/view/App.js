@@ -9,7 +9,6 @@ import RegisterComponent from "../view/RegisterComponent";
 import MyAccountEdit from "./MyAccountEdit";
 import PreviousOders from "../view/PreviousOrders";
 import CheckOut from "../view/CheckOut";
-import DishComponent from "../components/DishComponent";
 import ManageAccount from "../components/ManageAccount";
 import ManageFood from "../components/ManageFood";
 import EditFood from "../components/EditFood";
@@ -24,6 +23,7 @@ import Footer from "../view/Footer";
 import Nav from "../view/Nav";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { DetailProduct } from "./DetailProduct";
 
 function App() {
   return (
@@ -34,6 +34,7 @@ function App() {
           <Routes>
             <Route path="/" exact element={<HomeComponent />}></Route>
             <Route path="/menu" element={<MenuComponent />}></Route>
+            <Route path="/detail-product/:_id" element={<DetailProduct/>}></Route>
             <Route path="/about" element={<AboutComponent />}></Route>
             <Route path="/login" element={<LoginComponent />}>
               {" "}
@@ -52,7 +53,6 @@ function App() {
             <Route path="/checkout" element={<CheckOut />}>
               {" "}
             </Route>
-            <Route path="/dish/:id" element={<DishComponent />}></Route>
 
             <Route
               path="/admin/manage-account"

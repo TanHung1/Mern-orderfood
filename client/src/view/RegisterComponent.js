@@ -30,6 +30,13 @@ function RegisterComponent() {
         toast.success("Registered successfully.");
       })
       .catch((err) => {console.errolog(err);
+        let errorMessage;
+        if (err.response) {
+          errorMessage = err.response.data.error;
+        } else {
+          errorMessage = "Đăng ký thất bại. Vui lòng thử lại sau!";
+        }
+        setError(errorMessage);
       });
   };
 
@@ -84,7 +91,7 @@ function RegisterComponent() {
                   ]}
                 >
                   <Input placeholder="Số điện thoại của bạn" />
-                {error==="Số điện thoại đã tồn tại"? <Alert message={error} type="error" showIcon />:null}
+                  {error === "Số điện thoại đã tồn tại" ? (<Alert message={error} type="error" showIcon />) : null}
                 </Form.Item>
                 <Form.Item
                   name="email"
@@ -100,7 +107,8 @@ function RegisterComponent() {
                   ]}
                 >
                   <Input placeholder="Địa chỉ email của bạn" />
-                {error === "Email đã tồn tại"? <Alert message={error} type="error" showIcon />:null}
+                  {error === "Email đã tồn tại" ? (<Alert message={error} type="error" showIcon />) : null}
+
                 </Form.Item>
                 <Form.Item
                   name="password"
