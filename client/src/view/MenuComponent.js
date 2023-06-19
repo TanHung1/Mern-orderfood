@@ -6,10 +6,12 @@ import { Button, notification, message } from "antd";
 
 function MenuComponent() {
   const [data, setData] = useState([]);
+  console.log(data,'datax')
   const [cartItemCount, setCartItemCount] = useState(0);
   const [open, setOpen] = useState(false);
   console.log(cartItemCount, "count");
   const [selectedCategory, setSelectedCategory] = useState("");
+  console.log(selectedCategory,'4564551')
   // Thêm state cho "Hiển thị tất cả"
   const [showAll, setShowAll] = useState(false);
   const handleScrollToTop = () => {
@@ -33,6 +35,7 @@ function MenuComponent() {
       0
     );
     setCartItemCount(itemCount);
+    setSelectedCategory()
   }, []);
   const user = localStorage.getItem("token");
   console.log(user);
@@ -62,8 +65,9 @@ function MenuComponent() {
     const productsToRender = selectedCategory
       ? data?.products?.filter((item) => item.category === selectedCategory)
       : data?.products || [];
+      console.log(productsToRender,'sadasd ')
 
-    return productsToRender.map((item, index) => {
+    return productsToRender?.map((item, index) => {
       return (
         <div key={index}>
           <div class="card">

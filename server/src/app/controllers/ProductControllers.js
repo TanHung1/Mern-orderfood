@@ -37,22 +37,24 @@ class ProductController {
         name,
         rating,
         comment,
-      } = req.body;
+       } = req.body;
   
-      const product = await Product.findOne({_id: req.params.id });
+      const product = await Product.findById({_id: req.params.id });
   
       const newReview = {
         user_id: user_id,
         name: name,
-        rating: rating,
-        comment: comment,
+        rating: rating, 
+        comment: comment, 
         created: new Date(),
       };
   
       product.reviews.push(newReview);
       product.save();
   
-      res.status(200).json({message: 'oke'});
+      res.status(200).json({message: 'oke',
+      reviews: newReview
+    });
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Lỗi' });

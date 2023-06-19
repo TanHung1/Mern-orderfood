@@ -9,7 +9,7 @@ const { TextArea } = Input;
 
 const accessToken = localStorage.getItem("token");
 const dataUser = JSON.parse(accessToken);
-console.log(dataUser.user.username, 'dataUser');
+
 const token = {
   headers: {
     Authorization: `Bearer ${dataUser?.token}`,
@@ -20,20 +20,30 @@ const token = {
 export function DetailProduct() {
   const { _id } = useParams();
 
-  const [product, setProduct] = useState({});
+
+  const [product, setProduct] = useState([]);
   const [rating, setRating] = useState(1);
-  const [comment, setComment] = useState("");
+  const [comment, setComment] = useState();
 
-  useEffect (() => {
-    axios
+  const productAll = async () => {
+    const response = await axios
       .get(`http://localhost:5000/api/product/${_id}`)
-      .then((response) => {
-        setProduct(response.data.product);
-      })
-      .catch((err) => console.log(err));
-  }, [_id, rating]);
 
-  // console.log(product.review, 'review')
+    if (response?.data) {
+      setProduct(response?.data?.product)
+    }
+
+    console.log(response)
+
+    return response?.data
+  }
+
+  useEffect(() => {
+
+    productAll()
+  }, []);
+
+
 
   const handleAddToCart = (product) => {
     const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
@@ -47,22 +57,32 @@ export function DetailProduct() {
     localStorage.setItem("cart", JSON.stringify(cartItems));
   }
 
-  const handleRating = async () => {
+  const handleRating = async (event) => {
+    event.preventDefault();
     try {
       const response = await axios.post(`http://localhost:5000/api/product/detail-product/${_id}`, {
-      user_id: dataUser.user._id,
-      name: dataUser.user.username,
-      rating,
-      comment,
-    });
-    setRating(response)
-    message.success("Đánh giá thành công")
+        user_id: dataUser.user._id,
+        name: dataUser.user.username,
+        rating: rating,
+        comment: comment,
+      });
+      if (response?.data) {
+
+        message.success("Đánh giá thành công")
+       
+        await productAll()
+      
+
+      }
+ 
+      return response?.data
+
     } catch (error) {
-        message.error("Đánh giá thất bại")
+      message.error("Đánh giá thất bại")
     }
-    
+
   }
-  
+
   return (
     <>
       <div>Chi tiết sản phẩm</div>
@@ -79,44 +99,45 @@ export function DetailProduct() {
       </div>
 
       <div className="product-rating">
-        <h2>Đánh giá sản phẩm</h2>
+        <h2 style={{ color: 'black' }}>Đánh giá sản phẩm</h2>
 
         <div className="rating-list">
-          {product?.reviews?.map((review) => review.rating && review.comment && (
+          {product?.reviews?.map((review) =>
             <div key={review._id} className="rating-item">
               <p className="username">{review.name}</p>
               <Rate value={review.rating} disabled />
-              <p style={{fontSize: 12}}>{moment(review.created).format('DD-MM-YYYY HH:mm')}</p>
-              <p>{review.comment}</p>
-              <hr/>
+              <p style={{ fontSize: 12 }}>{moment(review.created).format('DD-MM-YYYY HH:mm')}</p>
+              <p>{review?.comment}</p>
+              <hr />
             </div>
-          ))}
+          )}
         </div>
 
       </div>
 
       <div className="my-rating">
-        <Form >
+        <form onSubmit={handleRating}>
           <Form.Item name="rating" label="Đánh giá của bạn">
-            <Rate value={rating} defaultValue={1} onChange={(ratingValue) => setRating(ratingValue)} />
+            <Rate defaultValue={rating} onChange={(ratingValue) => { setRating(ratingValue) }} />
           </Form.Item>
 
           <Form.Item name="comment" label="Bình luận của bạn">
-            <Input.TextArea
-              value={comment}
-              onChange={(e) => setComment(e.target?.value ?? '')}
+          <Input.TextArea
+            value={comment}
+              onChange={(e) => {setComment(e?.target?.value)}}
               rows={4}
               maxLength={100}
               placeholder="Nhập bình luận"
             />
+           
           </Form.Item>
 
           <Form.Item>
-            <Button onClick={handleRating} type="primary" htmlType="submit">
+            <button type="submit"  >
               Đánh giá
-            </Button>
+            </button>
           </Form.Item>
-        </Form>
+        </form>
       </div>
     </>
   );
