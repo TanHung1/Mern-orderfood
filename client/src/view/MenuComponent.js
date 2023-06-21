@@ -6,14 +6,12 @@ import { Button, notification, message } from "antd";
 
 function MenuComponent() {
   const [data, setData] = useState([]);
-  console.log(data,'datax')
   const [cartItemCount, setCartItemCount] = useState(0);
-  const [open, setOpen] = useState(false);
-  console.log(cartItemCount, "count");
-  const [selectedCategory, setSelectedCategory] = useState("");
-  console.log(selectedCategory,'4564551')
-  // Thêm state cho "Hiển thị tất cả"
   const [showAll, setShowAll] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const [sortType, setSortType] = useState("none");
+  const [selectedCategory, setSelectedCategory] = useState("");
+
   const handleScrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -23,7 +21,6 @@ function MenuComponent() {
       .then((response) => response.json())
       .then((data) => {
         setData(data);
-        console.log(data);
       })
       .catch((error) => {});
   }, []);
@@ -35,10 +32,9 @@ function MenuComponent() {
       0
     );
     setCartItemCount(itemCount);
-    setSelectedCategory()
+    setSelectedCategory();
   }, []);
-  const user = localStorage.getItem("token");
-  console.log(user);
+
   const handleAddToCart = (product) => {
     const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
     const index = cartItems.findIndex((item) => item._id === product._id);
@@ -55,44 +51,69 @@ function MenuComponent() {
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
   };
-  // Xử lý sự kiện "Hiển thị tất cả"
+
   const handleShowAllClick = () => {
     setSelectedCategory("");
     setShowAll(true);
   };
 
+  const handleSearchChange = (event) => {
+    setSearchValue(event.target.value);
+  };
+
+  const handleSearchSubmit = (event) => {
+    event.preventDefault();
+    setSelectedCategory("");
+    setShowAll(false);
+  };
+
   const renders = () => {
-    const productsToRender = selectedCategory
-      ? data?.products?.filter((item) => item.category === selectedCategory)
-      : data?.products || [];
-      console.log(productsToRender,'sadasd ')
+    let productsToRender = data?.products || [];
+
+    if (!showAll && selectedCategory) {
+      productsToRender = productsToRender.filter(
+        (item) => item.category === selectedCategory
+      );
+    }
+
+    if (searchValue) {
+      productsToRender = productsToRender.filter((item) =>
+        item.nameprod.toLowerCase().includes(searchValue.toLowerCase())
+      );
+    }
+
+    // if (sortType === "asc") {
+    //   productsToRender = productsToRender.sort((a, b) => a.price - b.price);
+    // } else if (sortType === "desc") {
+    //   productsToRender = productsToRender.sort((a, b) => b.price - a.price);
+    // }
 
     return productsToRender?.map((item, index) => {
       return (
         <div key={index}>
-          <div class="card">
+          <div className="card">
             <Link to={`/detail-product/${item._id}`}>
             <img
               style={{ width: "100%", height: 250 }}
-              class=""
+              className=""
               src={item.image}
               alt="Card image cap"
             />
             </Link>
-            <div class="card-body">
+            <div className="card-body">
               <Link to={`/detail-product/${item._id}`} style={{ textDecoration: 'none' }}>
-              <h5 class="card-title" style={{ fontSize: 15, width: "100%" }}>
+              <h5 className="card-title" style={{ fontSize: 15, width: "100%" }}>
                 {item.nameprod?.length > 10
                   ? `${item.nameprod?.slice(0, 35)}...`
                   : item.nameprod}
               </h5>
               </Link>
-              <p class="card-price">
+              <p className="card-price">
                 {item.price ? item.price.toLocaleString() : ""}&#8363;
               </p>
               <button
                 style={{ marginBottom: 20 }}
-                class="btn btn-primary"
+                className="btn btn-primary"
                 onClick={() => handleAddToCart(item)}
               >
                 Thêm vào giỏ hàng
@@ -103,9 +124,11 @@ function MenuComponent() {
       );
     });
   };
+
   return (
     <>
-      <h1 class="menu-header">Thực Đơn Món Ăn</h1>
+      <h1 className="menu-header">Thực Đơn Món Ăn</h1>
+
       <div className="category-buttons">
         <button
           className={selectedCategory === "" ? "active" : ""}
@@ -140,9 +163,30 @@ function MenuComponent() {
         </button>
       </div>
 
+      <form style= {{width: "25%", margin: "auto"}} onSubmit={handleSearchSubmit}>
+        <input
+          type="text"
+          placeholder="Tìm kiếm món ăn"
+          value={searchValue}
+          onChange={handleSearchChange}
+        />
+      </form>
+      {/* <div>
+        <label>Sắp xếp theo:</label>
+        <select
+          value={sortType}
+          onChange={(e) => setSortType(e.target.value)}
+        >
+          <option value="none">Không sắp xếp</option>
+          <option value="asc">Giá tăng dần</option>
+          <option value="desc">Giá giảm dần</option>
+        </select>
+      </div> */}
+
       <div>
         <div className="cards">{renders()}</div>
       </div>
+
       <button className="scroll-to-top" onClick={handleScrollToTop}>
         <i className="fa fa-arrow-up"></i>
       </button>

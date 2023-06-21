@@ -1,0 +1,134 @@
+// Style cho block chứa hình ảnh sản phẩm và thông tin sản phẩm
+.detail-product {
+    display: flex;
+    margin: 50px 20px 20px 20px;
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.1);
+    .block-left {
+      width: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      img {
+        max-height: 400px;
+        max-width: 400px;
+      }
+    }
+    .block-right {
+      width: 50%;
+      padding-left: 40px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      p.nameprod {
+        font-size: 32px;
+        font-weight: bold;
+        margin: 0;
+        color: #222222;
+        text-align: left;
+      }
+      p.price {
+        font-size: 24px;
+        font-weight: bold;
+        margin: 20px 0;
+        color: #f44336;
+        text-align: left;
+      }
+      button.btn-add-to-cart {
+        background-color: #f44336;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 15px;
+        font-size: 18px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        &:hover {
+          background-color: #d32f2f;
+        }
+      }
+    }
+  }
+  
+  // Style cho phần đánh giá sản phẩm
+  .product-rating {
+    margin: 20px;
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.1);
+    .rating-list {
+      margin-top: 20px;
+      .rating-item {
+        margin-bottom: 20px;
+        p.username {
+          font-weight: bold;
+          margin: 0;
+          color: #222222;
+          text-align: left;
+        }
+        p.comment {
+          font-size: 16px;
+          font-style: italic;
+          margin: 8px 0;
+          color: grey;
+          text-align: left;
+        }
+        hr {
+          border: none;
+          height: 1px;
+          background-color: #ddd;
+          margin: 10px 0;
+        }
+      }
+    }
+  }
+  
+  // Style cho phần đánh giá của người dùng
+  .my-rating {
+    margin: 20px;
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.1);
+    form {
+      .ant-form-item {
+        margin-bottom: 20px;
+        .ant-form-item-label {
+          text-align: left;
+          label {
+            font-weight: bold;
+            color: #222222;
+          }
+        }
+        .ant-form-item-control {
+          width: 100%;
+          .ant-rate {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 10px;
+          }
+          .ant-input {
+            border-radius: 5px;
+            border-color: #ddd;
+          }
+        }
+      }
+      button[type="submit"] {
+        background-color: #f44336;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 15px;
+        font-size: 18px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        &:hover {
+          background-color: #d32f2f;
+        }
+      }
+    }
+  }
+  

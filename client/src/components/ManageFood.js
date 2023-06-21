@@ -4,7 +4,7 @@ import axios from "axios";
 import "../styles/ManageFood.scss";
 import Footer from "../view/Footer";
 import { useForm,Controller,Control } from "react-hook-form"
-
+import { Table } from 'antd';
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import { api } from "../util/api";
@@ -16,6 +16,7 @@ const token = {
     "Content-Type": "application/json",
   },
 };
+
 
 function ManageFood() {
   const schema = yup
@@ -58,9 +59,6 @@ function ManageFood() {
     category: "",
   });
 
-  const hanleCount = () =>{
-    setCount(count+1000)
-  }
   useEffect(() => {
     axios
       .get(`${api}api/admin/get-all-products`, token)
@@ -126,6 +124,7 @@ function ManageFood() {
         });
     }
   }
+  
 
   return (
     <section className="">
@@ -176,7 +175,6 @@ function ManageFood() {
                       setInputData({ ...inputData, nameprod: e.target.value })
                     }
                   />
-                  <button onClick={hanleCount}>+</button>
                   <p style={{ color: 'red' }}>{errors.nameprod?.message}</p>                 
                   <div className="form-group">
                     <label
@@ -215,7 +213,6 @@ function ManageFood() {
                       {...register('price')}
                       placeholder="Nhập giá tiền"
                       id="exampleFormControlFile1"
-                      value={count}
                       onChange={(e) =>
                         setInputData({ ...inputData, price: e.target.value })
                       }

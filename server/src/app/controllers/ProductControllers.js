@@ -29,7 +29,7 @@ class ProductController {
       });
   }
 
-  //[post] api/product/detail-product/:id
+  //[post] api/product/create-review/:id
   createReviewProduct = async(req, res)=> {
     try {
       const {

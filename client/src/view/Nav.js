@@ -18,8 +18,7 @@ function Nav() {
   };
 
   useEffect(() => {
-    setCartItemCount(totalAmount());
-  }, [cartItemCount]);
+  });
 
   // useEffect(() => {
   //   if (location.pathname === "/my-account/edit") {
@@ -111,6 +110,7 @@ function Nav() {
             </li>
           )}
         </ul>
+       
         <form className="form-inline my-2 my-lg-0">
           <NavLink to="/cart" activeClassName="active">
             <i className="fa-solid fa-cart-shopping">

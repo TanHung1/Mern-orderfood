@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import moment from 'moment';
 import axios from "axios";
-import { Typography, message, Rate, Form, Input, Button } from "antd";
+import { Typography, message, Rate, Form, Input, Button, Modal, Image } from "antd";
 
 const { TextArea } = Input;
 
@@ -18,8 +18,9 @@ const token = {
 };
 
 export function DetailProduct() {
+  const [open, setOpen] = useState(false);
   const { _id } = useParams();
-
+  const navigate = useNavigate();
 
   const [product, setProduct] = useState([]);
   const [rating, setRating] = useState(1);
@@ -37,7 +38,16 @@ export function DetailProduct() {
 
     return response?.data
   }
+  const showModal = () => {
+    setOpen(true);
+  };
+  const handleCancel = () => {
+    setOpen(false);
+  };
 
+  const handleOk = () => {
+    navigate("/login");
+  };
   useEffect(() => {
 
     productAll()
@@ -60,21 +70,22 @@ export function DetailProduct() {
   const handleRating = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post(`http://localhost:5000/api/product/detail-product/${_id}`, {
+      if (!accessToken) {
+          showModal()
+          handleOk()
+          handleCancel()
+    
+      }
+      const response = await axios.post(`http://localhost:5000/api/product/create-review/${_id}`, {
         user_id: dataUser.user._id,
         name: dataUser.user.username,
         rating: rating,
         comment: comment,
-      });
+      }, token);
       if (response?.data) {
-
         message.success("Đánh giá thành công")
-       
         await productAll()
-      
-
       }
- 
       return response?.data
 
     } catch (error) {
@@ -88,16 +99,23 @@ export function DetailProduct() {
       <div>Chi tiết sản phẩm</div>
       <div className="detail-product">
         <div className="block-left">
-          <img src={product?.image}></img>
+          <Image src={product?.image}/>
         </div>
 
         <div className="block-right">
           <p className="nameprod">{product?.nameprod}</p>
-          <p className="price">{product?.price}</p>
+          <p className="category">{product?.category}</p>
+          <p className="price">{product?.price ? product?.price.toLocaleString() : ""}&#8363;</p>
           <button class="btn-add-to-cart" onClick={() => handleAddToCart(product)}>Thêm vào giỏ hàng</button>
         </div>
       </div>
-
+      <Modal
+          title="Bạn cần đăng nhập để đánh giá"
+          open={open}
+          onOk={handleOk}
+          onCancel={handleCancel}
+        >
+        </Modal>
       <div className="product-rating">
         <h2 style={{ color: 'black' }}>Đánh giá sản phẩm</h2>
 
@@ -122,14 +140,14 @@ export function DetailProduct() {
           </Form.Item>
 
           <Form.Item name="comment" label="Bình luận của bạn">
-          <Input.TextArea
-            value={comment}
-              onChange={(e) => {setComment(e?.target?.value)}}
+            <Input.TextArea
+              value={comment}
+              onChange={(e) => { setComment(e?.target?.value) }}
               rows={4}
               maxLength={100}
               placeholder="Nhập bình luận"
             />
-           
+
           </Form.Item>
 
           <Form.Item>
@@ -139,6 +157,7 @@ export function DetailProduct() {
           </Form.Item>
         </form>
       </div>
+
     </>
   );
 }
