@@ -41,7 +41,7 @@ function MenuComponent() {
     if (index !== -1) {
       message.warning("Đã có sản phẩm này trong giỏ hàng");
     } else {
-      message.success("Thêm sản phẩm thành công")
+      message.success("Thêm sản phẩm thành công");
       cartItems.push({ ...product, quantity: 1 });
     }
     localStorage.setItem("cart", JSON.stringify(cartItems));
@@ -50,6 +50,7 @@ function MenuComponent() {
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
+    setShowAll(false);
   };
 
   const handleShowAllClick = () => {
@@ -82,31 +83,37 @@ function MenuComponent() {
       );
     }
 
-    // if (sortType === "asc") {
-    //   productsToRender = productsToRender.sort((a, b) => a.price - b.price);
-    // } else if (sortType === "desc") {
-    //   productsToRender = productsToRender.sort((a, b) => b.price - a.price);
-    // }
+    if (sortType === "asc") {
+      productsToRender = productsToRender.sort((a, b) => a.price - b.price);
+    } else if (sortType === "desc") {
+      productsToRender = productsToRender.sort((a, b) => b.price - a.price);
+    }
 
     return productsToRender?.map((item, index) => {
       return (
         <div key={index}>
           <div className="card">
             <Link to={`/detail-product/${item._id}`}>
-            <img
-              style={{ width: "100%", height: 250 }}
-              className=""
-              src={item.image}
-              alt="Card image cap"
-            />
+              <img
+                style={{ width: "100%", height: 250 }}
+                className=""
+                src={item.image}
+                alt="Card image cap"
+              />
             </Link>
             <div className="card-body">
-              <Link to={`/detail-product/${item._id}`} style={{ textDecoration: 'none' }}>
-              <h5 className="card-title" style={{ fontSize: 15, width: "100%" }}>
-                {item.nameprod?.length > 10
-                  ? `${item.nameprod?.slice(0, 35)}...`
-                  : item.nameprod}
-              </h5>
+              <Link
+                to={`/detail-product/${item._id}`}
+                style={{ textDecoration: "none" }}
+              >
+                <h5
+                  className="card-title"
+                  style={{ fontSize: 15, width: "100%" }}
+                >
+                  {item.nameprod?.length > 10
+                    ? `${item.nameprod?.slice(0, 35)}...`
+                    : item.nameprod}
+                </h5>
               </Link>
               <p className="card-price">
                 {item.price ? item.price.toLocaleString() : ""}&#8363;
@@ -163,7 +170,10 @@ function MenuComponent() {
         </button>
       </div>
 
-      <form style= {{width: "25%", margin: "auto"}} onSubmit={handleSearchSubmit}>
+      <form
+        style={{ width: "25%", margin: "auto" }}
+        onSubmit={handleSearchSubmit}
+      >
         <input
           type="text"
           placeholder="Tìm kiếm món ăn"
@@ -171,18 +181,14 @@ function MenuComponent() {
           onChange={handleSearchChange}
         />
       </form>
-      {/* <div>
+      <div className="sort-price">
         <label>Sắp xếp theo:</label>
-        <select
-          value={sortType}
-          onChange={(e) => setSortType(e.target.value)}
-        >
+        <select value={sortType} onChange={(e) => setSortType(e.target.value)}>
           <option value="none">Không sắp xếp</option>
           <option value="asc">Giá tăng dần</option>
           <option value="desc">Giá giảm dần</option>
         </select>
-      </div> */}
-
+      </div>
       <div>
         <div className="cards">{renders()}</div>
       </div>

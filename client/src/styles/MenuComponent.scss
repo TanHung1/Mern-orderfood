@@ -36,7 +36,10 @@
   
 }
 
-
+.sort-price{
+  text-align: right;
+    margin-right: 100px;
+}
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));

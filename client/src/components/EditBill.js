@@ -4,9 +4,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Form, FormGroup, Label, Input, Button } from "reactstrap";
 import { message } from "antd";
 import "../styles/EditBill.scss";
-import { useForm } from "react-hook-form"
-import { yupResolver } from "@hookform/resolvers/yup"
-import * as yup from "yup"
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 const schema = yup
   .object({
@@ -29,7 +29,7 @@ const schema = yup
       .email("Định dạng email không hợp lệ")
       .required("Không được để trống email"),
   })
-  .required()
+  .required();
 
 const accessToken = localStorage.getItem("token");
 const dataUser = JSON.parse(accessToken);
@@ -47,7 +47,7 @@ function EditBill() {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
-  })
+  });
   const [order, setOrder] = useState(null);
   const [username, setUsername] = useState("");
   const [phonenumber, setPhoneNumber] = useState("");
@@ -101,39 +101,39 @@ function EditBill() {
   return (
     <div className="container mt-4">
       <h2 className="Edit-order">Cập nhật thông tin đơn hàng</h2>
-      <Form>
+      <Form onSubmit={handleUpdate}>
         <FormGroup>
           <Label>Tên khách hàng:</Label>
           <Input
             type="text"
+            disabled
             value={username}
             {...register("username")}
             onChange={(e) => setUsername(e.target.value)}
           />
-          <label style={{ color: 'red' }}>{errors.username?.message}</label>
-
+          <label style={{ color: "red" }}>{errors.username?.message}</label>
         </FormGroup>
         <FormGroup>
           <Label>Số điện thoại:</Label>
           <Input
             type="text"
+            disabled
             value={phonenumber}
             {...register("phonenumber")}
             onChange={(e) => setPhoneNumber(e.target.value)}
           />
-          <label style={{ color: 'red' }}>{errors.phonenumber?.message}</label>
-
+          <label style={{ color: "red" }}>{errors.phonenumber?.message}</label>
         </FormGroup>
         <FormGroup>
           <Label>Địa chỉ:</Label>
           <Input
             type="text"
             value={address}
+            disabled
             {...register("address")}
             onChange={(e) => setAddress(e.target.value)}
           />
-          <label style={{ color: 'red' }}>{errors.address?.message}</label>
-
+          <label style={{ color: "red" }}>{errors.address?.message}</label>
         </FormGroup>
         <FormGroup>
           <Label>Trạng thái:</Label>
@@ -145,11 +145,13 @@ function EditBill() {
             <option value="Chưa xác nhận">Chưa xác nhận</option>
             <option value="Đã xác nhận">Đã xác nhận</option>
             <option value="Đang giao">Đang giao</option>
-            <option value="Đã hoàn thành giao đơn hàng">Đã hoàn thành giao đơn hàng</option>
+            <option value="Đã hoàn thành giao đơn hàng">
+              Đã hoàn thành giao đơn hàng
+            </option>
             <option value="Đơn hàng bị hủy">Đơn hàng bị hủy</option>
           </Input>
         </FormGroup>
-        <Button onClick={handleSubmit(handleUpdate)} color="primary" type="submit" className="btn-editOrder">
+        <Button color="primary" type="submit" className="btn-editOrder">
           Lưu
         </Button>
       </Form>
