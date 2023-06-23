@@ -99,7 +99,7 @@ function TrashFood() {
 
                                                 onClick={() => handleRestore(d._id,d)}
                                             >
-                                                <i className="fa-solid fa-pen-to-square"></i>
+                                                <i className="fa-solid fa-trash-undo" style={{color: "#1dc931"}}></i>
                                             </button>
                                         </td>
                                         <td className="food-content">

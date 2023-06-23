@@ -134,7 +134,7 @@ function MenuComponent() {
           className={selectedCategory === "" ? "active" : ""}
           onClick={handleShowAllClick}
         >
-          All
+          Tất cả
         </button>
         <button
           className={selectedCategory === "pizza" ? "active" : ""}
@@ -147,19 +147,19 @@ function MenuComponent() {
           className={selectedCategory === "desserts" ? "active" : ""}
           onClick={() => handleCategoryClick("desserts")}
         >
-          Desserts
+          Tráng miệng
         </button>
         <button
           className={selectedCategory === "drink" ? "active" : ""}
           onClick={() => handleCategoryClick("drink")}
         >
-          Drink
+          Đồ uống
         </button>
         <button
           className={selectedCategory === "side" ? "active" : ""}
           onClick={() => handleCategoryClick("side")}
         >
-          Side
+          Đồ ăn kèm
         </button>
       </div>
 

@@ -5,9 +5,6 @@ const Schema = mongoose.Schema;
 
 const Account = new Schema(
   {
-    fullname: {
-      type: String,
-    },
 
     username: {
       type: String,
@@ -42,14 +39,6 @@ const Account = new Schema(
       type: String,
       enum: ["local", "google", "facebook"],
       default: "local",
-    },
-
-    sex: {
-      type: String,
-    },
-
-    dob: {
-      type: Date,
     },
 
     address: {

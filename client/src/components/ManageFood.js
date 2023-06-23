@@ -61,7 +61,7 @@ function ManageFood() {
 
   useEffect(() => {
     axios
-      .get(`${api}api/admin/get-all-products`, token)
+      .get(`http://localhost:5000/api/admin/get-all-products`, token)
       .then((res) => setData(res.data))
       .catch((err) => console.log(err));
   }, [deletedProduct, addedProduct]);
@@ -250,7 +250,7 @@ function ManageFood() {
             </div>
             <Link to="/admin/trash-food">
               <div className="trash-dish">
-                <button className="trash-dish-btn">Thùng rác ({data.deleteCount})</button>
+                <button  className="trash-dish-btn text-decoration-none btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i>({data.deleteCount})</button>
               </div>
             </Link>
             <table className="food-table">

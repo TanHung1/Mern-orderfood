@@ -17,7 +17,6 @@ const AuthenticationAccount = async (req, res, next) => {
     if (!user) {
       return res.status(403).json("Không tìm thấy người dùng");
     }
-
     req.user = user;
     next();
   } catch (error) {

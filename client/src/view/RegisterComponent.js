@@ -13,8 +13,9 @@ function RegisterComponent() {
   const [error, setError] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const navigate = useNavigate();
-
+  console.log(error, "loi");
   const handleSubmit = (values) => {
+    setError(null);
     const { username, password, email, phonenumber } = values;
 
     let regobj = { username, password, email, phonenumber };
@@ -36,7 +37,6 @@ function RegisterComponent() {
         } else {
           errorMessage = "Đăng ký thất bại. Vui lòng thử lại sau!";
         }
-        setError(errorMessage);
       });
   };
 
@@ -61,7 +61,7 @@ function RegisterComponent() {
           <div className="right-register">
             <div className="info-register">
               <h3 className="register-header">Đăng ký</h3>             
-              <Form onFinish={handleSubmit} validateTrigger="onSubmit">
+              <Form onFinish={handleSubmit} validateTrigger="onSubmit">              
                 <Form.Item
                   name="username"
                   rules={[
@@ -76,6 +76,7 @@ function RegisterComponent() {
                   ]}
                 >
                   <Input placeholder="Nhập họ và tên" />
+                  {error  ? (<Alert message={error} type="error" showIcon />) : null}
                 </Form.Item>
                 <Form.Item
                   name="phonenumber"
@@ -91,7 +92,6 @@ function RegisterComponent() {
                   ]}
                 >
                   <Input placeholder="Số điện thoại của bạn" />
-                  {error === "Số điện thoại đã tồn tại" ? (<Alert message={error} type="error" showIcon />) : null}
                 </Form.Item>
                 <Form.Item
                   name="email"
@@ -107,7 +107,6 @@ function RegisterComponent() {
                   ]}
                 >
                   <Input placeholder="Địa chỉ email của bạn" />
-                  {error === "Email đã tồn tại" ? (<Alert message={error} type="error" showIcon />) : null}
 
                 </Form.Item>
                 <Form.Item
