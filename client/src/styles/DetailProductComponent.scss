@@ -33,11 +33,10 @@
         font-size: 24px;
         font-weight: bold;
         margin: 20px 0;
-        color: #f44336;
         text-align: left;
       }
       button.btn-add-to-cart {
-        background-color: #f44336;
+        background-color: #ff6b6b;
         color: white;
         border: none;
         border-radius: 5px;
@@ -46,19 +45,21 @@
         cursor: pointer;
         transition: all 0.3s ease-in-out;
         &:hover {
-          background-color: #d32f2f;
+          background-color: #ff4e4e;
         }
       }
     }
   }
   
-  // Style cho phần đánh giá sản phẩm
   .product-rating {
     margin: 20px;
     background: white;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.1);
+    h2{
+      margin-top: 20px;
+    }
     .rating-list {
       margin-top: 20px;
       .rating-item {
@@ -86,7 +87,6 @@
     }
   }
   
-  // Style cho phần đánh giá của người dùng
   .my-rating {
     margin: 20px;
     background: white;

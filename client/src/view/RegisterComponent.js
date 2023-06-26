@@ -15,11 +15,11 @@ function RegisterComponent() {
   const navigate = useNavigate();
   console.log(error, "loi");
   const handleSubmit = (values) => {
-    setError(null);
+    
     const { username, password, email, phonenumber } = values;
 
     let regobj = { username, password, email, phonenumber };
-
+    setError(null);
     fetch("http://localhost:5000/api/account/register", {
       method: "POST",
       headers: { "content-type": "application/json" },
@@ -75,8 +75,7 @@ function RegisterComponent() {
                     },
                   ]}
                 >
-                  <Input placeholder="Nhập họ và tên" />
-                  {error  ? (<Alert message={error} type="error" showIcon />) : null}
+                  <Input placeholder="Nhập họ và tên" />        
                 </Form.Item>
                 <Form.Item
                   name="phonenumber"
@@ -92,6 +91,7 @@ function RegisterComponent() {
                   ]}
                 >
                   <Input placeholder="Số điện thoại của bạn" />
+                 
                 </Form.Item>
                 <Form.Item
                   name="email"

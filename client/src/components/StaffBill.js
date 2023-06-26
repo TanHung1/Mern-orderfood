@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import { Table, Tag, Popconfirm, message } from "antd";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { Table, Tag } from "antd";
+import { EditOutlined } from "@ant-design/icons";
 import "../styles/EditBill.scss";
 import moment from "moment";
 import "moment/locale/vi";
@@ -81,9 +81,9 @@ function StaffBill() {
         let color;
         switch (status) {
           case "Chưa xác nhận":
-            color = "orange";
+            color = "yellow";
             break;
-          case "Đã hoàn thành giao đơn hàng":
+          case "Đã hoàn thành":
             color = "green";
             break;
           case "Đang giao":

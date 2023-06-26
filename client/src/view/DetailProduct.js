@@ -31,7 +31,11 @@ export function DetailProduct() {
       .get(`http://localhost:5000/api/product/${_id}`)
 
     if (response?.data) {
-      setProduct(response?.data?.product)
+      const productData = response.data.product;
+      const sortedReviews = productData.reviews.sort((a, b) => {
+        return moment(b.created).diff(moment(a.created));
+      });
+      setProduct({ ...productData, reviews: sortedReviews });
     }
 
     console.log(response)
@@ -71,10 +75,10 @@ export function DetailProduct() {
     event.preventDefault();
     try {
       if (!accessToken) {
-          showModal()
-          handleOk()
-          handleCancel()
-    
+        showModal()
+        handleOk()
+        handleCancel()
+
       }
       const response = await axios.post(`http://localhost:5000/api/product/create-review/${_id}`, {
         user_id: dataUser.user._id,
@@ -99,7 +103,7 @@ export function DetailProduct() {
       <div>Chi tiết sản phẩm</div>
       <div className="detail-product">
         <div className="block-left">
-          <Image src={product?.image}/>
+          <Image src={product?.image} />
         </div>
 
         <div className="block-right">
@@ -110,29 +114,12 @@ export function DetailProduct() {
         </div>
       </div>
       <Modal
-          title="Bạn cần đăng nhập để đánh giá"
-          open={open}
-          onOk={handleOk}
-          onCancel={handleCancel}
-        >
-        </Modal>
-      <div className="product-rating">
-        <h2 style={{ color: 'black' }}>Đánh giá sản phẩm</h2>
-
-        <div className="rating-list">
-          {product?.reviews?.map((review) =>
-            <div key={review._id} className="rating-item">
-              <p className="username">{review.name}</p>
-              <Rate value={review.rating} disabled />
-              <p style={{ fontSize: 12 }}>{moment(review.created).format('DD-MM-YYYY HH:mm')}</p>
-              <p>{review?.comment}</p>
-              <hr />
-            </div>
-          )}
-        </div>
-
-      </div>
-
+        title="Bạn cần đăng nhập để đánh giá"
+        open={open}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+      </Modal>
       <div className="my-rating">
         <form onSubmit={handleRating}>
           <Form.Item name="rating" label="Đánh giá của bạn">
@@ -149,7 +136,6 @@ export function DetailProduct() {
             />
 
           </Form.Item>
-
           <Form.Item>
             <button type="submit"  >
               Đánh giá
@@ -158,6 +144,22 @@ export function DetailProduct() {
         </form>
       </div>
 
+      <div className="product-rating">
+        <h2 style={{ color: 'black' }}>Đánh giá sản phẩm</h2>
+
+        <div className="rating-list">
+          {product?.reviews?.map((review) =>
+            <div key={review._id} className="rating-item">
+              <p className="username">{review.name}</p>
+              <Rate value={review.rating} disabled />
+              <p style={{ fontSize: 12 }}>{moment(review.created).format('DD-MM-YYYY HH:mm')}</p>
+              <p>{review?.comment}</p>
+              <hr />
+            </div>
+          )}
+        </div>
+
+      </div>
     </>
   );
 }

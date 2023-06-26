@@ -83,7 +83,7 @@ const LoginComponent = () => {
                 >
                   <Input placeholder="Địa chỉ email hoặc số điện thoại của bạn" />
 
-                  {error==="Sai thông tin đăng nhập"? <Alert message={error} type="error" showIcon />:null}
+                  {error==="Email hoặc số điện thoại sai"? <label style={{ color: 'red' }}>{error}</label> :null}
                 </Form.Item>
 
                 
@@ -97,7 +97,7 @@ const LoginComponent = () => {
                   ]}
                 >
                   <Input.Password placeholder="Mật khẩu" />
-                  {error==="Sai mật khẩu"? <Alert message={error} type="error" showIcon />:null}
+                  {error==="Sai mật khẩu"? <label style={{ color: 'red' }}>{error}</label> :null}
                 </Form.Item>
                
                 <Button  htmlType="submit" className="submit">

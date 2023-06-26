@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../styles/CheckOut.scss";
-import { Modal, message } from "antd";
+import { Modal, message, Button, Result } from "antd";
 
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
@@ -117,6 +117,7 @@ const CheckOut = () => {
         token
       );
       message.success("Đặt hàng thành công")
+      
       setTimeout(message.destroy, 2500);
       setTimeout(() => {
         localStorage.removeItem("cart");
@@ -159,7 +160,16 @@ const CheckOut = () => {
     <div>
       <h2>Thông tin đơn hàng</h2>
       {cart.length === 0 ? (
-        <p>Đơn hàng của bạn đang trống</p>
+        <Result
+        status="success"
+        title="Đơn hàng của bạn đã thanh toán thành công"
+        subTitle="Sẽ có nhân viên gọi để để xác nhận lại đơn hàng"       
+        extra={[
+          <Link to={"/menu"}>
+            <Button key="buy">Tiếp tục mua</Button>,
+          </Link>
+        ]}
+      />
       ) : (
         <div className="checkout">
           <div className="checkout-info">
@@ -170,7 +180,6 @@ const CheckOut = () => {
                 type="text"
                 value={customerName}
                 {...register("username")}
-
                 onChange={(e) => setCustomerName(e.target.value)}
               />
               <label style={{ color: 'red' }}>{errors.username?.message}</label>

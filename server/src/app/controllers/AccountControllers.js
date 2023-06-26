@@ -57,7 +57,7 @@ class AccountControler {
     }
 
     if (!user) {
-      return res.status(403).json({ error: "Sai thông tin đăng nhập" });
+      return res.status(403).json({ error: "Email hoặc số điện thoại sai" });
     }
 
     const vallidPassword = await bcrypt.compare(

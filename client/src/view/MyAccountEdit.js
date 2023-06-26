@@ -211,16 +211,6 @@ function MyAccountEdit() {
           </div>
         </div>
       </div>
-      {/* <Modal
-        title="Cập nhật tài khoản thành công"
-        visible={modalVisible}
-        onOk={handleModalOk}
-        footer={[
-          <Button key="ok" type="primary" onClick={handleModalOk}>
-            OK
-          </Button>,
-        ]}
-      ></Modal> */}
     </section>
   );
 }

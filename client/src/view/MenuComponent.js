@@ -2,7 +2,7 @@ import "../styles/MenuComponent.scss";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Button, notification, message } from "antd";
+import { Button, notification, message, Space, Select } from "antd";
 
 function MenuComponent() {
   const [data, setData] = useState([]);
@@ -182,12 +182,31 @@ function MenuComponent() {
         />
       </form>
       <div className="sort-price">
-        <label>Sắp xếp theo:</label>
-        <select value={sortType} onChange={(e) => setSortType(e.target.value)}>
-          <option value="none">Không sắp xếp</option>
+        <label>Sắp xếp theo </label>
+        <Space>
+          <Select value={sortType} onChange={(e) => setSortType(e)}
+          options={[
+            {
+              value: 'none',
+              label: 'Không sắp xếp',
+            },
+            {
+              value: 'asc',
+              label: 'Giá tăng dần',
+            },
+            {
+              value: 'desc',
+              label: 'Giá giảm dần',
+            },
+            
+          ]}
+          />
+        </Space>
+        {/* <select value={sortType} onChange={(e) => setSortType(e.target.value)}>
+          <option value="">Không sắp xếp</option>
           <option value="asc">Giá tăng dần</option>
           <option value="desc">Giá giảm dần</option>
-        </select>
+        </select> */}
       </div>
       <div>
         <div className="cards">{renders()}</div>

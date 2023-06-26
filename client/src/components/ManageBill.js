@@ -40,9 +40,9 @@ function ManageBill() {
   const columns = [
     {
       title: "ID",
-      dataIndex: "id",
+      dataIndex: "_id",
       key: "_id",
-      render: (_id, record, index) => <span>{index + 1}</span>,
+      render: (_id, record, index) => <span>{_id}</span>,
     },
     {
       title: "Người đặt",
@@ -86,7 +86,7 @@ function ManageBill() {
         let color;
         switch (status) {
           case "Chưa xác nhận":
-            color = "orange";
+            color = "yellow";
             break;
           case "Đã xác nhận":
             color = "purple";
@@ -94,7 +94,7 @@ function ManageBill() {
           case "Đang giao":
             color = "blue";
             break;
-          case "Đã hoàn thành giao đơn hàng":
+          case "Đã hoàn thành":
             color = "green";
             break;
           case "Đơn hàng bị hủy":
@@ -114,12 +114,12 @@ function ManageBill() {
           <Link to={`/Admin/manage-bill/edit/${record._id}`}>
             <EditOutlined /> Sửa
           </Link>
-          <Popconfirm
+          {/* <Popconfirm
             title="Bạn có chắc muốn xóa đơn hàng này?"
             onConfirm={() => handleDelete(record._id)}
             okText="Đồng ý"
             cancelText="Hủy"
-          ></Popconfirm>
+          ></Popconfirm> */}
         </span>
       ),
     },

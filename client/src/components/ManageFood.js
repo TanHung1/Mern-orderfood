@@ -3,8 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/ManageFood.scss";
 import Footer from "../view/Footer";
-import { useForm,Controller,Control } from "react-hook-form"
-import { Table } from 'antd';
+import { useForm, Controller, Control } from "react-hook-form"
+import { Button, Table, message, Popconfirm } from 'antd';
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import { api } from "../util/api";
@@ -43,11 +45,11 @@ function ManageFood() {
     image: "",
     category: "",
   });
-
+  const [visible, setVisible] = useState(false);
   const [image, setImage] = useState(null);
   const [error, setError] = useState(null);
   const [data, setData] = useState([]);
-  const [count,setCount] = useState(1000)
+  const [count, setCount] = useState(1000)
   const [dialogActive, setDialogActive] = useState(false);
   const navigate = useNavigate();
   const [deletedProduct, setDeletedProduct] = useState(null);
@@ -58,6 +60,8 @@ function ManageFood() {
     image: "",
     category: "",
   });
+
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     axios
@@ -77,22 +81,21 @@ function ManageFood() {
         setInputData((prevState) => ({ ...prevState, image: reader.result }));
         setImage(reader.result);
       };
-    }else{
+    } else {
       setImage(error)
     }
   };
   const handleAddFood = (event) => {
-  
+
     axios
       .post("http://localhost:5000/api/admin/create-product", inputData, token)
       .then((res) => {
-        alert("Thêm món ăn thành công");
+        message.success("Thêm món ăn thành công")
         navigate("/admin/manage-food");
         setAddedProduct(res.data._id);
       })
-      .catch((err) => {
-        console.log(err);
-        alert("Thêm món ăn thất bại");
+      .catch((err) => {       
+        message.error("Xóa thất bại")
       });
   };
 
@@ -112,19 +115,110 @@ function ManageFood() {
     });
   };
 
-  function handleDelete(_id) {
-    const confirm = window.confirm("Bạn có muốn xóa?");
-    if (confirm) {
-      axios
-        .delete(`http://localhost:5000/api/admin/delete-product/${_id}`, token)
-        .then((res) => {
-          alert(" Xóa thành công");
-          console.log(_id);
-          setDeletedProduct(_id);
-        });
+  const handleCancel = () => {
+    setOpen(false);
+  };
+
+  const handleDelete = async (_id) => {
+    setOpen(true);
+    try {
+      const response = await axios.delete(`http://localhost:5000/api/admin/delete-product/${_id}`, token);
+      if (response === "oke") {
+        message.success("Xóa thành công");
+      }
+      setDeletedProduct(_id);
+
+    } catch (error) {
+      message.error("Xóa thất bại");
     }
-  }
-  
+  };
+  const columns = [
+    {
+      title: 'ID',
+      dataIndex: '_id',
+      key: '_id',
+      width: "10%",
+      align: "center",
+      render: (_id) => <span>{_id}</span>,
+
+    },
+    {
+      title: 'Tên món',
+      dataIndex: 'nameprod',
+      key: 'nameprod',
+      width: "40%",
+      align: "center",
+      render: (nameprod) => <span>{nameprod}</span>
+    },
+    {
+      title: 'Hình',
+      dataIndex: 'image',
+      key: 'image',
+      width: "20%",
+      align: "center",
+      render: (image) => <img style={{ maxWidth: 100 }} src={image}></img>
+    },
+    {
+      title: 'Giá',
+      dataIndex: 'price',
+      key: 'price',
+      align: "center",
+      defaultSortOrder: 'descend',
+      sorter: (a, b) => a.price - b.price,
+      render: (price) => <span>{price}</span>
+    },
+    {
+      title: 'Loại',
+      dataIndex: 'category',
+      key: 'category',
+      align: "center",
+      filters: [
+        {
+          text: 'pizza',
+          value: 'pizza',
+        },
+        {
+          text: 'drink',
+          value: 'drink',
+        },
+        {
+          text: 'desserts',
+          value: 'desserts',
+        },
+        {
+          text: 'side',
+          value: 'side',
+        }
+      ],
+      onFilter: (value, record) => record.category.indexOf(value) === 0,
+      render: (category) => <span>{category}</span>
+    },
+    {
+      title: 'Lựa chọn',
+      key: 'action',
+      align: "center",
+      render: (record) => (
+        <span>
+          <Link to={`/admin/edit-food/${record._id}`}>
+            <EditOutlined /> Sửa
+          </Link>
+          <Popconfirm
+            placement="top"
+            title="Lưu ý"
+            description="Bạn vẫn tiếp tục muốn xóa?"
+            onConfirm={() => handleDelete(record._id)}
+            visible={open}
+            onCancel={handleCancel}
+          >
+            <Button style={{ marginLeft: 10 }} type="primary" danger>
+              <DeleteOutlined />
+            </Button>
+          </Popconfirm>
+
+        </span>
+      )
+    }
+  ]
 
   return (
     <section className="">
@@ -140,6 +234,12 @@ function ManageFood() {
               >
                 Thêm món ăn
               </a>
+
+            </div>
+            <div className="trash-dish">
+              <Link to="/admin/trash-food">
+                <button className="trash-dish-btn text-decoration-none btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i>({data.deleteCount})</button>
+              </Link>
             </div>
 
             <div
@@ -175,7 +275,7 @@ function ManageFood() {
                       setInputData({ ...inputData, nameprod: e.target.value })
                     }
                   />
-                  <p style={{ color: 'red' }}>{errors.nameprod?.message}</p>                 
+                  <p style={{ color: 'red' }}>{errors.nameprod?.message}</p>
                   <div className="form-group">
                     <label
                       htmlFor="exampleFormControlFile1"
@@ -198,10 +298,10 @@ function ManageFood() {
                         className="preview-image"
                       />
                     )}
-                   {!error? <p style={{ color: 'red' }}>Chưa có hình ảnh</p> :null}
+                    {!error ? <p style={{ color: 'red' }}>Chưa có hình ảnh</p> : null}
                   </div>
                   <div className="form-group">
-              <label
+                    <label
                       htmlFor="exampleFormControlSelect2"
                       className="text-lable"
                     >
@@ -240,7 +340,7 @@ function ManageFood() {
                       <option>side</option>
                     </select>
                   </div>
-                    <p style={{ color: 'red' }}>{errors.category==="Loại".message}</p>
+                  <p style={{ color: 'red' }}>{errors.category === "Loại".message}</p>
 
                   <button type="submit" className="btn btn-primary">
                     Thêm món
@@ -248,60 +348,13 @@ function ManageFood() {
                 </form>
               </div>
             </div>
-            <Link to="/admin/trash-food">
-              <div className="trash-dish">
-                <button  className="trash-dish-btn text-decoration-none btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i>({data.deleteCount})</button>
-              </div>
-            </Link>
-            <table className="food-table">
-              <thead>
-                <tr>
-                  <th className="food-header">Mã Món</th>
-                  <th className="food-header">Tên món</th>
-                  <th className="food-header">Hình ảnh</th>
-                  <th className="food-header">Giá</th>
-                  <th className="food-header">Loại</th>
-                  <th className="food-header">Chỉnh sửa</th>
-                  <th className="food-header">Xóa</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data.products?.map((d, i) => (
-                  <tr key={i}>
-                    <td className="food-content">{i + 1}</td>
-                    <td className="food-content">{d.nameprod}</td>
-                    <td className="food-content">
-                      <img
-                        src={d.image}
-                        className="img-manageFood"
-                        alt="food"
-                      />
-                    </td>
-                    <td className="food-content">
-                      {d.price && d.price.toLocaleString()}&#8363;
-                    </td>
-                    <td className="food-content">{d.category}</td>
-                    <td className="food-content">
-                      <Link
-                        className="text-decoration-none btn btn-sm btn-success"
-                        to={`/admin/edit-food/${d._id}`}
-                        onClick={() => console.log(d)}
-                      >
-                        <i className="fa-solid fa-pen-to-square"></i>
-                      </Link>
-                    </td>
-                    <td className="food-content">
-                      <button
-                        className="text-decoration-none btn btn-sm btn-danger"
-                        onClick={(e) => handleDelete(d._id)}
-                      >
-                        <i className="fa-solid fa-trash"></i>{" "}
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+
+            <Table
+              columns={columns}
+              dataSource={data.products}
+              bordered
+            >
+            </Table>
           </div>
         </div>
       </div>

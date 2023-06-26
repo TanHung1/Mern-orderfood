@@ -145,8 +145,8 @@ function EditBill() {
             <option value="Chưa xác nhận">Chưa xác nhận</option>
             <option value="Đã xác nhận">Đã xác nhận</option>
             <option value="Đang giao">Đang giao</option>
-            <option value="Đã hoàn thành giao đơn hàng">
-              Đã hoàn thành giao đơn hàng
+            <option value="Đã hoàn thành">
+              Đã hoàn thành
             </option>
             <option value="Đơn hàng bị hủy">Đơn hàng bị hủy</option>
           </Input>
