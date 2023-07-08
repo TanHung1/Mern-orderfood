@@ -13,13 +13,12 @@ const Account = new Schema(
 
     phonenumber: {
       type: String,
-      unique: true,
+  
     },
 
     email: {
       type: String,
-      require: true,
-      unique: true,
+
     },
 
     password: {

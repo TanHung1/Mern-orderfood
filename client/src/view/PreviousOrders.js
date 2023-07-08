@@ -3,8 +3,6 @@ import axios from "axios";
 import { Table, Tag } from "antd";
 import { NavLink, Link } from "react-router-dom";
 import moment from "moment";
-import "moment/locale/vi"; // Nếu muốn hiển thị ngôn ngữ tiếng Việt, có thể import locale này
-const { Column } = Table;
 
 const PreviousOrders = ({ customerId }) => {
   const [orders, setOrders] = useState([]);
@@ -14,7 +12,7 @@ const PreviousOrders = ({ customerId }) => {
   const dataUser = JSON.parse(accessToken);
   const userId = dataUser?.user?._id;
 
-  const token = {
+  const token = { 
     headers: {
       Authorization: `Bearer ${dataUser?.token}`,
       "Content-Type": "application/json",
@@ -70,7 +68,7 @@ const PreviousOrders = ({ customerId }) => {
       width: "40%",
       align: "center",
       render: (product) =>
-        product.map((p) => <div key={p._id}>- {p.nameprod}</div>)
+        product.map((p) => <div key={p._id}>{p.nameprod}</div>)
 
     },
     {
@@ -88,16 +86,14 @@ const PreviousOrders = ({ customerId }) => {
       key: "createdAt",
       width: "10%",
       align: "center",
-      defaultSortOrder:'descend',
-      defaultFilteredValue:[moment().subtract(1, 'month'), moment()],
-      sorter: (a, b) => moment(a.createdAt).valueOf() - moment(b.createdAt).valueOf(),
+      defaultSortOrder:'ascend',
+      sorter: (a, b) => moment(b.createdAt).diff(moment(a.createdAt)),
       render: (createdAt) => <span>{moment(createdAt).format("DD-MM-YYYY HH: mm")}</span>
     },
     {
       title: "Trạng thái",
       dataIndex: "status",
       align: "center",
-
       key: "status",
       filters: [
         {
@@ -113,8 +109,8 @@ const PreviousOrders = ({ customerId }) => {
           value: 'Đang giao',
         },
         {
-          text: 'Đã giao',
-          value: 'Đã giao',
+          text: 'Đã hoàn thành',
+          value: 'Đã hoàn thành',
         },
         {
           text: 'Đơn hàng bị hủy',
@@ -125,6 +121,9 @@ const PreviousOrders = ({ customerId }) => {
       render: (status) => {
         let color;
         switch (status) {
+          case "Đã hoàn thành":
+            color = "green";
+            break;
           case "Chưa xác nhận":
             color = "yellow";
             break;
@@ -133,9 +132,6 @@ const PreviousOrders = ({ customerId }) => {
             break;
           case "Đang giao":
             color = "blue";
-            break;
-          case "Đã giao":
-            color = "green";
             break;
           case "Đơn hàng bị hủy":
             color = "red";
@@ -146,64 +142,14 @@ const PreviousOrders = ({ customerId }) => {
         return <Tag color={color}>{status}</Tag>;
       }
     }
+    
   ]
 
 return (
   <div>
     <h2 className="list-order">Danh sách đơn hàng</h2>
-    {/* <Link to={"/my-account/edit"} style={{ width: "100%" }}>
-        Trở về
-      </Link>
-      <Table dataSource={orders} rowKey="_id">
-        <Column title="Mã đơn hàng" dataIndex="_id" key="_id" />
-        <Column
-          title="Thông tin đơn hàng"
-          dataIndex="product"
-          render={(product) =>
-            product.map((p) => <div key={p._id}>- {p.nameprod}</div>)
-          }
-        />
-        <Column
-          title="Tổng tiền"
-          dataIndex="totalPrice"
-          key="totalPrice"
-          render={(text) => <span>{Number(text).toLocaleString()}&#8363;</span>}
-        />
-        <Column title="Địa chỉ" dataIndex="address" key="address" />
-        <Column
-          title="Ngày đặt hàng"
-          dataIndex="createdAt"
-          key="createdAt"
-          render={(createdAt) => moment(createdAt).format("DD/MM/YYYY HH: mm")}
-        />
-        <Column
-          title="Trạng thái"
-          dataIndex="status"
-          key="status"
-          
-          render={(status) => {
-            let color;
-            switch (status) {
-              case "Chưa xác nhận":
-                color = "orange";
-                break;
-              case "Đã xác nhận":
-                color = "green";
-                break;
-              case "Đang giao":
-                color = "blue";
-                break;
-              case "Đã giao":
-                color = "purple";
-                break;
-              default:
-                color = "gray";
-            }
-            return <Tag color={color}>{status}</Tag>;
-          }}
-        />
-      </Table> */}
     <Table
+      style={{margin: '0px 20px'}}
       columns={columns}
       dataSource={orders}
       bordered

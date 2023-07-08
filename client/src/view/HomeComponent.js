@@ -14,7 +14,7 @@ import Test from "../components/test";
 
 function HomeComponent() {
   const handleScrollToTop = () => {
-    window.scrollTo({ top: 1000, behavior: "smooth" });
+    window.scrollTo({ top: 1100, behavior: "smooth" });
   };
 
   return (

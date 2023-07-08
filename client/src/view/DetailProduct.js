@@ -78,7 +78,6 @@ export function DetailProduct() {
         showModal()
         handleOk()
         handleCancel()
-
       }
       const response = await axios.post(`http://localhost:5000/api/product/create-review/${_id}`, {
         user_id: dataUser.user._id,
@@ -154,7 +153,7 @@ export function DetailProduct() {
               <Rate value={review.rating} disabled />
               <p style={{ fontSize: 12 }}>{moment(review.created).format('DD-MM-YYYY HH:mm')}</p>
               <p>{review?.comment}</p>
-              <hr />
+              <hr/>
             </div>
           )}
         </div>

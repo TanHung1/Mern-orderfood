@@ -201,12 +201,7 @@ function MenuComponent() {
             
           ]}
           />
-        </Space>
-        {/* <select value={sortType} onChange={(e) => setSortType(e.target.value)}>
-          <option value="">Không sắp xếp</option>
-          <option value="asc">Giá tăng dần</option>
-          <option value="desc">Giá giảm dần</option>
-        </select> */}
+        </Space>       
       </div>
       <div>
         <div className="cards">{renders()}</div>

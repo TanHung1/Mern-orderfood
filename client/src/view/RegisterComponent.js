@@ -1,11 +1,12 @@
 import React from "react";
 import "../styles/RegisterComponent.scss";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, Router, redirect, useNavigate } from "react-router-dom";
 import f6 from "../assets/f6.png";
 import { toast } from "react-toastify";
-import { Form, Input, Button, Alert, Modal } from "antd";
+import { Form, Input, Button, message, Alert, notification } from "antd";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import axios from "axios";
 
 
 function RegisterComponent() {
@@ -13,43 +14,28 @@ function RegisterComponent() {
   const [error, setError] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const navigate = useNavigate();
-  console.log(error, "loi");
-  const handleSubmit = (values) => {
-    
+  const handleSubmit = async (values) => {
+
     const { username, password, email, phonenumber } = values;
 
-    let regobj = { username, password, email, phonenumber };
+    const data = {
+      username:username,
+      password:password,
+      email:email,
+      phonenumber:phonenumber
+    }
     setError(null);
-    fetch("http://localhost:5000/api/account/register", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(regobj),
-    })
-      .then((res) => {
-        setSuccess(true);
-        setModalVisible(true);
-        toast.success("Registered successfully.");
-      })
-      .catch((err) => {console.errolog(err);
-        let errorMessage;
-        if (err.response) {
-          errorMessage = err.response.data.error;
-        } else {
-          errorMessage = "Đăng ký thất bại. Vui lòng thử lại sau!";
-        }
-      });
+    try {
+      const response = await axios .post("http://localhost:5000/api/account/register",data)
+      console.log(response, 'message')
+      setSuccess(true);
+      message.success("Đăng ký thành công")
+      navigate("/login")
+    } catch (error) {
+      console.log(error.response?.data?.error)
+      notification.error({ message: error.response?.data?.error})
+    }
   };
-
-  const handleModalOk = () => {
-    setModalVisible(false);
-    navigate("/login");
-  };
-
-  const handleModalCancel = () => {
-    setModalVisible(false);
-    navigate("/register");
-  };
-
   return (
     <div>
       <section className="register">
@@ -60,8 +46,8 @@ function RegisterComponent() {
           </div>
           <div className="right-register">
             <div className="info-register">
-              <h3 className="register-header">Đăng ký</h3>             
-              <Form onFinish={handleSubmit} validateTrigger="onSubmit">              
+              <h3 className="register-header">Đăng ký</h3>
+              <Form onFinish={handleSubmit} validateTrigger="onSubmit">
                 <Form.Item
                   name="username"
                   rules={[
@@ -75,7 +61,7 @@ function RegisterComponent() {
                     },
                   ]}
                 >
-                  <Input placeholder="Nhập họ và tên" />        
+                  <Input placeholder="Nhập họ và tên" />
                 </Form.Item>
                 <Form.Item
                   name="phonenumber"
@@ -91,7 +77,7 @@ function RegisterComponent() {
                   ]}
                 >
                   <Input placeholder="Số điện thoại của bạn" />
-                 
+                  {/* {error === "Số điện thoại đã tồn tại" ? <label style={{ color: 'red' }}>{error}</label> : null} */}
                 </Form.Item>
                 <Form.Item
                   name="email"
@@ -107,7 +93,7 @@ function RegisterComponent() {
                   ]}
                 >
                   <Input placeholder="Địa chỉ email của bạn" />
-
+                  {error === "Email đã tồn tại" ? <label style={{ color: 'red' }}>{error}</label> : null}
                 </Form.Item>
                 <Form.Item
                   name="password"
@@ -148,15 +134,6 @@ function RegisterComponent() {
           </div>
         </div>
       </section>
-      {/* <Modal
-        title="Đăng ký thành công"
-        visible={modalVisible}
-        onOk={handleModalOk}
-        onCancel={handleModalCancel}
-      >
-        <p>Tài khoản của bạn đã được đăng ký thành công.</p>
-        <p>Vui lòng đăng nhập để tiếp tục sử dụng.</p>
-      </Modal> */}
     </div>
   );
 }

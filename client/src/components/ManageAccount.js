@@ -14,32 +14,28 @@ const token = {
 };
 
 function ManageAccount() {
-  const [customers, setCustomers] = useState([]);
+  const [accounts, setaccounts] = useState([]);
 
   useEffect(() => {
     axios
       .get("http://localhost:5000/api/admin/all-accounts", token)
       .then((response) => {
-        setCustomers(response.data);
+        setaccounts(response.data);
       })
       .catch((error) => {
         console.error(error);
       });
   }, []);
 
-  const handleClick = (_id) => {
-    console.log(_id);
-  };
-
   const columns = [
     {
       title: "ID",
-      dataIndex: "id",
+      dataIndex: "_id",
       key: "_id",
-      render: (_id, record, index) => <span>{index + 1}</span>,
+      render: (_id, record, index) => <span>{_id}</span>,
     },
     {
-      title: "Username",
+      title: "Tên tài khoản",
       dataIndex: "username",
       key: "username",
     },
@@ -49,26 +45,26 @@ function ManageAccount() {
       key: "email",
     },
     {
-      title: "Phone number",
+      title: "Số điện thoại",
       dataIndex: "phonenumber",
       key: "phonenumber",
     },
     {
-      title: "Address",
+      title: "Địa chỉ",
       dataIndex: "address",
       key: "address",
     },
     {
-      title: "Role",
+      title: "Vị trí",
       dataIndex: "role",
       key: "role",
     },
     {
-      title: "Actions",
+      title: "Lựa chọn",
       key: "actions",
       render: (text, record) => (
         <Link to={`/admin/Edit-account/${record._id}`}>
-          <Button type="primary">Edit</Button>
+          <Button type="primary">Sửa</Button>
         </Link>
       ),
     },
@@ -77,7 +73,7 @@ function ManageAccount() {
   return (
     <div>
       <h1 className="h1_listAccount">Danh sách tài khoản</h1>
-      <Table dataSource={customers} columns={columns} />
+      <Table style={{margin: "0 px 20px"}} dataSource={accounts} columns={columns} />
     </div>
   );
 }

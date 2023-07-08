@@ -16,9 +16,9 @@ const createProduct = async (req, res) => {
     });
     await product.save();
     res.status(200).send(product);
-  } catch (err) {
-    res.status(500).json(err);
-    console.log(err);
+  } catch (error) {
+    res.status(500).json(error);
+    console.log(error);
   }
 };
 
@@ -33,55 +33,68 @@ const getAllProducts = async (req, res, next) => {
       deleteCount,
       products: mutipleMongooseToObject(products),
     });
-  } catch (err) {
-    res.status(401).json(err);
+  } catch (error) {
+    res.status(401).json(error);
   }
 }
 
 // [get] /api/admin/trash-products
-const trashProducts = (req, res) => {
-  Product.findDeleted({})
-    .then((products) =>
-      res.json({
-        products: mutipleMongooseToObject(products),
-      })
-    )
-    .catch((err) => res.status(401).json(err));
+const trashProducts = async (req, res) => {
+  try {
+    const products = await Product.findDeleted({})
+    res.status(200).json({
+      products: mutipleMongooseToObject(products)
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(401).json({ message: "error" })
+  }
+
 }
 
 // [put] api/admin/update-product/:id
-const updateProduct = (req, res) => {
-  Product.updateOne({ _id: req.params.id }, req.body)
-    .then(() => res.status(200).json({ messages: "success" }))
-    .catch((err) => res.status(500).json(err));
+const updateProduct = async (req, res) => {
+  try {
+    await Product.updateOne({ _id: req.params.id }, req.body)
+    res.status(200).json({ message: "success" })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: "error" })
+  }
 }
 
 // [delete] /admin/delete-product/:id
-const deleteProduct = (req, res) => {
-  Product.delete({ _id: req.params.id })
-    .then(res.status(200).send("oke"))
-    .catch((err) => res.status(500).json(err));
+const deleteProduct = async (req, res) => {
+  try {
+    await Product.delete({ _id: req.params.id })
+    res.status(200).json({ message: "success" })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: "error" })
+  }
 }
 
 // [patch] /admim/restore-product/:id
-const restoreProduct = (req, res, next) => {
-  Product.restore({ _id: req.params.id })
-    .then((trash) => res.status(200).json({
-      success: "ok",
-      data: trash
-    }))
-    .catch((err) => {
-      console.log(err)
+const restoreProduct = async (req, res, next) => {
+  try {
+    await Product.restore({ _id: req.params.id })
+    res.status(200).json({ success: "success" })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json(error)
 
-      res.status(500).json(err)
-    });
+  }
 }
 
 // [delete] api/admin/forcedelete-product/:id
-const forcedeleteProduct = (req, res, next) => {
-  Product.deleteOne({ _id: req.params.id })
-    .then(res.status(200).send("oke"))
-    .catch((err) => res.status(500).json(err));
+const forcedeleteProduct = async (req, res, next) => {
+  try {
+    await Product.deleteOne({ _id: req.params.id })
+    res.status(200).json({ message: "success" })
+
+  } catch (error) {
+    res.status(500).json({ message: "error" })
+  }
 }
 
 //--------------Account-----------
@@ -107,10 +120,14 @@ const getAccountById = async (req, res) => {
   }
 };
 // [put] /api/admin/update-account/:id
-const updateAccount = (req, res) => {
-  User.updateOne({ _id: req.params.id }, req.body)
-    .then(() => res.status(200).json({ messages: "success" }))
-    .catch((err) => res.status(500).json(err));
+const updateAccount = async (req, res) => {
+  try {
+    await User.updateOne({ _id: req.params.id }, req.body)
+    res.status(200).json({ messages: "success" })
+
+  } catch (error) {
+    res.status(500).json(error)
+  }
 }
 
 //---------Order--------
@@ -120,17 +137,28 @@ const getAllOrders = async (req, res) => {
   try {
     const orders = await Order.find();
     let totalAmount = 0;
+    let totalAmountByDay = {}
     orders.forEach((order) => {
       totalAmount += order.totalPrice;
+
+      const date = new Date(order.createdAt).toLocaleDateString();
+
+      if (totalAmountByDay[date]) {
+        totalAmountByDay[date] += order.totalPrice;
+      } else {
+        totalAmountByDay[date] = order.totalPrice;
+      }
+
     });
 
     res.status(200).json({
       orders: mutipleMongooseToObject(orders),
       totalAmount,
+      totalAmountByDay
     });
   } catch (error) {
-    res.status(500).json(error);
     console.log(error);
+    res.status(500).json(error);
   }
 };
 // [get] /api/admin/order/:id
@@ -145,93 +173,99 @@ const getOrderById = async (req, res) => {
   }
 };
 // [put] api/admin/order/update-order/:id
-const updateOrder = (req, res) => {
-  Order.updateOne({ _id: req.params.id }, req.body)
-    .then(() => res.status(200).json({ messages: "success" }))
-    .catch((err) => res.status(500).json(err));
-},
+const updateOrder = async (req, res) => {
+  try {
+    await Order.updateOne({_id: req.params.id}, req.body);
+    res.status(200).json({success: "Success"})
+  } catch (error) {
+    console.log(error)
+    res.status(403).json({message:"error"})
+  }
+};
 
-  // [put] /api/admin/update-status-order/:id
-  updateStatusOrder = async (req, res) => {
-    try {
-      const order = await Order.findById(req.params.id);
+// [put] /api/admin/update-status-order/:id
+const updateStatusOrder = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
 
-      if (!order) {
-        return res.status(404).send("Không tìm thấy đơn hàng này!");
-      }
-
-      const { status } = req.body;
-
-      if (
-        status === "Chưa xác nhận" ||
-        status === "Đã xác nhận" ||
-        status === "Đang giao" ||
-        status === "Đã hoàn thành giao đơn hàng" ||
-        status === "Đơn hàng bị hủy"
-      ) {
-        order.status = status;
-
-        if (status === "Đã xác nhận") {
-          order.status = "Đã xác nhận";
-        }
-
-        if (status === "Đang giao") {
-          order.status = "Đang giao";
-          order.shippingDate = Date.now();
-        }
-
-        if (status === "Đã hoàn thành giao đơn hàng") {
-          order.status = "Đã hoàn thành giao đơn hàng";
-          order.deliveredDate = Date.now();
-        }
-
-        if (status === "Đơn hàng bị hủy") {
-          order.status = "Đơn hàng bị hủy";
-        }
-
-        await order.save();
-
-        return res
-          .status(200)
-          .json({ message: "Cập nhật trạng thái đơn hàng thành công!" });
-      } else {
-        return res.status(400).send("Trạng thái không hợp lệ!");
-      }
-    } catch (err) {
-      console.error(err);
-      return res.status(500).send("Lỗi máy chủ!");
+    if (!order) {
+      return res.status(404).send("Không tìm thấy đơn hàng này!");
     }
-  };
+
+    const { status } = req.body;
+
+    if (
+      status === "Chưa xác nhận" ||
+      status === "Đã xác nhận" ||
+      status === "Đang giao" ||
+      status === "Đã hoàn thành" ||
+      status === "Đơn hàng bị hủy"
+    ) {
+      order.status = status;
+
+      if (status === "Đã xác nhận") {
+        order.status = "Đã xác nhận";
+      }
+
+      if (status === "Đang giao") {
+        order.status = "Đang giao";
+        order.shippingDate = Date.now();
+      }
+
+      if (status === "Đã hoàn thành") {
+        order.status = "Đã hoàn thành";
+        order.deliveredDate = Date.now();
+      }
+
+      if (status === "Đơn hàng bị hủy") {
+        order.status = "Đơn hàng bị hủy";
+      }
+
+      await order.save();
+
+      return res
+        .status(200)
+        .json({ message: "Cập nhật trạng thái đơn hàng thành công!" });
+    } else {
+      return res.status(400).send("Trạng thái không hợp lệ!");
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send("Lỗi máy chủ!");
+  }
+};
 // [get] api/admin/trash-orders/
-const trashOrders = (req, res) => {
-  Order.findDeleted({})
-    .then((orders) =>
+const trashOrders = async (req, res) => {
+  try {
+    const orders = await Order.findDeleted({})
       res.json({
-        orders: mutipleMongooseToObject(orders),
-      })
-    )
-    .catch((err) => res.status(500).json(err));
+          orders: mutipleMongooseToObject(orders),
+        })     
+    
+  } catch (error) {
+    res.status(500).json(error)    
+  }
 }
 
 // [delete] api/admin/delete-order/:id
 const deleteOrder = (req, res) => {
   Order.delete({ _id: req.params.id })
     .then(() => res.status(200).json({ messages: "success" }))
-    .catch((err) => res.status(500).json(err));
+    .catch((error) => res.status(500).json(error));
 }
 
 // [patch] api/admin/restore-order/:id
 const restoreOrder = (res, req) => {
   Order.restore({ _id: req.params.id })
     .then(() => res.status(200).json({ messages: "success" }))
-    .catch((err) => res.status(500).json(err));
+    .catch((error) => res.status(500).json(error));
 }
 
 // [delete] api/admin/forcedelete-order/:id
 const forcedeleteOrder = (req, res) => {
   Customer.deleteOne({ _id: req.params.id })
     .then(() => res.status(200).json({ messages: "success" }))
-    .catch((err) => res.status(500).json(err));
+    .catch((error) => res.status(500).json(error));
 }
 module.exports = {
   updateStatusOrder,
