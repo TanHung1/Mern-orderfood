@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Table, Button } from "antd";
 import { Link } from "react-router-dom";
+import {EditOutlined} from "@ant-design/icons"
 import "../styles/ManageAccount.scss";
 
 const accessToken = localStorage.getItem("token");
@@ -64,7 +65,7 @@ function ManageAccount() {
       key: "actions",
       render: (text, record) => (
         <Link to={`/admin/Edit-account/${record._id}`}>
-          <Button type="primary">Sửa</Button>
+          <Button type="primary"><EditOutlined /></Button>
         </Link>
       ),
     },

@@ -247,26 +247,6 @@ const trashOrders = async (req, res) => {
   }
 }
 
-// [delete] api/admin/delete-order/:id
-const deleteOrder = (req, res) => {
-  Order.delete({ _id: req.params.id })
-    .then(() => res.status(200).json({ messages: "success" }))
-    .catch((error) => res.status(500).json(error));
-}
-
-// [patch] api/admin/restore-order/:id
-const restoreOrder = (res, req) => {
-  Order.restore({ _id: req.params.id })
-    .then(() => res.status(200).json({ messages: "success" }))
-    .catch((error) => res.status(500).json(error));
-}
-
-// [delete] api/admin/forcedelete-order/:id
-const forcedeleteOrder = (req, res) => {
-  Customer.deleteOne({ _id: req.params.id })
-    .then(() => res.status(200).json({ messages: "success" }))
-    .catch((error) => res.status(500).json(error));
-}
 module.exports = {
   updateStatusOrder,
   createProduct,
@@ -283,8 +263,5 @@ module.exports = {
   getOrderById,
   updateOrder,
   trashOrders,
-  deleteOrder,
-  restoreOrder,
-  forcedeleteOrder,
 }
 

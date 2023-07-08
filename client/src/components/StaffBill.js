@@ -20,11 +20,11 @@ function StaffBill() {
   const [order, setOrder] = useState(null);
   const navigate = useNavigate();
 
-  const result = async () =>{
-    const ressponse =  await  axios
-    .get("http://localhost:5000/api/staff//all-orders", token)
-    .then((res) => setData(res.data))
-    .catch((err) => console.log(err));
+  const result = async () => {
+    const ressponse = await axios
+      .get("http://localhost:5000/api/staff/all-orders", token)
+      .then((res) => setData(res.data))
+      .catch((err) => console.log(err));
 
     return ressponse?.data
   }
@@ -48,7 +48,7 @@ function StaffBill() {
       title: "Ngày đặt",
       dataIndex: "createdAt",
       key: "createdAt",
-      defaultSortOrder:'ascend',
+      defaultSortOrder: 'ascend',
       render: (createdAt) => moment(createdAt).format("DD/MM/YYYY HH: mm"),
     },
     {
@@ -93,6 +93,9 @@ function StaffBill() {
           case "Đã xác nhận":
             color = "purple";
             break;
+          case "Đơn hàng bị hủy":
+            color = "red";
+            break;
           default:
             color = "gray";
         }
@@ -105,7 +108,7 @@ function StaffBill() {
       render: (text, record) => (
         <span>
           <Link to={`/Staff/manage-bill/edit/${record._id}`}>
-          <Button type="primary">Sửa</Button>
+            <Button type="primary">Sửa</Button>
           </Link>
         </span>
       ),
@@ -115,7 +118,7 @@ function StaffBill() {
   return (
     <div className="container mt-4">
       <h2 className="managebill">Danh sách các hóa đơn</h2>
-     <Table columns={columns} dataSource={data.orders} rowKey="_id" />
+      <Table columns={columns} dataSource={data.orders} rowKey="_id" />
     </div>
   );
 }

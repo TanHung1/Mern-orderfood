@@ -143,7 +143,7 @@ function ManageBill() {
       render: (text, record) => (
         <span>
           <Link to={`/Admin/manage-bill/edit/${record._id}`}>
-            <Button type="primary">Sửa</Button>
+            <Button type="primary"><EditOutlined /></Button>
           </Link>
         </span>
       ),

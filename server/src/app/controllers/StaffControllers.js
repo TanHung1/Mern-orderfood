@@ -55,68 +55,6 @@ class StaffController {
       return res.status(500).send("Lỗi máy chủ!");
     }
   };
-
-  //[get] /api/staff/all-orders
-
-  // total amount datetime
-  // getAllOrders = async (req, res) => {
-  //     try {
-  //         const { date } = req.query;
-
-  //         let query;
-  //         let startDay;
-  //         let endDay;
-
-  //         if (date) {
-  //             const dayDate = parseInt(moment(date).format("D"));
-  //             const monthDate = parseInt(moment(date).format("M"));
-  //             const yearDate = parseInt(moment(date).format("YYYY"));
-
-  //             startDay = moment([yearDate, monthDate - 1, dayDate]).utc().startOf("day").toDate();
-  //             endDay = moment([yearDate, monthDate - 1, dayDate]).utc().endOf("day").toDate();
-
-  //             query = {
-  //                 updatedAt: {
-  //                     $gte: startDay,
-  //                     $lte: endDay,
-  //                 }
-  //             }
-  //         } else {
-  //             query = {}
-  //         }
-
-  //         const orders = await Order.find(query);
-  //         let totalAmount = 0;
-  //         orders.forEach((order) => {
-  //             totalAmount += order.totalPrice;
-  //         })
-
-  //         res.status(200).json({
-  //             orders: mutipleMongooseToObject(orders),
-  //             totalAmount,
-  //         })
-  //     } catch (error) {
-  //         res.status(500).json(error)
-  //         console.log(error)
-  //     }
-  // };
-  // getAllOrders = async (req, res) => {
-  //   try {
-  //     const orders = await Order.find();
-  //     let totalAmount = 0;
-  //     orders.forEach((order) => {
-  //       totalAmount += order.totalPrice;
-  //     });
-
-  //     res.status(200).json({
-  //       orders: mutipleMongooseToObject(orders),
-  //       totalAmount,
-  //     });
-  //   } catch (error) {
-  //     res.status(500).json(error);
-  //     console.log(error);
-  //   }
-  // };
 }
 
 module.exports = new StaffController();
