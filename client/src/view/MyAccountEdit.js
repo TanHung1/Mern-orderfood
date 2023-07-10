@@ -5,9 +5,9 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
 import { Modal, Button, message } from "antd";
-import { useForm } from "react-hook-form"
-import { yupResolver } from "@hookform/resolvers/yup"
-import * as yup from "yup"
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 const schema = yup
   .object({
@@ -30,7 +30,7 @@ const schema = yup
       .email("Định dạng email không hợp lệ")
       .required("Không được để trống email"),
   })
-  .required()
+  .required();
 
 function MyAccountEdit() {
   const {
@@ -39,7 +39,7 @@ function MyAccountEdit() {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
-  })
+  });
 
   const [customerName, setCustomerName] = useState("");
   const [FullName, setFullName] = useState("");
@@ -102,7 +102,7 @@ function MyAccountEdit() {
         JSON.stringify({ user: updatedUser, token: dataUser?.token })
       );
       setFullName(customerName);
-      message.success("Cập nhật thành công")
+      message.success("Cập nhật thành công");
     } catch (error) {
       console.error(error);
       message.error("Cập nhật thông tin thất bại. Vui lòng thử lại.");
@@ -148,7 +148,7 @@ function MyAccountEdit() {
         <div className="right-history">
           <div className="previous-oders-right">
             <h3>THÔNG TIN CÁ NHÂN</h3>
-            <form>
+            <form onSubmit={handleUpdate}>
               <div class="form-group">
                 <label for="exampleInputEmail1">Họ và tên</label>
                 <input
@@ -160,7 +160,9 @@ function MyAccountEdit() {
                   {...register("username")}
                   onChange={(e) => setCustomerName(e.target.value)}
                 />
-                <label style={{ color: 'red' }}>{errors.username?.message}</label>
+                <label style={{ color: "red" }}>
+                  {errors.username?.message}
+                </label>
               </div>
               <div class="form-group">
                 <label for="exampleInputEmail1">Địa chỉ giao hàng</label>
@@ -174,7 +176,7 @@ function MyAccountEdit() {
                   onChange={(e) => setCustomerAddress(e.target.value)}
                 />
               </div>
-              <label style={{ color: 'red' }}>{errors.address?.message}</label>
+              <label style={{ color: "red" }}>{errors.address?.message}</label>
               <div class="form-group">
                 <label for="exampleInputEmail1">Số điện thoại</label>
                 <input
@@ -186,8 +188,9 @@ function MyAccountEdit() {
                   {...register("phonenumber")}
                   onChange={(e) => setCustomerPhone(e.target.value)}
                 />
-                <label style={{ color: 'red' }}>{errors.phonenumber?.message}</label>
-
+                <label style={{ color: "red" }}>
+                  {errors.phonenumber?.message}
+                </label>
               </div>
 
               <div class="form-group">
@@ -201,10 +204,13 @@ function MyAccountEdit() {
                   {...register("email")}
                   onChange={(e) => setCustomerEmail(e.target.value)}
                 />
-                <label style={{ color: 'red' }}>{errors.email?.message}</label>
-
+                <label style={{ color: "red" }}>{errors.email?.message}</label>
               </div>
-              <button onClick={handleSubmit(handleUpdate)} type="submit" class="btn btn-primary">
+              <button
+                //onClick={handleSubmit(handleUpdate)}
+                type="submit"
+                class="btn btn-primary"
+              >
                 Cập nhật
               </button>
             </form>
