@@ -45,7 +45,6 @@ function ManageFood() {
     image: "",
     category: "",
   });
-  const [visible, setVisible] = useState(false);
   const [image, setImage] = useState(null);
   const [error, setError] = useState(null);
   const [data, setData] = useState([]);
@@ -64,10 +63,14 @@ function ManageFood() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:5000/api/admin/get-all-products`, token)
-      .then((res) => setData(res.data))
-      .catch((err) => console.log(err));
+         
+      axios
+        .get(`http://localhost:5000/api/admin/get-all-products`, token)
+       .then((res)=>{
+        setData(res.data)
+       }) 
+    .catch ((error) =>
+      console.log(error));      
   }, [deletedProduct, addedProduct]);
 
   const handleImageChange = (event) => {
@@ -95,7 +98,7 @@ function ManageFood() {
         setAddedProduct(res.data._id);
       })
       .catch((err) => {       
-        message.error("Xóa thất bại")
+        message.error("Thêm thất bại")
       });
   };
 
@@ -123,7 +126,7 @@ function ManageFood() {
     setOpen(true);
     try {
       const response = await axios.delete(`http://localhost:5000/api/admin/delete-product/${_id}`, token);
-      if (response === "oke") {
+      if (response) {
         message.success("Xóa thành công");
       }
       setDeletedProduct(_id);
@@ -200,7 +203,7 @@ function ManageFood() {
       render: (record) => (
         <span>
           <Link to={`/admin/edit-food/${record._id}`}>
-            <EditOutlined /> Sửa
+          <Button type="primary">Sửa</Button>
           </Link>
           <Popconfirm
             placement="top"
@@ -225,7 +228,7 @@ function ManageFood() {
       <div className="account-food-content">
         <div className="right-history">
           <div className="admin-right">
-            <h3 className="list-food">DANH SÁCH MÓN ĂN</h3>
+            <h3 className="list-food" style={{textAlign: "center"}}>DANH SÁCH MÓN ĂN</h3>
             <div className="add-dish">
               <a
                 className="dialog-btn"

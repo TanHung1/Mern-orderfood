@@ -16,9 +16,6 @@ router.delete("/forcedelete-product/:id", AuthenticationAccount, checkRole('admi
 router.get("/get-all-orders", AuthenticationAccount, checkRole('admin'), getAllOrders);
 router.get("/order/:id", AuthenticationAccount, checkRole('admin'), getOrderById);
 router.put("/update-order/:id", AuthenticationAccount, checkRole('admin'), updateStatusOrder);
-router.delete("/delete-order/:id", AuthenticationAccount, checkRole('admin'), deleteOrder);
-router.patch("c", AuthenticationAccount, checkRole('admin'), restoreOrder);
-router.delete("/forcedelete-order/:id", AuthenticationAccount, checkRole('admin'), forcedeleteOrder);
 
 //Account
 router.get("/all-accounts", AuthenticationAccount, checkRole('admin'), getAllAccounts);

@@ -18,6 +18,7 @@ import StaffBill from "../components/StaffBill";
 import ManageBill from "../components/ManageBill";
 import EditBill from "../components/EditBill";
 import StaffEditBill from "../components/StaffEditBill";
+import Thongke from "../components/Thongke";
 import Footer from "../view/Footer";
 
 import Nav from "../view/Nav";
@@ -34,7 +35,10 @@ function App() {
           <Routes>
             <Route path="/" exact element={<HomeComponent />}></Route>
             <Route path="/menu" element={<MenuComponent />}></Route>
-            <Route path="/detail-product/:_id" element={<DetailProduct/>}></Route>
+            <Route
+              path="/detail-product/:_id"
+              element={<DetailProduct />}
+            ></Route>
             <Route path="/about" element={<AboutComponent />}></Route>
             <Route path="/login" element={<LoginComponent />}>
               {" "}
@@ -69,10 +73,16 @@ function App() {
             <Route path="/Staff/manage-bill" element={<StaffBill />}>
               {" "}
             </Route>
-            <Route path="/Staff/manage-bill/edit/:_id" element={<StaffEditBill />}>
+            <Route
+              path="/Staff/manage-bill/edit/:_id"
+              element={<StaffEditBill />}
+            >
               {" "}
             </Route>
             <Route path="/Admin/manage-bill" element={<ManageBill />}>
+              {" "}
+            </Route>
+            <Route path="/Admin/thongke" element={<Thongke />}>
               {" "}
             </Route>
             <Route path="/Admin/manage-bill/edit/:_id" element={<EditBill />}>

@@ -72,7 +72,7 @@ function MyAccountEdit() {
     window.location.pathname = "/login";
   };
 
-  const handleUpdate = async (e) => {
+  const handleUpdate = async () => {
     // e.preventDefault();
     try {
       const response = await axios.put(
@@ -102,16 +102,13 @@ function MyAccountEdit() {
         JSON.stringify({ user: updatedUser, token: dataUser?.token })
       );
       setFullName(customerName);
+
       message.success("Cập nhật thành công");
     } catch (error) {
       console.error(error);
       message.error("Cập nhật thông tin thất bại. Vui lòng thử lại.");
     }
   };
-
-  // const handleModalOk = () => {
-  //   setModalVisible(false);
-  // };
 
   return (
     <section className="my-account-wrapper">
@@ -148,7 +145,7 @@ function MyAccountEdit() {
         <div className="right-history">
           <div className="previous-oders-right">
             <h3>THÔNG TIN CÁ NHÂN</h3>
-            <form onSubmit={handleUpdate}>
+            <form>
               <div class="form-group">
                 <label for="exampleInputEmail1">Họ và tên</label>
                 <input
@@ -207,7 +204,7 @@ function MyAccountEdit() {
                 <label style={{ color: "red" }}>{errors.email?.message}</label>
               </div>
               <button
-                //onClick={handleSubmit(handleUpdate)}
+                onClick={handleSubmit(handleUpdate)}
                 type="submit"
                 class="btn btn-primary"
               >

@@ -5,7 +5,6 @@ const {
 const Order = require("../models/Order");
 const mongoose = require("mongoose");
 
-class OrderController {
   //[post] /api/order/neworder
   newOrder = async (req, res) => {
     try {
@@ -61,5 +60,8 @@ class OrderController {
       console.log(error);
     }
   };
-}
-module.exports = new OrderController();
+
+module.exports = {
+  newOrder,
+  myOrder,
+};

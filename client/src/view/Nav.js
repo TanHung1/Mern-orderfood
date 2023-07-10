@@ -17,8 +17,7 @@ function Nav() {
     }, 0);
   };
 
-  useEffect(() => {
-  });
+  useEffect(() => {});
 
   // useEffect(() => {
   //   if (location.pathname === "/my-account/edit") {
@@ -106,11 +105,16 @@ function Nav() {
                     Quản lý tài khoản
                   </NavLink>
                 </li>
+                <li>
+                  <NavLink className="dropdown-item" to="/admin/Thongke">
+                    Thống kê doanh thu
+                  </NavLink>
+                </li>
               </ul>
             </li>
           )}
         </ul>
-       
+
         <form className="form-inline my-2 my-lg-0">
           <NavLink to="/cart" activeClassName="active">
             <i className="fa-solid fa-cart-shopping">

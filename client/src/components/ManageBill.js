@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import { Table, Tag, Popconfirm, message } from "antd";
+import { Table, Tag, Popconfirm, message, Button } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import "../styles/EditBill.scss";
 import moment from "moment";
@@ -15,16 +15,17 @@ const token = {
   },
 };
 
-
 function ManageBill() {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
 
-  useEffect(() => {
+  useEffect((res) => {
     axios
       .get("http://localhost:5000/api/admin/get-all-orders", token)
-      .then((res) => setData(res.data))
-      .catch((err) => console.log(err));
+      .then((res) => {
+        setData(res.data);
+      })
+      .catch((error) => console.log(error));
   }, []);
 
   const handleDelete = (_id) => {
@@ -53,6 +54,8 @@ function ManageBill() {
       title: "Ngày đặt",
       dataIndex: "createdAt",
       key: "createdAt",
+      defaultSortOrder: "ascend",
+      sorter: (a, b) => moment(b.createdAt).diff(moment(a.createdAt)),
       render: (createdAt) => moment(createdAt).format("DD/MM/YYYY HH: mm"),
     },
     {
@@ -62,7 +65,7 @@ function ManageBill() {
       render: (product) => (
         <>
           {product.map((p) => (
-            <div key={p._id}>- {p.nameprod}</div>
+            <div key={p._id}>{p.nameprod}</div>
           ))}
         </>
       ),
@@ -82,6 +85,29 @@ function ManageBill() {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
+      filters: [
+        {
+          text: "Chưa xác nhận",
+          value: "Chưa xác nhận",
+        },
+        {
+          text: "Đã xác nhận",
+          value: "Đã xác nhận",
+        },
+        {
+          text: "Đang giao",
+          value: "Đang giao",
+        },
+        {
+          text: "Đã hoàn thành",
+          value: "Đã hoàn thành",
+        },
+        {
+          text: "Đơn hàng bị hủy",
+          value: "Đơn hàng bị hủy",
+        },
+      ],
+      onFilter: (value, record) => record.status.indexOf(value) === 0,
       render: (status) => {
         let color;
         switch (status) {
@@ -112,14 +138,10 @@ function ManageBill() {
       render: (text, record) => (
         <span>
           <Link to={`/Admin/manage-bill/edit/${record._id}`}>
-            <EditOutlined /> Sửa
+            <Button type="primary">
+              <EditOutlined />
+            </Button>
           </Link>
-          {/* <Popconfirm
-            title="Bạn có chắc muốn xóa đơn hàng này?"
-            onConfirm={() => handleDelete(record._id)}
-            okText="Đồng ý"
-            cancelText="Hủy"
-          ></Popconfirm> */}
         </span>
       ),
     },

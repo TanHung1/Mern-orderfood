@@ -1,11 +1,12 @@
 const express = require("express");
-const AccountControllers = require("../app/controllers/AccountControllers");
 const router = express.Router();
 const passport = require("passport");
 const { AuthenticationAccount, checkRole } = require("../app/middleware/Authentication");
+const { checkvalidata } = require("../app/middleware/check");
+const { register, login, updateAccount } = require("../app/controllers/AccountControllers");
 
-router.post("/register", AccountControllers.register);
-router.post("/login", AccountControllers.login);
+router.post("/register", register);
+router.post("/login", login);
 // router.post(
 //   "/auth/google",
 //   passport.authenticate("google-plus-token"),
@@ -14,7 +15,7 @@ router.post("/login", AccountControllers.login);
 router.put(
   "/:id/update-account",
   AuthenticationAccount,
-  AccountControllers.updateAccount
+  updateAccount
 );
 
 module.exports = router;

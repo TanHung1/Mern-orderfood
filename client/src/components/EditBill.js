@@ -89,7 +89,7 @@ function EditBill() {
       .then((res) => {
         console.log(res.data);
         message.success("Cập nhật thông tin đơn hàng thành công!");
-        navigate("/Staff/manage-bill");
+        navigate("/admin/manage-bill");
       })
       .catch((err) => console.log(err));
   };
@@ -145,9 +145,7 @@ function EditBill() {
             <option value="Chưa xác nhận">Chưa xác nhận</option>
             <option value="Đã xác nhận">Đã xác nhận</option>
             <option value="Đang giao">Đang giao</option>
-            <option value="Đã hoàn thành">
-              Đã hoàn thành
-            </option>
+            <option value="Đã hoàn thành">Đã hoàn thành</option>
             <option value="Đơn hàng bị hủy">Đơn hàng bị hủy</option>
           </Input>
         </FormGroup>
