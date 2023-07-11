@@ -16,9 +16,8 @@ const token = {
 
 function ThongKe() {
   const [data, setData] = useState([]);
-  const navigate = useNavigate();
 
-  useEffect((res) => {
+  useEffect(() => {
     axios
       .get("http://localhost:5000/api/admin/get-all-orders", token)
       .then((res) => {
@@ -27,16 +26,24 @@ function ThongKe() {
       .catch((error) => console.log(error));
   }, []);
 
-  const completedOrders = data.orders?.filter(
-    (order) => order.status === "Đã hoàn thành"
-  );
-  console.log("completedOrders:", completedOrders);
-  const chartData =
-    completedOrders?.map((order) => ({
-      date: moment(order.createdAt).format("DD/MM/YYYY"),
-      totalPrice: order.totalPrice,
-    })) || [];
-  console.log("du lieu:", chartData);
+  const completedOrders =
+    data.orders?.filter((order) => order.status === "Đã hoàn thành") || [];
+
+  const chartData = completedOrders?.reduce((result, order) => {
+    const date = moment(order.createdAt).format("DD/MM/YYYY");
+    const existingData = result.find((data) => data.date === date);
+
+    if (existingData) {
+      existingData.totalPrice += order.totalPrice;
+    } else {
+      result.push({
+        date: date,
+        totalPrice: order.totalPrice,
+      });
+    }
+
+    return result;
+  }, []);
 
   const chartConfig = {
     data: chartData,
