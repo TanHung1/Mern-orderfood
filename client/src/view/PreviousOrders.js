@@ -19,12 +19,6 @@ const PreviousOrders = ({ customerId }) => {
     },
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("cart");
-    window.location.pathname = "/login";
-  };
-
   useEffect(() => {
     if (accessToken) {
       setCustomerName(dataUser.user?.username);
