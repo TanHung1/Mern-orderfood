@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import axios from "axios";
 import f6 from "../assets/f6.png";
 import { Form, Input, Button, Modal, Alert, message } from "antd";
+import OAuth2Login from 'react-simple-oauth2-login';
 import about from "../assets/about-img.png";
-import { NavLink, useRoutes,useNavigate } from "react-router-dom";
+import { NavLink, useRoutes, useNavigate } from "react-router-dom";
 import { notification } from "antd";
 
 import "../styles/LoginComponent.scss";
@@ -23,7 +24,7 @@ const LoginComponent = () => {
   const handleSubmit = async (values) => {
 
     setError(null);
-   
+
 
     try {
       const response = await axios.post(
@@ -32,30 +33,41 @@ const LoginComponent = () => {
       );
 
       localStorage.setItem("token", JSON.stringify(response.data));
-        if(response?.data){ 
-          message.success("Đăng nhập thành công")            
-          setTimeout(()=>{     
-             
-            window.location.replace("/")
-          },500)
-        }
-      setSuccess(true);
-    } catch (error) {console.log(error,'tk')
+      if (response?.data) {
+        message.success("Đăng nhập thành công")
+        setTimeout(() => {
+
+          window.location.replace("/")
+        }, 500)
+      }
+    } catch (error) {
       if (error.response.data.error) {
         setError(error.response.data.error)
       }
     }
   };
 
-  const handleOk = () => {
-    setSuccess(false);
-    navigate("/");
-  };
+  const onSuccess = async (res) => {
+    const token = res.access_token
+    const result = await fetch(`https://graph.facebook.com/me?fields=id,name,picture.type(large)&access_token=${token}`)
+    const profile = await result.json()
+    const {id, name} = profile
+    const avatar = profile.picture.data.url
+    const response = await axios.post("http://localhost:5000/api/account/login/facebook",{
+      id, name, avatar
+    })
+    localStorage.setItem("token", JSON.stringify(response.data));
+    if (response?.data) {
+      message.success("Đăng nhập thành công")
+      setTimeout(() => {
+        window.location.replace("/")
+      }, 500)
+    }
+  }
 
-  // const handleCancel = () => {
-  //   setSuccess(false);
-  //   navigate("/login");
-  // };
+  const onFailure = (res) => {
+
+  }
 
   return (
     <div>
@@ -68,7 +80,7 @@ const LoginComponent = () => {
           <div className="right-login">
             <div className="info-login">
               <h3 className="login-header">Đăng nhập</h3>
-             
+
               <Form onFinish={handleSubmit} validateTrigger="onSubmit">
                 <Form.Item
                   name="identifier"
@@ -78,15 +90,15 @@ const LoginComponent = () => {
                       message: "Vui lòng nhập tài khoản!",
                     },
                   ]}
-                  // validateStatus={error ? "error" : ""}
-                  // errorMessage={error ? error : ""}
+                // validateStatus={error ? "error" : ""}
+                // errorMessage={error ? error : ""}
                 >
                   <Input placeholder="Địa chỉ email hoặc số điện thoại của bạn" />
 
-                  {error==="Email hoặc số điện thoại sai"? <label style={{ color: 'red' }}>{error}</label> :null}
+                  {error === "Email hoặc số điện thoại sai" ? <label style={{ color: 'red' }}>{error}</label> : null}
                 </Form.Item>
 
-                
+
                 <Form.Item
                   name="password"
                   rules={[
@@ -97,19 +109,25 @@ const LoginComponent = () => {
                   ]}
                 >
                   <Input.Password placeholder="Mật khẩu" />
-                  {error==="Sai mật khẩu"? <label style={{ color: 'red' }}>{error}</label> :null}
+                  {error === "Sai mật khẩu" ? <label style={{ color: 'red' }}>{error}</label> : null}
                 </Form.Item>
-               
-                <Button  htmlType="submit" className="submit">
+
+                <Button htmlType="submit" className="submit">
                   Đăng nhập
                 </Button>
               </Form>
               <hr />
               <h6>Hoặc đăng nhập với</h6>
-              <button className="login-facebook">
-                <i className="fa-brands fa-facebook"></i> Đăng nhập bằng
-                Facebook
-              </button>
+              <OAuth2Login
+                className="login-facebook"
+                authorizationUrl="https://www.facebook.com/dialog/oauth"
+                responseType="token"
+                clientId="1977957859224393"
+                redirectUri="http://localhost:3000/login"
+                onSuccess={onSuccess}
+                onFailure={onFailure}>
+                <i className="fa-brands fa-facebook"></i> Đăng nhập bằng Facebook
+              </OAuth2Login>
               <button className="login-google">
                 <i className="fa-brands fa-google"></i> Đăng nhập bằng Google
               </button>
@@ -125,14 +143,6 @@ const LoginComponent = () => {
           </div>
         </div>
       </section>
-      {/* <Modal
-        title="Đăng nhập thành công"
-        visible={success}
-        onOk={handleOk}
-        cancelButtonProps={false}
-      >
-        <p>Bạn đã đăng nhập thành công!</p>
-      </Modal> */}
     </div>
   );
 };

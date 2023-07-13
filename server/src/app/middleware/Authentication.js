@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const Account = require("../models/Account");
 const GooglePlusTokenStrategy = require("passport-google-plus-token");
+const FacebookTokenStrategy = require("passport-facebook-token");
 const passport = require("passport");
 const dotenv = require("dotenv");
 dotenv.config();
@@ -34,51 +35,9 @@ const checkRole = (role) => {
     }
   };
 };
-passport.serializeUser(function(user, done) {
-  done(null, user);
-});
 
-passport.deserializeUser(function(user, done) {
-  done(null, user);
-});
 
-passport.use(
-  new GooglePlusTokenStrategy(
-    {
-      clientID:"113981226682-qfqqlm0hs2ur8j9o7oj6du7sak3t4p0l.apps.googleusercontent.com",
-      clientSecret: "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",
-    },
-    async (accessToken, refreshToken, profile, done) => {
-      try {
-        console.log("accessToken: " , accessToken);
-        console.log("refreshToken: ", refreshToken);
-        console.log("profile: " , profile);
 
-        const user = await Account.findOne({
-          loginType: "google",
-          authGoogleID: profile.id,
-        });
-
-        if (user) {
-          return done(null, user);
-        }
-
-        if(!user)
-        {
-          const newAccount = new Account({
-            loginType: "google",
-            email: profile.emails[0].value,
-            authGoogleID: profile.id,
-          });
-          await newAccount.save();
-          done(newAccount);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  )
-);
 
 module.exports = {
   AuthenticationAccount,

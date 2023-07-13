@@ -4,7 +4,7 @@ const mongooseDelete = require("mongoose-delete");
 
 const Schema = mongoose.Schema;
 
-const ReviewSchema = new Schema({
+const Review= new Schema({
   user_id: {
     type: String
   },
@@ -32,7 +32,7 @@ const Product = new mongoose.Schema(
     image: { type: String },
     category: { type: String },
     price: { type: Number },
-    reviews: [ReviewSchema],
+    reviews: [Review],
 
     deleted:{
       type: Boolean,

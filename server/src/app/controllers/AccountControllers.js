@@ -17,7 +17,6 @@ const bcrypt = require("bcrypt");
         password
       } = req.body;
 
-      // const phonenumberExists = await Account.findOne({phonenumber})
       const phonenumberExists = await Account.findOne({ phonenumber: phonenumber });
       if (phonenumberExists) {
         return res.status(403).json({ error: "Số điện thoại đã tồn tại" });
@@ -47,7 +46,6 @@ const bcrypt = require("bcrypt");
 
   //[post] api/account/login
   login = async (req, res, next) => {
-    // if (this.loginType !== "local") next();
     const identifier = req.body.identifier;
     let user;
 
@@ -76,16 +74,37 @@ const bcrypt = require("bcrypt");
       { expiresIn: "48h" }
     );
 
-    res.status(200).json({ success: "Đăng nhập thành công", token, user });
+    res.status(200).json({token, user });
   };
 
-  //[post] /api/account/auth/google
-  authGoogle = async (req, res) => {
-    const token = encodedToken(req.user._id);
-    console.log(token);
-    res.setHeader("Authorization", token);
-    return res.status(200).json({ success: true });
-  };
+  //[post] /api/account/login/facebook
+  const loginWithFacebook = async (req, res) => {
+    const {id, name, avatar} = req.body;
+    try {
+      const user = await Account.findOne({authFacebookID: id})
+      if( user)
+      {
+        const token = jwt.sign(
+          { userId: user._id },
+          process.env.jwt_access_token,
+          { expiresIn: "48h" }
+        );
+        return res.status(200).json({token, user})
+      }
+      else{
+        const newAccount = new Account({authFacebookID: id, username: name, avatar: avatar})
+        const result = await newAccount.save()
+        const token = jwt.sign(
+          { userId: result._id },
+          process.env.jwt_access_token,
+          { expiresIn: "48h" }
+        );
+        return res.status(200).json({token, user})
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   //[put] api/account/update-account/:id
   updateAccount = async (req, res) => {
@@ -102,5 +121,6 @@ const bcrypt = require("bcrypt");
 module.exports = {
   register,
   login,
+  loginWithFacebook,
   updateAccount
 };

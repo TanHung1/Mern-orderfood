@@ -25,6 +25,10 @@ const Account = new Schema(
       type: String,
     },
 
+    avatar: {
+      type: String
+    }, 
+    
     authGoogleID: {
       type: String,
       default: null,
