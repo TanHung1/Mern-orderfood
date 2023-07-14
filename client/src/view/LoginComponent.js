@@ -48,22 +48,23 @@ const LoginComponent = () => {
     );
     const profile = await result.json();
     const { id, name } = profile;
-    const avatar = profile.picture.data.url;
-    const response = await axios.post(
-      "http://localhost:5000/api/account/login/facebook",
-      {
-        id,
-        name,
-        avatar,
-      }
-    );
-    localStorage.setItem("token", JSON.stringify(response.data));
-    if (response?.data) {
-      message.success("Đăng nhập thành công");
-      setTimeout(() => {
-        window.location.replace("/");
-      }, 500);
-    }
+    // const avatar = profile.picture.data.url;
+    // const response = await axios.post(
+    //   "http://localhost:5000/api/account/login/facebook",
+    //   {
+    //     id,
+    //     name,
+    //     avatar,
+    //   }
+    // );
+    // localStorage.setItem("token", JSON.stringify(response.data));
+    // if (response?.data) {
+    //   message.success("Đăng nhập thành công");
+    //   setTimeout(() => {
+    //     window.location.replace("/");
+    //   }, 500);
+    // }
+    console.log(profile);
   };
 
   const onFailure = (res) => {};
@@ -124,7 +125,7 @@ const LoginComponent = () => {
                 className="login-facebook"
                 authorizationUrl="https://www.facebook.com/dialog/oauth"
                 responseType="token"
-                clientId="1977957859224393"
+                clientId="259667280114120"
                 redirectUri="http://localhost:3000/login"
                 onSuccess={onSuccess}
                 onFailure={onFailure}

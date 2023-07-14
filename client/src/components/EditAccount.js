@@ -4,9 +4,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Form, FormGroup, Label, Input, Button } from "reactstrap";
 import "../styles/EditStaff.scss";
 import { message } from "antd";
-import { useForm } from "react-hook-form"
-import { yupResolver } from "@hookform/resolvers/yup"
-import * as yup from "yup"
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 const accessToken = localStorage.getItem("token");
 const dataUser = JSON.parse(accessToken);
@@ -16,7 +16,6 @@ const token = {
     "Content-Type": "application/json",
   },
 };
-
 
 const schema = yup
   .object({
@@ -39,7 +38,7 @@ const schema = yup
       .email("Định dạng email không hợp lệ")
       .required("Không được để trống email"),
   })
-  .required()
+  .required();
 function EditAccount() {
   const {
     register,
@@ -47,7 +46,7 @@ function EditAccount() {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
-  })
+  });
 
   const [account, setAccount] = useState(null);
   const [username, setUsername] = useState("");
@@ -90,11 +89,11 @@ function EditAccount() {
         token
       )
       .then((response) => {
-        message.success("Cập nhật thành công")
+        message.success("Cập nhật thành công");
         navigate("/admin/manage-account");
       })
       .catch((error) => {
-        message.error("Cập nhật thất bại")
+        message.error("Cập nhật thất bại");
         console.error(error);
       });
   };
@@ -106,7 +105,7 @@ function EditAccount() {
   return (
     <div className="container mt-4">
       <h2 className="Edit-account">Edit Account</h2>
-      <Form onSubmit={handleSubmit(handleUpdate)}>
+      <Form onSubmit={handleUpdate}>
         <FormGroup>
           <Label>Tên tài khoản:</Label>
           <Input
@@ -115,8 +114,7 @@ function EditAccount() {
             {...register("username")}
             onChange={(event) => setUsername(event.target.value)}
           />
-          <label style={{ color: 'red' }}>{errors.username?.message}</label>
-
+          <label style={{ color: "red" }}>{errors.username?.message}</label>
         </FormGroup>
         <FormGroup>
           <Label>Email:</Label>
@@ -126,7 +124,7 @@ function EditAccount() {
             {...register("email")}
             onChange={(event) => setEmail(event.target.value)}
           />
-              <label style={{ color: 'red' }}>{errors.email?.message}</label>
+          <label style={{ color: "red" }}>{errors.email?.message}</label>
         </FormGroup>
         <FormGroup>
           <Label>Số điện thoại:</Label>
@@ -136,7 +134,7 @@ function EditAccount() {
             {...register("phonenumber")}
             onChange={(event) => setPhoneNumber(event.target.value)}
           />
-          <label style={{color: 'red'}}>{errors.phonenumber?.message}</label>
+          <label style={{ color: "red" }}>{errors.phonenumber?.message}</label>
         </FormGroup>
         <FormGroup>
           <Label>Địa chỉ:</Label>
@@ -144,11 +142,9 @@ function EditAccount() {
             type="text"
             value={address}
             {...register("address")}
-
             onChange={(event) => setAddress(event.target.value)}
           />
-          <label style={{color: 'red'}}>{errors.address?.message}</label>
-
+          <label style={{ color: "red" }}>{errors.address?.message}</label>
         </FormGroup>
         <FormGroup>
           <Label>Vị trí:</Label>

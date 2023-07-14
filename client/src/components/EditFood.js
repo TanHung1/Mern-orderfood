@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import { message, Modal } from "antd";
+import { Button, message, Modal } from "antd";
 import "../styles/EditFood.scss";
 
 const accessToken = localStorage.getItem("token");
@@ -14,7 +14,7 @@ const token = {
 };
 
 function EditFood() {
-const [data, setData] = useState([]);
+  const [data, setData] = useState([]);
 
   const { _id } = useParams();
   const navigate = useNavigate();
@@ -41,7 +41,6 @@ const [data, setData] = useState([]);
       })
       .catch((err) => console.log(err));
   }, [_id]);
-
 
   const handleEditFood = (event) => {
     event.preventDefault();
@@ -98,7 +97,6 @@ const [data, setData] = useState([]);
               }))
             }
             placeholder="Nhập tên món ăn"
-            
           />
         </div>
         <div className="form-group">
@@ -163,13 +161,13 @@ const [data, setData] = useState([]);
             <option value="side">Món ăn kèm</option>
           </select>
         </div>
-        <button
-          type="submit"
+        <Button
+          htmlType="submit"
           className="btn btn-primary mt-3"
           style={{ marginBottom: "50px" }}
         >
           Cập nhật
-        </button>
+        </Button>
       </form>
       <Modal
         visible={isSuccess}

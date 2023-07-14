@@ -53,6 +53,11 @@ function MyAccountEdit() {
   const dataUser = JSON.parse(accessToken);
 
   useEffect(() => {
+    setCustomerName(dataUser.user.username);
+    setCustomerAddress(dataUser.user.address);
+    setCustomerPhone(dataUser.user.phonenumber);
+    setCustomerEmail(dataUser.user.email);
+
     if (accessToken) {
       setCustomerName(dataUser.user?.username);
       setCustomerAddress(dataUser.user?.address);
@@ -72,17 +77,23 @@ function MyAccountEdit() {
     window.location.pathname = "/login";
   };
 
-  const handleUpdate = async () => {
-    // e.preventDefault();
+  const handleUpdate = async (e) => {
+    e.preventDefault();
     try {
-      const response = await axios.put(
-        `http://localhost:5000/api/account/${dataUser?.user?._id}/update-account`,
+      const validatedData = await schema.validate(
         {
           username: customerName,
-          phonenumber: customerPhone,
           address: customerAddress,
+          phonenumber: customerPhone,
           email: customerEmail,
         },
+        { abortEarly: false }
+      );
+
+      // Gửi dữ liệu lên server nếu dữ liệu hợp lệ
+      const response = await axios.put(
+        `http://localhost:5000/api/account/${dataUser?.user?._id}/update-account`,
+        validatedData,
         {
           headers: {
             Authorization: `Bearer ${dataUser?.token}`,
@@ -91,23 +102,32 @@ function MyAccountEdit() {
         }
       );
       console.log(response);
+
+      // Lưu thông tin người dùng mới vào local storage và cập nhật state
       const updatedUser = {
         ...dataUser?.user,
-        username: customerName,
-        phonenumber: customerPhone,
-        address: customerAddress,
-        email: customerEmail,
+        username: validatedData.username,
+        phonenumber: validatedData.phonenumber,
+        address: validatedData.address,
+        email: validatedData.email,
       };
       localStorage.setItem(
         "token",
         JSON.stringify({ user: updatedUser, token: dataUser?.token })
       );
-      setFullName(customerName);
+      setFullName(validatedData.username);
 
+      // Hiển thị thông báo thành công
       message.success("Cập nhật thành công");
     } catch (error) {
-      console.error(error.response?.data?.error);
-      notification.error({ message: error.response?.data?.error });
+      if (error instanceof yup.ValidationError) {
+        // Nếu có lỗi xảy ra, hiển thị các thông báo lỗi
+        const errorMessages = error.errors;
+        notification.error({ message: errorMessages.join(", ") });
+      } else {
+        console.error(error.response?.data?.error);
+        notification.error({ message: error.response?.data?.error });
+      }
     }
   };
 
@@ -146,74 +166,60 @@ function MyAccountEdit() {
         <div className="right-history">
           <div className="previous-oders-right">
             <h3>THÔNG TIN CÁ NHÂN</h3>
-            <form>
-              <div class="form-group">
+            <form onSubmit={handleUpdate}>
+              <div className="form-group">
                 <label for="exampleInputEmail1">Họ và tên</label>
                 <input
                   type="text"
-                  class="form-control"
+                  className="form-control"
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
                   value={customerName}
                   {...register("username")}
                   onChange={(e) => setCustomerName(e.target.value)}
                 />
-                <label style={{ color: "red" }}>
-                  {errors.username?.message}
-                </label>
               </div>
-              <div class="form-group">
-                <label for="exampleInputEmail1">Địa chỉ giao hàng</label>
+              <div className="form-group">
+                <label htmlFor="exampleInputEmail1">Địa chỉ giao hàng</label>
                 <input
                   type="text"
-                  class="form-control"
+                  className="form-control"
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
                   value={customerAddress}
                   {...register("address")}
                   onChange={(e) => setCustomerAddress(e.target.value)}
                 />
+                <label style={{ color: "red" }}>
+                  {errors.address?.message}
+                </label>
               </div>
               <label style={{ color: "red" }}>{errors.address?.message}</label>
-              <div class="form-group">
+              <div className="form-group">
                 <label for="exampleInputEmail1">Số điện thoại</label>
                 <input
-                  class="form-control"
+                  className="form-control"
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
                   value={customerPhone}
                   {...register("phonenumber")}
                   onChange={(e) => setCustomerPhone(e.target.value)}
                 />
-                <label style={{ color: "red" }}>
-                  {errors.phonenumber?.message}
-                </label>
               </div>
 
-              <div class="form-group">
+              <div className="form-group">
                 <label for="exampleInputEmail1">Địa chỉ email</label>
                 <input
                   // type="email"
-                  class="form-control"
+                  className="form-control"
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
                   value={customerEmail}
                   {...register("email")}
                   onChange={(e) => setCustomerEmail(e.target.value)}
                 />
-                <label style={{ color: "red" }}>{errors.email?.message}</label>
               </div>
-              <button
-                onClick={handleSubmit(handleUpdate)}
-                type="submit"
-                class="btn btn-primary"
-                disabled={
-                  !customerName ||
-                  !customerEmail ||
-                  !customerAddress ||
-                  !customerPhone
-                }
-              >
+              <button type="submit" className="btn btn-primary">
                 Cập nhật
               </button>
             </form>

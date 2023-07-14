@@ -10,7 +10,6 @@ import f1 from "../assets/f1.png";
 import f3 from "../assets/f3.png";
 import f7 from "../assets/f7.png";
 import f9 from "../assets/f9.png";
-import Test from "../components/test";
 
 function HomeComponent() {
   const handleScrollToTop = () => {
@@ -92,7 +91,7 @@ function HomeComponent() {
         </div>
       </div>
       <MenuComponent />
-    {/* <Test/> */}
+      {/* <Test/> */}
       <AboutComponent />
 
       {/* Add a button at the bottom right corner of the page */}
