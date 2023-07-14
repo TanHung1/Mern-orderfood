@@ -92,7 +92,7 @@ const bcrypt = require("bcrypt");
         return res.status(200).json({token, user})
       }
       else{
-        const newAccount = new Account({authFacebookID: id, username: name, avatar: avatar})
+        const newAccount = new Account({authFacebookID: id, username: name, avatar: avatar, loginType: 'facebook',})
         const result = await newAccount.save()
         const token = jwt.sign(
           { userId: result._id },
@@ -109,6 +109,20 @@ const bcrypt = require("bcrypt");
   //[put] api/account/update-account/:id
   updateAccount = async (req, res) => {
     try {
+      const {
+        phonenumber,
+        email,        
+      } = req.body;
+
+      const phonenumberExists = await Account.findOne({ phonenumber: phonenumber });
+      if (phonenumberExists) {
+        return res.status(403).json({ error: "Số điện thoại đã tồn tại" });
+      }
+
+      const emailExists = await Account.findOne({email: email});
+      if(emailExists){
+        return res.status(403).json({ error: "Email đã tồn tại" })
+      }
       await Account.updateOne({_id: req.params.id}, req.body);
       res.status(200).json({message: "Success"})  
     } catch (error) {

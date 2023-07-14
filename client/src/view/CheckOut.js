@@ -18,11 +18,11 @@ const schema = yup
     address: yup.string().required("Không được để trống địa chỉ giao hàng"),
 
     phonenumber: yup
-      .number()
+      .string()
       .required("Không được để trống số điện thoại")
       .typeError("Số điện thoại không hợp lệ")
-      .min(1000000000, "Số điện thoại phải đủ 10 chữ số")
-      .max(9999999999, "Số điện thoại phải đủ 10 chữ số"),
+      .min(10, "Số điện thoại phải đủ 10 chữ số")
+      .max(10, "Số điện thoại phải đủ 10 chữ số"),
 
     email: yup
       .string()

@@ -27,7 +27,6 @@ function RegisterComponent() {
     setError(null);
     try {
       const response = await axios .post("http://localhost:5000/api/account/register",data)
-      console.log(response, 'message')
       setSuccess(true);
       message.success("Đăng ký thành công")
       navigate("/login")
@@ -77,7 +76,7 @@ function RegisterComponent() {
                   ]}
                 >
                   <Input placeholder="Số điện thoại của bạn" />
-                  {/* {error === "Số điện thoại đã tồn tại" ? <label style={{ color: 'red' }}>{error}</label> : null} */}
+                  {error === "Số điện thoại đã tồn tại" ? <label style={{ color: 'red' }}>{error}</label> : null}
                 </Form.Item>
                 <Form.Item
                   name="email"
