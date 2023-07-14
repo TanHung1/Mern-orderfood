@@ -1,7 +1,10 @@
 const jwt = require("jsonwebtoken");
 const Account = require("../models/Account");
+<<<<<<< HEAD
 
 const passport = require("passport");
+=======
+>>>>>>> bd86e89c998d00b57e8c27c01364e6a00090bde4
 const dotenv = require("dotenv");
 dotenv.config();
 const AuthenticationAccount = async (req, res, next) => {

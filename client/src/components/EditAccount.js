@@ -60,7 +60,7 @@ function EditAccount() {
     axios
       .get(`http://localhost:5000/api/admin/account/${_id}`, token)
       .then((response) => {
-        const accountData = response.data;
+        const accountData = response.data.account;
         setAccount(accountData);
         setUsername(accountData.username);
         setEmail(accountData.email);
