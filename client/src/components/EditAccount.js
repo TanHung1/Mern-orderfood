@@ -73,29 +73,44 @@ function EditAccount() {
       });
   }, [_id]);
 
-  const handleUpdate = (event) => {
+  const handleUpdate = async (event) => {
     event.preventDefault();
-    const updatedAccount = {
-      username,
-      email,
-      phonenumber,
-      address,
-      role,
-    };
-    axios
-      .put(
+    try {
+      const validate = await schema.validate(
+        {
+          username,
+          email,
+          phonenumber,
+          address,
+          role,
+        },
+        { abortEarly: false }
+      );
+
+      const updatedAccount = {
+        username: validate.username,
+        email: validate.email,
+        phonenumber: validate.phonenumber,
+        address: validate.address,
+        role: validate.role,
+      };
+      await axios.put(
         `http://localhost:5000/api/admin/update-account/${_id}`,
         updatedAccount,
         token
-      )
-      .then((response) => {
-        message.success("Cập nhật thành công");
-        navigate("/admin/manage-account");
-      })
-      .catch((error) => {
-        message.error("Cập nhật thất bại");
+      );
+
+      message.success("Cập nhật thành công");
+      navigate("/admin/manage-account");
+    } catch (error) {
+      if (error instanceof yup.ValidationError) {
+        const errorMessages = error.errors;
+        errorMessages.forEach(message.error);
+      } else {
         console.error(error);
-      });
+        message.error("Cập nhật thất bại");
+      }
+    }
   };
 
   if (!account) {
