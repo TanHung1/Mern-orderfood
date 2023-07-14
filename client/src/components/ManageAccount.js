@@ -21,7 +21,7 @@ function ManageAccount() {
     axios
       .get("http://localhost:5000/api/admin/all-accounts", token)
       .then((response) => {
-        setaccounts(response.data);
+        setaccounts(response.data.accounts);
       })
       .catch((error) => {
         console.error(error);

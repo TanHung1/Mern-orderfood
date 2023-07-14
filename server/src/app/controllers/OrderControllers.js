@@ -24,6 +24,26 @@ const mongoose = require("mongoose");
         0
       );
 
+      const accountId = req.params.id;
+
+      const phonenumberExists = await Account.findOne({ 
+        _id: {$ne: accountId},
+        phonenumber: customerPhone 
+      });
+      if (phonenumberExists) {
+        return res.status(403).json({ error: "Số điện thoại đã tồn tại" });
+      }
+
+      const emailExists = await Account.findOne({
+        _id: {$ne: accountId},
+        email: customerEmail
+      });
+      if(emailExists){
+        return res.status(403).json({ error: "Email đã tồn tại" })
+      }
+      await Account.updateOne({_id: accountId}, req.body);
+      res.status(200).json({message: "Success"})  
+
       const newOrder = new Order({
         customer_id: customerID,
         username: customerName,

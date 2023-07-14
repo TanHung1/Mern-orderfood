@@ -17,7 +17,7 @@ const show = async (req, res) => {
 //[get] /api/product/:id
 const productDetail = async (req, res, next) => {
   try {
-    const product = await Product.findOne({ _id: req.params.id })
+    const product = await Product.findById({ _id: req.params.id })
 
     res.status(200).json({
       product: mongooesToObject(product),

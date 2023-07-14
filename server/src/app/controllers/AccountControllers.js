@@ -114,16 +114,24 @@ const bcrypt = require("bcrypt");
         email,        
       } = req.body;
 
-      const phonenumberExists = await Account.findOne({ phonenumber: phonenumber });
+      const accountId = req.params.id;
+
+      const phonenumberExists = await Account.findOne({ 
+        _id: {$ne: accountId},
+        phonenumber: phonenumber 
+      });
       if (phonenumberExists) {
         return res.status(403).json({ error: "Số điện thoại đã tồn tại" });
       }
 
-      const emailExists = await Account.findOne({email: email});
+      const emailExists = await Account.findOne({
+        _id: {$ne: accountId},
+        email: email
+      });
       if(emailExists){
         return res.status(403).json({ error: "Email đã tồn tại" })
       }
-      await Account.updateOne({_id: req.params.id}, req.body);
+      await Account.updateOne({_id: accountId}, req.body);
       res.status(200).json({message: "Success"})  
     } catch (error) {
       console.log(error);

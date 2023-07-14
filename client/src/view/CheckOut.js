@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/CheckOut.scss";
-import { Modal, message, Button, Result } from "antd";
+import { Modal, message, Button, Result, notification } from "antd";
 
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
@@ -129,10 +129,7 @@ const CheckOut = () => {
       }, 500)
     } catch (error) {
       console.error(error);
-      Modal.error({
-        title: "Thông báo",
-        content: "Thanh toán thất bại. Vui lòng thử lại sau.",
-      });
+      notification.error({message: error.response?.data?.error})
     }
   };
 

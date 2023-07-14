@@ -61,7 +61,7 @@ function EditAccount() {
     axios
       .get(`http://localhost:5000/api/admin/account/${_id}`, token)
       .then((response) => {
-        const accountData = response.data;
+        const accountData = response.data.account;
         setAccount(accountData);
         setUsername(accountData.username);
         setEmail(accountData.email);
@@ -106,13 +106,13 @@ function EditAccount() {
   return (
     <div className="container mt-4">
       <h2 className="Edit-account">Edit Account</h2>
-      <Form onSubmit={handleSubmit(handleUpdate)}>
+      <Form onSubmit={handleUpdate}>
         <FormGroup>
           <Label>Tên tài khoản:</Label>
           <Input
             type="text"
             value={username}
-            {...register("username")}
+            // {...register("username")}
             onChange={(event) => setUsername(event.target.value)}
           />
           <label style={{ color: 'red' }}>{errors.username?.message}</label>
@@ -123,7 +123,7 @@ function EditAccount() {
           <Input
             type="email"
             value={email}
-            {...register("email")}
+            // {...register("email")}
             onChange={(event) => setEmail(event.target.value)}
           />
               <label style={{ color: 'red' }}>{errors.email?.message}</label>
@@ -133,7 +133,7 @@ function EditAccount() {
           <Input
             type="text"
             value={phonenumber}
-            {...register("phonenumber")}
+            // {...register("phonenumber")}
             onChange={(event) => setPhoneNumber(event.target.value)}
           />
           <label style={{color: 'red'}}>{errors.phonenumber?.message}</label>
@@ -143,7 +143,7 @@ function EditAccount() {
           <Input
             type="text"
             value={address}
-            {...register("address")}
+            // {...register("address")}
 
             onChange={(event) => setAddress(event.target.value)}
           />

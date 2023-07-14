@@ -1,6 +1,6 @@
 const Product = require("../models/Product");
 const User = require("../models/Account");
-const { mutipleMongooseToObject } = require("../../util/mongoose");
+const { mutipleMongooseToObject, mongooesToObject } = require("../../util/mongoose");
 const Order = require("../models/Order");
 
 //[post] /api/admin/create-product
@@ -102,7 +102,9 @@ const forcedeleteProduct = async (req, res, next) => {
 const getAllAccounts = async (req, res) => {
   try {
     const accounts = await User.find();
-    res.status(200).json(accounts);
+    res.status(200).json({
+      accounts: mutipleMongooseToObject(accounts)
+    });
   } catch (error) {
     res.status(500).json(error);
     console.log(error);
@@ -111,9 +113,8 @@ const getAllAccounts = async (req, res) => {
 // [get] /api/admin/account/:id
 const getAccountById = async (req, res) => {
   try {
-    const accountId = req.params.id;
-    const account = await User.findById(accountId);
-    res.status(200).json(account);
+    const account = await User.findById({_id: req.params.id})
+    res.status(200).json({account: mongooesToObject(account)});
   } catch (error) {
     res.status(500).json(error);
     console.log(error);
@@ -164,9 +165,8 @@ const getAllOrders = async (req, res) => {
 // [get] /api/admin/order/:id
 const getOrderById = async (req, res) => {
   try {
-    const orderId = req.params.id;
-    const order = await Order.findById(orderId);
-    res.status(200).json(order);
+    const order = await Order.findById({_id: req.params.id});
+    res.status(200).json({order: mongooesToObject(order)});
   } catch (error) {
     res.status(500).json(error);
     console.log(error);

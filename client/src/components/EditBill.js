@@ -62,11 +62,12 @@ function EditBill() {
       .get(`http://localhost:5000/api/admin/order/${_id}`, token)
       .then((res) => {
         setOrder(res.data);
-        setUsername(res.data.username);
-        setPhoneNumber(res.data.phonenumber);
-        setAddress(res.data.address);
-        setTotalPrice(res.data.totalPrice);
-        setStatus(res.data.status);
+        setUsername(res.data.order.username);
+        setPhoneNumber(res.data.order.phonenumber);
+        setAddress(res.data.order.address);
+        setTotalPrice(res.data.order.totalPrice);
+        setStatus(res.data.order.status);
+        
       })
       .catch((err) => console.log(err));
   }, [_id]);

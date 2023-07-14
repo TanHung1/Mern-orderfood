@@ -53,6 +53,11 @@ function MyAccountEdit() {
   const dataUser = JSON.parse(accessToken);
 
   useEffect(() => {
+    setCustomerName(dataUser.user.username);
+    setCustomerAddress(dataUser.user.address);
+    setCustomerPhone(dataUser.user.phonenumber);
+    setCustomerEmail(dataUser.user.email);
+
     if (accessToken) {
       setCustomerName(dataUser.user?.username);
       setCustomerAddress(dataUser.user?.address);
