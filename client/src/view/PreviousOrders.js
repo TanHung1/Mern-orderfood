@@ -58,20 +58,20 @@ const PreviousOrders = ({ customerId }) => {
 
     // In các thông tin hóa đơn
     doc.setFontSize(18);
-    doc.text("Hóa đơn", marginLeft, currentY);
+    doc.text("Hoa don", marginLeft, currentY);
     currentY += 10;
     doc.setFontSize(12);
     doc.text(
-      `Ngày đặt: ${moment(data.createdAt).format("DD/MM/YYYY HH: mm")}`,
+      `ngay dat: ${moment(data.createdAt).format("DD/MM/YYYY HH: mm")}`,
       marginLeft,
       currentY
     );
     currentY += 10;
-    doc.text(`Tên khách hàng: ${data.username}`, marginLeft, currentY);
+    doc.text(`Ten khach hang: ${data.username}`, marginLeft, currentY);
     currentY += 10;
-    doc.text(`Số điện thoại: ${data.phonenumber}`, marginLeft, currentY);
+    doc.text(`So dien thoai: ${data.phonenumber}`, marginLeft, currentY);
     currentY += 10;
-    doc.text("Chi tiết đơn hàng:", marginLeft, currentY);
+    doc.text("Chi tiet don hang:", marginLeft, currentY);
     currentY += 10;
     data.product.forEach((p) => {
       doc.text(
@@ -82,12 +82,12 @@ const PreviousOrders = ({ customerId }) => {
       currentY += 10;
     });
     doc.text(
-      `Tổng giá: ${data.totalPrice.toLocaleString()}đ`,
+      `Tong gia: ${data.totalPrice.toLocaleString()}đ`,
       marginLeft,
       currentY
     );
     currentY += 10;
-    doc.text(`Trạng thái: ${data.status}`, marginLeft, currentY);
+    doc.text(`Trang thai: ${data.status}`, marginLeft, currentY);
 
     // Lưu tài liệu PDF
     doc.save("hoadon.pdf");

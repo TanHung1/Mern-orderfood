@@ -113,11 +113,6 @@ function ThongKe() {
       size: 5,
       shape: "diamond",
     },
-    xAxis: {
-      label: {
-        formatter: (value) => moment(value).format("DD/MM/YYYY HH:mm"),
-      },
-    },
   };
   const monthlyChartConfig = {
     data: monthlyChartData,

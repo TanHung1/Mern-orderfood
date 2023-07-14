@@ -107,7 +107,7 @@ function MyAccountEdit() {
       message.success("Cập nhật thành công");
     } catch (error) {
       console.error(error.response?.data?.error);
-      notification.error({message: error.response?.data?.error});
+      notification.error({ message: error.response?.data?.error });
     }
   };
 
@@ -207,6 +207,12 @@ function MyAccountEdit() {
                 onClick={handleSubmit(handleUpdate)}
                 type="submit"
                 class="btn btn-primary"
+                disabled={
+                  !customerName ||
+                  !customerEmail ||
+                  !customerAddress ||
+                  !customerPhone
+                }
               >
                 Cập nhật
               </button>

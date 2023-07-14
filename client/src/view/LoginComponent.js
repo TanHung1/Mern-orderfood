@@ -3,7 +3,6 @@ import axios from "axios";
 import f6 from "../assets/f6.png";
 import { Form, Input, Button, Modal, Alert, message } from "antd";
 import OAuth2Login from "react-simple-oauth2-login";
-import about from "../assets/about-img.png";
 import { NavLink, useRoutes, useNavigate } from "react-router-dom";
 import { notification } from "antd";
 

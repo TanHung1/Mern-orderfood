@@ -1,7 +1,6 @@
 const jwt = require("jsonwebtoken");
 const Account = require("../models/Account");
-const GooglePlusTokenStrategy = require("passport-google-plus-token");
-const FacebookTokenStrategy = require("passport-facebook-token");
+
 const passport = require("passport");
 const dotenv = require("dotenv");
 dotenv.config();
@@ -35,9 +34,6 @@ const checkRole = (role) => {
     }
   };
 };
-
-
-
 
 module.exports = {
   AuthenticationAccount,
