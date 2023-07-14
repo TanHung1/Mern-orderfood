@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
-import { Modal, Button, message } from "antd";
+import { Modal, Button, message, notification } from "antd";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -19,11 +19,11 @@ const schema = yup
     address: yup.string().required("Không được để trống địa chỉ giao hàng"),
 
     phonenumber: yup
-      .number()
+      .string()
       .required("Không được để trống số điện thoại")
       .typeError("Số điện thoại không hợp lệ")
-      .min(1000000000, "Số điện thoại phải đủ 10 chữ số")
-      .max(9999999999, "Số điện thoại phải đủ 10 chữ số"),
+      .min(10, "Số điện thoại phải đủ 10 chữ số")
+      .max(10, "Số điện thoại phải đủ 10 chữ số"),
 
     email: yup
       .string()
@@ -90,6 +90,7 @@ function MyAccountEdit() {
           },
         }
       );
+      console.log(response);
       const updatedUser = {
         ...dataUser?.user,
         username: customerName,
@@ -105,8 +106,8 @@ function MyAccountEdit() {
 
       message.success("Cập nhật thành công");
     } catch (error) {
-      console.error(error);
-      message.error("Cập nhật thông tin thất bại. Vui lòng thử lại.");
+      console.error(error.response?.data?.error);
+      notification.error({message: error.response?.data?.error});
     }
   };
 
@@ -177,7 +178,6 @@ function MyAccountEdit() {
               <div class="form-group">
                 <label for="exampleInputEmail1">Số điện thoại</label>
                 <input
-                  type="text"
                   class="form-control"
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
