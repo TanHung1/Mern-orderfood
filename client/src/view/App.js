@@ -20,11 +20,12 @@ import EditBill from "../components/EditBill";
 import StaffEditBill from "../components/StaffEditBill";
 import Thongke from "../components/Thongke";
 import Footer from "../view/Footer";
+import Invoice from "../components/Invoice";
+import { DetailProduct } from "./DetailProduct";
 
 import Nav from "../view/Nav";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { DetailProduct } from "./DetailProduct";
 
 function App() {
   return (
@@ -86,6 +87,10 @@ function App() {
               {" "}
             </Route>
             <Route path="/Admin/manage-bill/edit/:_id" element={<EditBill />}>
+              {" "}
+            </Route>
+
+            <Route path="/Admin/manage-bill/print-bill/:_id" element={<Invoice/>}>
               {" "}
             </Route>
           </Routes>

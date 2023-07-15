@@ -189,9 +189,12 @@ function ManageBill() {
               <EditOutlined />
             </Button>
           </Link>
-          <Button onClick={() => printInvoice(record)}>
-            <i class="fa-solid fa-print"></i>
-          </Button>
+          
+          <Link to={`/Admin/manage-bill/print-bill/${record._id}`}>
+            <Button >
+              <i class="fa-solid fa-print"></i>
+            </Button>
+          </Link>
         </span>
       ),
     },
