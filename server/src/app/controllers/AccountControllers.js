@@ -21,29 +21,32 @@ const bcrypt = require("bcrypt");
       if (phonenumberExists) {
         return res.status(403).json({ error: "Số điện thoại đã tồn tại" });
       }
-
        const emailExists = await Account.findOne({email: email});
       if(emailExists){
         return res.status(403).json({ error: "Email đã tồn tại" })
       }
    
-
-      const newAccount = new Account({
-        username,
-        phonenumber,
-        email,
-        password: hashedPasword,
-        role,
-      });
-      await newAccount.save();
-      return res.status(200).json({message: "oke",Listdata:{username:newAccount.username,phonenumber:newAccount.phonenumber,email:newAccount.email}});
-
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json(error);
-    }
-  };
-
+    const newAccount = new Account({
+      username,
+      phonenumber,
+      email,
+      password: hashedPasword,
+      role,
+    });
+    await newAccount.save();
+    return res.status(200).json({
+      message: "oke",
+      Listdata: {
+        username: newAccount.username,
+        phonenumber: newAccount.phonenumber,
+        email: newAccount.email,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json(error);
+  }
+};
   //[post] api/account/login
   login = async (req, res, next) => {
     const identifier = req.body.identifier;

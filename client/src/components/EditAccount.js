@@ -29,9 +29,7 @@ const schema = yup
     phonenumber: yup
       .string()
       .required("Không được để trống số điện thoại")
-      .typeError("Số điện thoại không hợp lệ")
-      .min(1000000000, "Số điện thoại phải đủ 10 chữ số")
-      .max(9999999999, "Số điện thoại phải đủ 10 chữ số"),
+      .matches(/^\d{10}$/, "Số điện thoại phải đủ 10 chữ số"),
 
     email: yup
       .string()
@@ -105,7 +103,7 @@ function EditAccount() {
     } catch (error) {
       if (error instanceof yup.ValidationError) {
         const errorMessages = error.errors;
-        errorMessages.forEach(message.error);
+        message.error(errorMessages.join(", "));
       } else {
         console.error(error);
         message.error("Cập nhật thất bại");

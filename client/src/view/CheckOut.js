@@ -4,9 +4,9 @@ import { Link, useNavigate } from "react-router-dom";
 import "../styles/CheckOut.scss";
 import { Modal, message, Button, Result, notification } from "antd";
 
-import { useForm } from "react-hook-form"
-import { yupResolver } from "@hookform/resolvers/yup"
-import * as yup from "yup"
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 const schema = yup
   .object({
@@ -29,7 +29,7 @@ const schema = yup
       .email("Định dạng email không hợp lệ")
       .required("Không được để trống email"),
   })
-  .required()
+  .required();
 
 const accessToken = localStorage.getItem("token");
 const dataUser = JSON.parse(accessToken);
@@ -47,7 +47,7 @@ const CheckOut = () => {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
-  })
+  });
   const [cart, setCart] = useState([]);
   const [customerName, setCustomerName] = useState("");
   const [customerAddress, setCustomerAddress] = useState("");
@@ -116,8 +116,8 @@ const CheckOut = () => {
         },
         token
       );
-      message.success("Đặt hàng thành công")
-      
+      message.success("Đặt hàng thành công");
+
       setTimeout(message.destroy, 2500);
       setTimeout(() => {
         localStorage.removeItem("cart");
@@ -126,10 +126,10 @@ const CheckOut = () => {
         setCustomerAddress("");
         setCustomerPhone("");
         setCustomerEmail("");
-      }, 500)
+      }, 500);
     } catch (error) {
       console.error(error);
-      notification.error({message: error.response?.data?.error})
+      notification.error({ message: error.response?.data?.error });
     }
   };
 
@@ -158,15 +158,15 @@ const CheckOut = () => {
       <h2>Thông tin đơn hàng</h2>
       {cart.length === 0 ? (
         <Result
-        status="success"
-        title="Đơn hàng của bạn đã thanh toán thành công"
-        subTitle="Sẽ có nhân viên gọi để để xác nhận lại đơn hàng"       
-        extra={[
-          <Link to={"/menu"}>
-            <Button key="buy">Tiếp tục mua</Button>,
-          </Link>
-        ]}
-      />
+          status="success"
+          title="Đơn hàng của bạn đã thanh toán thành công"
+          subTitle="Sẽ có nhân viên gọi để để xác nhận lại đơn hàng"
+          extra={[
+            <Link to={"/menu"}>
+              <Button key="buy">Tiếp tục mua</Button>,
+            </Link>,
+          ]}
+        />
       ) : (
         <div className="checkout">
           <div className="checkout-info">
@@ -179,7 +179,7 @@ const CheckOut = () => {
                 {...register("username")}
                 onChange={(e) => setCustomerName(e.target.value)}
               />
-              <label style={{ color: 'red' }}>{errors.username?.message}</label>
+              <label style={{ color: "red" }}>{errors.username?.message}</label>
             </div>
             <div className="form-group">
               <label>Địa chỉ:</label>
@@ -189,7 +189,7 @@ const CheckOut = () => {
                 {...register("address")}
                 onChange={(e) => setCustomerAddress(e.target.value)}
               />
-              <label style={{ color: 'red' }}>{errors.address?.message}</label>
+              <label style={{ color: "red" }}>{errors.address?.message}</label>
             </div>
             <div className="form-group">
               <label>Điện thoại:</label>
@@ -199,7 +199,9 @@ const CheckOut = () => {
                 {...register("phonenumber")}
                 onChange={(e) => setCustomerPhone(e.target.value)}
               />
-              <label style={{ color: 'red' }}>{errors.phonenumber?.message}</label>
+              <label style={{ color: "red" }}>
+                {errors.phonenumber?.message}
+              </label>
             </div>
             <div className="form-group">
               <label>Email:</label>
@@ -207,11 +209,9 @@ const CheckOut = () => {
                 type="text"
                 value={customerEmail}
                 {...register("email")}
-
                 onChange={(e) => setCustomerEmail(e.target.value)}
               />
-              <label style={{ color: 'red' }}>{errors.email?.message}</label>
-
+              <label style={{ color: "red" }}>{errors.email?.message}</label>
             </div>
             <div className="form-group">
               <label>Hình thức thanh toán:</label>
