@@ -2,15 +2,14 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 const { AuthenticationAccount, checkRole } = require("../app/middleware/Authentication");
-const { register, login, updateAccount, loginWithFacebook } = require("../app/controllers/AccountControllers");
+const { register, login, updateAccount, loginWithFacebook, loginWithGoogle } = require("../app/controllers/AccountControllers");
 
 router.post("/register", register);
 router.post("/login", login);
-// router.post(
-//   "/auth/google",
-//   passport.authenticate("google-plus-token"),
-//   AccountControllers.authGoogle
-// );
+router.post(
+  "/login/google", loginWithGoogle
+  
+);
 router.post("/login/facebook", loginWithFacebook);
 
 

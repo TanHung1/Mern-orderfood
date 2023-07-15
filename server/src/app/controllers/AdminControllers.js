@@ -137,25 +137,8 @@ const updateAccount = async (req, res) => {
 const getAllOrders = async (req, res) => {
   try {
     const orders = await Order.find();
-    let totalAmount = 0;
-    let totalAmountByDay = {}
-    orders.forEach((order) => {
-      totalAmount += order.totalPrice;
-
-      const date = new Date(order.createdAt).toLocaleDateString();
-
-      if (totalAmountByDay[date]) {
-        totalAmountByDay[date] += order.totalPrice;
-      } else {
-        totalAmountByDay[date] = order.totalPrice;
-      }
-
-    });
-
     res.status(200).json({
       orders: mutipleMongooseToObject(orders),
-      totalAmount,
-      totalAmountByDay
     });
   } catch (error) {
     console.log(error);

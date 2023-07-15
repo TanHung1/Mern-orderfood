@@ -165,6 +165,7 @@ const [data, setData] = useState([]);
         </div>
         <button
           type="submit"
+          validateTrigger="onSubmit"
           className="btn btn-primary mt-3"
           style={{ marginBottom: "50px" }}
         >

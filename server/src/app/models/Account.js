@@ -12,8 +12,8 @@ const Account = new Schema(
     },
 
     phonenumber: {
-      type: String,
-  
+      type: String,  
+      default: null
     },
 
     email: {

@@ -14,7 +14,6 @@ const bcrypt = require("bcrypt");
         phonenumber,
         email,        
         role,
-        password
       } = req.body;
 
       const phonenumberExists = await Account.findOne({ phonenumber: phonenumber });
@@ -106,6 +105,34 @@ const bcrypt = require("bcrypt");
     }
   }
 
+  const loginWithGoogle = async (req, res) => {
+    const {iat, name, email} = req.body;
+    try {
+      const user = await Account.findOne({authGoogleID: iat})
+      if( user)
+      {
+        const token = jwt.sign(
+          { userId: user._id },
+          process.env.jwt_access_token,
+          { expiresIn: "48h" }
+        );
+        return res.status(200).json({token, user})
+      }
+      else{
+        const newAccount = new Account({authGoogleID: iat, username: name, email: email, loginType: 'google',})
+        const result = await newAccount.save()
+        const token = jwt.sign(
+          { userId: result._id },
+          process.env.jwt_access_token,
+          { expiresIn: "48h" }
+        );
+        return res.status(200).json({token, user})
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   //[put] api/account/update-account/:id
   updateAccount = async (req, res) => {
     try {
@@ -144,5 +171,6 @@ module.exports = {
   register,
   login,
   loginWithFacebook,
-  updateAccount
+  updateAccount,
+  loginWithGoogle
 };
