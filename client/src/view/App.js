@@ -22,9 +22,8 @@ import Thongke from "../components/Thongke";
 import Footer from "../view/Footer";
 import Invoice from "../components/Invoice";
 import { DetailProduct } from "./DetailProduct";
-
 import Nav from "../view/Nav";
-
+import InvoiceStaff from "../components/InvioceStaff";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
@@ -90,7 +89,16 @@ function App() {
               {" "}
             </Route>
 
-            <Route path="/Admin/manage-bill/print-bill/:_id" element={<Invoice/>}>
+            <Route
+              path="/Admin/manage-bill/print-bill/:_id"
+              element={<Invoice />}
+            >
+              {" "}
+            </Route>
+            <Route
+              path="/Staff/manage-bill/print-bill/:_id"
+              element={<InvoiceStaff />}
+            >
               {" "}
             </Route>
           </Routes>
