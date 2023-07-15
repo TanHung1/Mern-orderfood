@@ -29,7 +29,9 @@ const schema = yup
     phonenumber: yup
       .string()
       .required("Không được để trống số điện thoại")
-      .matches(/^\d{10}$/, "Số điện thoại phải đủ 10 chữ số"),
+      .typeError("Số điện thoại không hợp lệ")
+      .min(10, "Số điện thoại phải đủ 10 chữ số")
+      .max(10, "Số điện thoại phải đủ 10 chữ số"),
 
     email: yup
       .string()
