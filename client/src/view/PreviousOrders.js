@@ -3,6 +3,7 @@ import axios from "axios";
 import { Table, Tag, Button } from "antd";
 import { NavLink, Link } from "react-router-dom";
 import moment from "moment";
+import "jspdf-autotable";
 import jsPDF from "jspdf";
 const PreviousOrders = ({ customerId }) => {
   const [orders, setOrders] = useState([]);
@@ -47,7 +48,9 @@ const PreviousOrders = ({ customerId }) => {
   }, [customerId]);
   const printInvoice = (data) => {
     const doc = new jsPDF();
-
+    const fontPath = "./Roboto-Regular.ttf";
+    const fontName = "Roboto";
+    doc.addFont(fontPath, fontName, "normal");
     // Tạo định dạng cho tài liệu PDF
     const pageWidth = doc.internal.pageSize.width;
     const pageHeight = doc.internal.pageSize.height;
@@ -55,7 +58,7 @@ const PreviousOrders = ({ customerId }) => {
     const marginTop = 20;
     const contentWidth = pageWidth - marginLeft * 2;
     let currentY = marginTop;
-
+    doc.setFont(fontName, "normal");
     // In các thông tin hóa đơn
     doc.setFontSize(18);
     doc.text("Hoa don", marginLeft, currentY);
@@ -74,6 +77,7 @@ const PreviousOrders = ({ customerId }) => {
     doc.text("Chi tiet don hang:", marginLeft, currentY);
     currentY += 10;
     data.product.forEach((p) => {
+      doc.setFont(fontName, "normal");
       doc.text(
         `${p.nameprod}: ${p.price.toLocaleString()}đ`,
         marginLeft,
