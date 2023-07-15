@@ -33,9 +33,6 @@ const checkRole = (role) => {
   };
 };
 
-
-
-
 module.exports = {
   AuthenticationAccount,
   checkRole,

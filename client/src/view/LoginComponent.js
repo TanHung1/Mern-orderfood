@@ -21,12 +21,8 @@ const LoginComponent = () => {
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
-
-
   const handleSubmit = async (values) => {
-
     setError(null);
-
 
     try {
       const response = await axios.post(
@@ -36,15 +32,14 @@ const LoginComponent = () => {
 
       localStorage.setItem("token", JSON.stringify(response.data));
       if (response?.data) {
-        message.success("Đăng nhập thành công")
+        message.success("Đăng nhập thành công");
         setTimeout(() => {
-
-          window.location.replace("/")
-        }, 500)
+          window.location.replace("/");
+        }, 500);
       }
     } catch (error) {
       if (error.response.data.error) {
-        setError(error.response.data.error)
+        setError(error.response.data.error);
       }
     }
   };
@@ -88,8 +83,8 @@ const LoginComponent = () => {
     }
   }
 
-  const onFailureGoogle = async (res) => {
-
+  const onFailureGoogle = (res) => {
+    message.error("Đăng nhập thất bại")
   }
 
   return (
@@ -113,14 +108,15 @@ const LoginComponent = () => {
                       message: "Vui lòng nhập tài khoản!",
                     },
                   ]}
-                // validateStatus={error ? "error" : ""}
-                // errorMessage={error ? error : ""}
+                  // validateStatus={error ? "error" : ""}
+                  // errorMessage={error ? error : ""}
                 >
                   <Input placeholder="Địa chỉ email hoặc số điện thoại của bạn" />
 
-                  {error === "Email hoặc số điện thoại sai" ? <label style={{ color: 'red' }}>{error}</label> : null}
+                  {error === "Email hoặc số điện thoại sai" ? (
+                    <label style={{ color: "red" }}>{error}</label>
+                  ) : null}
                 </Form.Item>
-
 
                 <Form.Item
                   name="password"
@@ -132,7 +128,9 @@ const LoginComponent = () => {
                   ]}
                 >
                   <Input.Password placeholder="Mật khẩu" />
-                  {error === "Sai mật khẩu" ? <label style={{ color: 'red' }}>{error}</label> : null}
+                  {error === "Sai mật khẩu" ? (
+                    <label style={{ color: "red" }}>{error}</label>
+                  ) : null}
                 </Form.Item>
 
                 <Button htmlType="submit" className="submit">

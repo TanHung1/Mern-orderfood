@@ -1,13 +1,17 @@
 import React from "react";
 import "../styles/RegisterComponent.scss";
-import { Link, Navigate, Router, redirect, useNavigate } from "react-router-dom";
+import {
+  Link,
+  Navigate,
+  Router,
+  redirect,
+  useNavigate,
+} from "react-router-dom";
 import f6 from "../assets/f6.png";
-import { toast } from "react-toastify";
 import { Form, Input, Button, message, Alert, notification } from "antd";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
-
 
 function RegisterComponent() {
   const [success, setSuccess] = useState(false);
@@ -15,24 +19,26 @@ function RegisterComponent() {
   const [modalVisible, setModalVisible] = useState(false);
   const navigate = useNavigate();
   const handleSubmit = async (values) => {
-
     const { username, password, email, phonenumber } = values;
 
     const data = {
-      username:username,
-      password:password,
-      email:email,
-      phonenumber:phonenumber
-    }
+      username: username,
+      password: password,
+      email: email,
+      phonenumber: phonenumber,
+    };
     setError(null);
     try {
-      const response = await axios .post("http://localhost:5000/api/account/register",data)
+      const response = await axios.post(
+        "http://localhost:5000/api/account/register",
+        data
+      );
       setSuccess(true);
-      message.success("Đăng ký thành công")
-      navigate("/login")
+      message.success("Đăng ký thành công");
+      navigate("/login");
     } catch (error) {
-      console.log(error.response?.data?.error)
-      notification.error({ message: error.response?.data?.error})
+      console.log(error.response?.data?.error);
+      notification.error({ message: error.response?.data?.error });
     }
   };
   return (
@@ -76,7 +82,9 @@ function RegisterComponent() {
                   ]}
                 >
                   <Input placeholder="Số điện thoại của bạn" />
-                  {error === "Số điện thoại đã tồn tại" ? <label style={{ color: 'red' }}>{error}</label> : null}
+                  {error === "Số điện thoại đã tồn tại" ? (
+                    <label style={{ color: "red" }}>{error}</label>
+                  ) : null}
                 </Form.Item>
                 <Form.Item
                   name="email"
@@ -92,7 +100,9 @@ function RegisterComponent() {
                   ]}
                 >
                   <Input placeholder="Địa chỉ email của bạn" />
-                  {error === "Email đã tồn tại" ? <label style={{ color: 'red' }}>{error}</label> : null}
+                  {error === "Email đã tồn tại" ? (
+                    <label style={{ color: "red" }}>{error}</label>
+                  ) : null}
                 </Form.Item>
                 <Form.Item
                   name="password"

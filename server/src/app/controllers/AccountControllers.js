@@ -14,6 +14,7 @@ const bcrypt = require("bcrypt");
         phonenumber,
         email,        
         role,
+        password
       } = req.body;
 
       const phonenumberExists = await Account.findOne({ phonenumber: phonenumber });
@@ -92,9 +93,9 @@ const bcrypt = require("bcrypt");
       }
       else{
         const newAccount = new Account({authFacebookID: id, username: name, avatar: avatar, loginType: 'facebook',})
-        const result = await newAccount.save()
+        const user = await newAccount.save()
         const token = jwt.sign(
-          { userId: result._id },
+          { userId: user._id },
           process.env.jwt_access_token,
           { expiresIn: "48h" }
         );
@@ -105,6 +106,7 @@ const bcrypt = require("bcrypt");
     }
   }
 
+  //[post] /api/account/login/google
   const loginWithGoogle = async (req, res) => {
     const {iat, name, email} = req.body;
     try {
@@ -120,9 +122,9 @@ const bcrypt = require("bcrypt");
       }
       else{
         const newAccount = new Account({authGoogleID: iat, username: name, email: email, loginType: 'google',})
-        const result = await newAccount.save()
+        const user = await newAccount.save()
         const token = jwt.sign(
-          { userId: result._id },
+          { userId: user._id },
           process.env.jwt_access_token,
           { expiresIn: "48h" }
         );
@@ -171,6 +173,6 @@ module.exports = {
   register,
   login,
   loginWithFacebook,
-  updateAccount,
-  loginWithGoogle
+  loginWithGoogle,
+  updateAccount
 };

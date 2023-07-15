@@ -4,9 +4,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Form, FormGroup, Label, Input, Button } from "reactstrap";
 import "../styles/EditStaff.scss";
 import { message } from "antd";
-import { useForm } from "react-hook-form"
-import { yupResolver } from "@hookform/resolvers/yup"
-import * as yup from "yup"
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 const accessToken = localStorage.getItem("token");
 const dataUser = JSON.parse(accessToken);
@@ -16,7 +16,6 @@ const token = {
     "Content-Type": "application/json",
   },
 };
-
 
 const schema = yup
   .object({
@@ -28,7 +27,7 @@ const schema = yup
     address: yup.string().required("Không được để trống địa chỉ giao hàng"),
 
     phonenumber: yup
-      .number()
+      .string()
       .required("Không được để trống số điện thoại")
       .typeError("Số điện thoại không hợp lệ")
       .min(1000000000, "Số điện thoại phải đủ 10 chữ số")
@@ -39,7 +38,7 @@ const schema = yup
       .email("Định dạng email không hợp lệ")
       .required("Không được để trống email"),
   })
-  .required()
+  .required();
 function EditAccount() {
   const {
     register,
@@ -47,7 +46,7 @@ function EditAccount() {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
-  })
+  });
 
   const [account, setAccount] = useState(null);
   const [username, setUsername] = useState("");
@@ -74,29 +73,44 @@ function EditAccount() {
       });
   }, [_id]);
 
-  const handleUpdate = (event) => {
+  const handleUpdate = async (event) => {
     event.preventDefault();
-    const updatedAccount = {
-      username,
-      email,
-      phonenumber,
-      address,
-      role,
-    };
-    axios
-      .put(
+    try {
+      const validate = await schema.validate(
+        {
+          username,
+          email,
+          phonenumber,
+          address,
+          role,
+        },
+        { abortEarly: false }
+      );
+
+      const updatedAccount = {
+        username: validate.username,
+        email: validate.email,
+        phonenumber: validate.phonenumber,
+        address: validate.address,
+        role: validate.role,
+      };
+      await axios.put(
         `http://localhost:5000/api/admin/update-account/${_id}`,
         updatedAccount,
         token
-      )
-      .then((response) => {
-        message.success("Cập nhật thành công")
-        navigate("/admin/manage-account");
-      })
-      .catch((error) => {
-        message.error("Cập nhật thất bại")
+      );
+
+      message.success("Cập nhật thành công");
+      navigate("/admin/manage-account");
+    } catch (error) {
+      if (error instanceof yup.ValidationError) {
+        const errorMessages = error.errors;
+        errorMessages.forEach(message.error);
+      } else {
         console.error(error);
-      });
+        message.error("Cập nhật thất bại");
+      }
+    }
   };
 
   if (!account) {
@@ -112,43 +126,40 @@ function EditAccount() {
           <Input
             type="text"
             value={username}
-            // {...register("username")}
+            {...register("username")}
             onChange={(event) => setUsername(event.target.value)}
           />
-          <label style={{ color: 'red' }}>{errors.username?.message}</label>
-
+          <label style={{ color: "red" }}>{errors.username?.message}</label>
         </FormGroup>
         <FormGroup>
           <Label>Email:</Label>
           <Input
             type="email"
             value={email}
-            // {...register("email")}
+            {...register("email")}
             onChange={(event) => setEmail(event.target.value)}
           />
-              <label style={{ color: 'red' }}>{errors.email?.message}</label>
+          <label style={{ color: "red" }}>{errors.email?.message}</label>
         </FormGroup>
         <FormGroup>
           <Label>Số điện thoại:</Label>
           <Input
             type="text"
             value={phonenumber}
-            // {...register("phonenumber")}
+            {...register("phonenumber")}
             onChange={(event) => setPhoneNumber(event.target.value)}
           />
-          <label style={{color: 'red'}}>{errors.phonenumber?.message}</label>
+          <label style={{ color: "red" }}>{errors.phonenumber?.message}</label>
         </FormGroup>
         <FormGroup>
           <Label>Địa chỉ:</Label>
           <Input
             type="text"
             value={address}
-            // {...register("address")}
-
+            {...register("address")}
             onChange={(event) => setAddress(event.target.value)}
           />
-          <label style={{color: 'red'}}>{errors.address?.message}</label>
-
+          <label style={{ color: "red" }}>{errors.address?.message}</label>
         </FormGroup>
         <FormGroup>
           <Label>Vị trí:</Label>

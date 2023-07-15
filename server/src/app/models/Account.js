@@ -13,7 +13,6 @@ const Account = new Schema(
 
     phonenumber: {
       type: String,  
-      default: null
     },
 
     email: {
