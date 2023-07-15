@@ -36,34 +36,36 @@ function StaffBill() {
   }, []);
   const printInvoice = (data) => {
     const doc = new jsPDF();
-
+    const fontPath = "./Roboto-Regular.ttf";
+    const fontName = "Roboto";
+    doc.addFont(fontPath, fontName, "normal");
     // Tạo định dạng cho tài liệu PDF
     const pageWidth = doc.internal.pageSize.width;
     const pageHeight = doc.internal.pageSize.height;
     const marginLeft = 20;
     const marginTop = 20;
     const contentWidth = pageWidth - marginLeft * 2;
-    doc.setFont("Arial Unicode MS", "normal");
     let currentY = marginTop;
-
+    doc.setFont(fontName, "normal");
     // In các thông tin hóa đơn
     doc.setFontSize(18);
-    doc.text("Hóa đơn", marginLeft, currentY);
+    doc.text("Hoa don", marginLeft, currentY);
     currentY += 10;
     doc.setFontSize(12);
     doc.text(
-      `Ngày đặt: ${moment(data.createdAt).format("DD/MM/YYYY HH: mm")}`,
+      `ngay dat: ${moment(data.createdAt).format("DD/MM/YYYY HH: mm")}`,
       marginLeft,
       currentY
     );
     currentY += 10;
-    doc.text(`Tên khách hàng: ${data.username}`, marginLeft, currentY);
+    doc.text(`Ten khach hang: ${data.username}`, marginLeft, currentY);
     currentY += 10;
-    doc.text(`Số điện thoại: ${data.phonenumber}`, marginLeft, currentY);
+    doc.text(`So dien thoai: ${data.phonenumber}`, marginLeft, currentY);
     currentY += 10;
-    doc.text("Chi tiết đơn hàng:", marginLeft, currentY);
+    doc.text("Chi tiet don hang:", marginLeft, currentY);
     currentY += 10;
     data.product.forEach((p) => {
+      doc.setFont(fontName, "normal");
       doc.text(
         `${p.nameprod}: ${p.price.toLocaleString()}đ`,
         marginLeft,
@@ -72,12 +74,12 @@ function StaffBill() {
       currentY += 10;
     });
     doc.text(
-      `Tổng giá: ${data.totalPrice.toLocaleString()}đ`,
+      `Tong gia: ${data.totalPrice.toLocaleString()}đ`,
       marginLeft,
       currentY
     );
     currentY += 10;
-    doc.text(`Trạng thái: ${data.status}`, marginLeft, currentY);
+    doc.text(`Trang thai: ${data.status}`, marginLeft, currentY);
 
     // Lưu tài liệu PDF
     doc.save("hoadon.pdf");
