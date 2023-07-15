@@ -30,16 +30,14 @@ register = async (req, res, next) => {
       role,
     });
     await newAccount.save();
-    return res
-      .status(200)
-      .json({
-        message: "oke",
-        Listdata: {
-          username: newAccount.username,
-          phonenumber: newAccount.phonenumber,
-          email: newAccount.email,
-        },
-      });
+    return res.status(200).json({
+      message: "oke",
+      Listdata: {
+        username: newAccount.username,
+        phonenumber: newAccount.phonenumber,
+        email: newAccount.email,
+      },
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json(error);
