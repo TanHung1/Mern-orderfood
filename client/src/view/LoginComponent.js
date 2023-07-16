@@ -72,7 +72,7 @@ const LoginComponent = () => {
 
   const onSuccessGoogle = async (res) => {
     var decoded = jwt_decode(res.credential);
-    const { iat, name, email } = decoded;
+    const { iat, name, email, picture } = decoded;
     console.log(decoded);
     const response = await axios.post(
       "http://localhost:5000/api/account/login/google",
@@ -80,6 +80,7 @@ const LoginComponent = () => {
         iat,
         name,
         email,
+        picture,
       }
     );
     localStorage.setItem("token", JSON.stringify(response.data));

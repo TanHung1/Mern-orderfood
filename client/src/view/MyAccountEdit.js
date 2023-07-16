@@ -46,6 +46,7 @@ function MyAccountEdit() {
   const [customerAddress, setCustomerAddress] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
+  const [customerAvatar, setCustomerAvatar] = useState("");
   // const [message, setMessage] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const accessToken = localStorage.getItem("token");
@@ -63,6 +64,7 @@ function MyAccountEdit() {
       setCustomerAddress(dataUser.user?.address);
       setCustomerPhone(dataUser.user?.phonenumber);
       setCustomerEmail(dataUser.user?.email);
+      setCustomerAvatar(dataUser.user?.avatar);
     }
   }, []);
 
@@ -123,7 +125,14 @@ function MyAccountEdit() {
       if (error instanceof yup.ValidationError) {
         // Nếu có lỗi xảy ra, hiển thị các thông báo lỗi
         const errorMessages = error.errors;
-        notification.error({ message: errorMessages.join(", ") });
+
+        const errorMessageList = errorMessages.map((message, index) => (
+          <li key={index}>{message}</li>
+        ));
+
+        notification.error({
+          message: <ul>{errorMessageList}</ul>,
+        });
       } else {
         console.error(error.response?.data?.error);
         notification.error({ message: error.response?.data?.error });
@@ -138,6 +147,9 @@ function MyAccountEdit() {
           <div>
             <div className="left-previousOders-content">
               <div className="header-info">
+                <div>
+                  <img src={customerAvatar}></img>
+                </div>
                 <h2>
                   XIN CHÀO,
                   <br /> {FullName}
