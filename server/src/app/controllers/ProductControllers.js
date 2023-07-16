@@ -29,7 +29,7 @@ const productDetail = async (req, res, next) => {
     const averageRating = numReviews > 0 ? totalRating / numReviews : 0;
     res.status(200).json({
       product: mongooesToObject(product),
-      starPoit: mongooesToObject(averageRating),
+      averageRating,
     });
   } catch (error) {
     console.log(error);
