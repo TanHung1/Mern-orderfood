@@ -27,7 +27,7 @@ const LoginComponent = () => {
     try {
       const response = await axios.post(
         "http://localhost:5000/api/account/login",
-        values
+        identifier, password
       );
 
       localStorage.setItem("token", JSON.stringify(response.data));

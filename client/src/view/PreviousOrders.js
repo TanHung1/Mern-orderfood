@@ -3,8 +3,6 @@ import axios from "axios";
 import { Table, Tag, Button } from "antd";
 import { NavLink, Link } from "react-router-dom";
 import moment from "moment";
-import "jspdf-autotable";
-import jsPDF from "jspdf";
 const PreviousOrders = ({ customerId }) => {
   const [orders, setOrders] = useState([]);
   const [customerName, setCustomerName] = useState("");
@@ -46,56 +44,7 @@ const PreviousOrders = ({ customerId }) => {
 
     fetchOrders();
   }, [customerId]);
-  const printInvoice = (data) => {
-    const doc = new jsPDF();
-    const fontPath = "./Roboto-Regular.ttf";
-    const fontName = "Roboto";
-    doc.addFont(fontPath, fontName, "normal");
-    // Tạo định dạng cho tài liệu PDF
-    const pageWidth = doc.internal.pageSize.width;
-    const pageHeight = doc.internal.pageSize.height;
-    const marginLeft = 20;
-    const marginTop = 20;
-    const contentWidth = pageWidth - marginLeft * 2;
-    let currentY = marginTop;
-    doc.setFont(fontName, "normal");
-    // In các thông tin hóa đơn
-    doc.setFontSize(18);
-    doc.text("Hoa don", marginLeft, currentY);
-    currentY += 10;
-    doc.setFontSize(12);
-    doc.text(
-      `ngay dat: ${moment(data.createdAt).format("DD/MM/YYYY HH: mm")}`,
-      marginLeft,
-      currentY
-    );
-    currentY += 10;
-    doc.text(`Ten khach hang: ${data.username}`, marginLeft, currentY);
-    currentY += 10;
-    doc.text(`So dien thoai: ${data.phonenumber}`, marginLeft, currentY);
-    currentY += 10;
-    doc.text("Chi tiet don hang:", marginLeft, currentY);
-    currentY += 10;
-    data.product.forEach((p) => {
-      doc.setFont(fontName, "normal");
-      doc.text(
-        `${p.nameprod}: ${p.price.toLocaleString()}đ`,
-        marginLeft,
-        currentY
-      );
-      currentY += 10;
-    });
-    doc.text(
-      `Tong gia: ${data.totalPrice.toLocaleString()}đ`,
-      marginLeft,
-      currentY
-    );
-    currentY += 10;
-    doc.text(`Trang thai: ${data.status}`, marginLeft, currentY);
 
-    // Lưu tài liệu PDF
-    doc.save("hoadon.pdf");
-  };
   const columns = [
     {
       title: "ID",
@@ -185,17 +134,6 @@ const PreviousOrders = ({ customerId }) => {
         }
         return <Tag color={color}>{status}</Tag>;
       },
-    },
-    {
-      title: "Lựa chọn",
-      key: "action",
-      render: (text, record) => (
-        <span>
-          <Button onClick={() => printInvoice(record)}>
-            <i class="fa-solid fa-print"></i>
-          </Button>
-        </span>
-      ),
     },
   ];
 

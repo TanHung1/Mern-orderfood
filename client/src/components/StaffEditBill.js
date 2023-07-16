@@ -61,14 +61,10 @@ function StaffEditBill() {
       .catch((err) => console.log(err));
   };
 
-  if (order) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <div className="container mt-4">
       <h2 className="Edit-order">Cập nhật thông tin đơn hàng</h2>
-    {!order?<div>Loading...</div>:<Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit}>
         <FormGroup>
           <Label>Tên khách hàng:</Label>
           <Input
@@ -118,7 +114,7 @@ function StaffEditBill() {
         <Button color="primary" type="submit" className="btn-editOrder">
           Lưu
         </Button>
-      </Form>}  
+      </Form> 
     </div>
   );
 }
