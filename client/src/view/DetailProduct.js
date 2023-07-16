@@ -13,6 +13,7 @@ import {
   Modal,
   Image,
 } from "antd";
+import iconuser from "../assets/user-solid.svg";
 import Avatar from "antd/es/avatar/avatar";
 
 const { TextArea } = Input;
@@ -171,7 +172,16 @@ export function DetailProduct() {
         <div className="rating-list">
           {product?.reviews?.map((review) => (
             <div key={review._id} className="rating-item">
-              <Avatar src={review.avatar}></Avatar>
+              {review.avatar ? (
+                <Avatar src={review.avatar} />
+              ) : (
+                <Avatar
+                  src={iconuser}
+                  style={{
+                    border: "1px solid black",
+                  }}
+                ></Avatar>
+              )}
               <p className="username">{review.name}</p>
               <Rate value={review.rating} disabled />
               <p style={{ fontSize: 12 }}>

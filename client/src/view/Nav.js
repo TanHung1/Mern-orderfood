@@ -3,6 +3,7 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import "../styles/Nav.scss";
 import pizza from "../assets/logoPizza.png";
 import { Avatar } from "antd";
+import iconuser from "../assets/user-solid.svg";
 function Nav() {
   const [cartItemCount, setCartItemCount] = useState(0);
   const [isNavOpen, setIsNavOpen] = useState(false);
@@ -129,7 +130,16 @@ function Nav() {
             </NavLink>
           ) : (
             <NavLink to="/my-account/edit" activeClassName="active">
-              <Avatar src={user.user.avatar}></Avatar>
+              {user.user.avatar ? (
+                <Avatar src={user.user.avatar}></Avatar>
+              ) : (
+                <Avatar
+                  src={iconuser}
+                  style={{
+                    border: "1px solid black",
+                  }}
+                ></Avatar>
+              )}
             </NavLink>
           )}
         </form>
