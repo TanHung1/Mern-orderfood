@@ -34,6 +34,7 @@ export function DetailProduct() {
   const navigate = useNavigate();
 
   const [product, setProduct] = useState([]);
+  const [scores, setScores] = useState([]);
   const [rating, setRating] = useState(1);
   const [comment, setComment] = useState();
 
@@ -44,15 +45,19 @@ export function DetailProduct() {
 
     if (response?.data) {
       const productData = response.data.product;
+      const starPoit = Math.round(response.data.averageRating);
       const sortedReviews = productData.reviews.sort((a, b) => {
         return moment(b.created).diff(moment(a.created));
       });
       setProduct({ ...productData, reviews: sortedReviews });
+      if(starPoit === 0){
+        setScores(5)
+      }else{
+        setScores (starPoit)
+      }
     }
 
-    console.log(response);
-
-    return response?.data;
+    // return response?.data;
   };
   const showModal = () => {
     setOpen(true);
@@ -119,6 +124,7 @@ export function DetailProduct() {
 
         <div className="block-right">
           <p className="nameprod">{product?.nameprod}</p>
+          <p><Rate value={scores} allowHalf disabled /> {scores}</p>
           <p className="category">{product?.category}</p>
           <p className="price">
             {product?.price ? product?.price.toLocaleString() : ""}&#8363;

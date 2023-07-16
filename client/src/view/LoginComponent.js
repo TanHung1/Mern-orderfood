@@ -139,7 +139,7 @@ const LoginComponent = () => {
                 className="login-facebook"
                 authorizationUrl="https://www.facebook.com/dialog/oauth"
                 responseType="token"
-                clientId="259667280114120"
+                clientId="1977957859224393"
                 redirectUri="http://localhost:3000/login"
                 onSuccess={onSuccessFacebook}
                 onFailure={onFailureFacebook}
