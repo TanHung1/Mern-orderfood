@@ -37,7 +37,7 @@ function StaffEditBill() {
       })
       .catch((err) => console.log(err));
   }, [_id]);
-  console.log(username)
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const updatedOrder = {
@@ -64,12 +64,13 @@ function StaffEditBill() {
   return (
     <div className="container mt-4">
       <h2 className="Edit-order">Cập nhật thông tin đơn hàng</h2>
-    <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit}>
         <FormGroup>
           <Label>Tên khách hàng:</Label>
           <Input
             type="text"
             value={username}
+            disabled="true"
             onChange={(e) => setUsername(e.target.value)}
           />
         </FormGroup>
@@ -77,6 +78,7 @@ function StaffEditBill() {
           <Label>Số điện thoại:</Label>
           <Input
             type="text"
+            disabled="true"
             value={phonenumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
           />
@@ -85,6 +87,7 @@ function StaffEditBill() {
           <Label>Địa chỉ:</Label>
           <Input
             type="text"
+            disabled="true"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
           />
@@ -93,6 +96,7 @@ function StaffEditBill() {
           <Label>Tổng giá:</Label>
           <Input
             type="text"
+            disabled="true"
             value={totalPrice}
             onChange={(e) => setTotalPrice(e.target.value)}
           />
@@ -104,7 +108,7 @@ function StaffEditBill() {
             value={status}
             onChange={(e) => setStatus(e.target.value)}
           >
-             <option value="Chưa xác nhận">Chưa xác nhận</option>
+            <option value="Chưa xác nhận">Chưa xác nhận</option>
             <option value="Đã xác nhận">Đã xác nhận</option>
             <option value="Đang giao">Đang giao</option>
             <option value="Đã hoàn thành">Đã hoàn thành</option>
@@ -114,7 +118,7 @@ function StaffEditBill() {
         <Button color="primary" type="submit" className="btn-editOrder">
           Lưu
         </Button>
-      </Form> 
+      </Form>
     </div>
   );
 }

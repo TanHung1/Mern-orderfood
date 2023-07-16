@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import f6 from "../assets/f6.png";
 import { Form, Input, Button, Modal, Alert, message } from "antd";
-import OAuth2Login from 'react-simple-oauth2-login';
-import { GoogleOAuthProvider, GoogleLogin  } from '@react-oauth/google';
+import OAuth2Login from "react-simple-oauth2-login";
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
 import about from "../assets/about-img.png";
 import { NavLink, useRoutes, useNavigate } from "react-router-dom";
@@ -15,15 +15,10 @@ const LoginComponent = () => {
   const [identifier, setidentifier] = useState("");
   const [password, setPassword] = useState("");
 
-  const [error, setError] = useState(null);
-
-  console.log(error);
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (values) => {
-    setError(null);
-
     try {
       const response = await axios.post(
         "http://localhost:5000/api/account/login",
@@ -33,59 +28,72 @@ const LoginComponent = () => {
       localStorage.setItem("token", JSON.stringify(response.data));
       if (response?.data) {
         message.success("Đăng nhập thành công");
+
         setTimeout(() => {
           window.location.replace("/");
         }, 500);
       }
     } catch (error) {
       if (error.response.data.error) {
-        setError(error.response.data.error);
+        message.error(error.response.data.error);
       }
     }
   };
 
   const onSuccessFacebook = async (res) => {
-    const token = res.access_token
-    const result = await fetch(`https://graph.facebook.com/me?fields=id,name,picture.type(large)&access_token=${token}`)
-    const profile = await result.json()
-    console.log(profile)
-    const {id, name} = profile
-    const avatar = profile.picture.data.url
-    const response = await axios.post("http://localhost:5000/api/account/login/facebook",{
-      id, name, avatar
-    })
+    const token = res.access_token;
+    const result = await fetch(
+      `https://graph.facebook.com/me?fields=id,name,picture.type(large)&access_token=${token}`
+    );
+    const profile = await result.json();
+    console.log(profile);
+    const { id, name } = profile;
+    const avatar = profile.picture.data.url;
+    const response = await axios.post(
+      "http://localhost:5000/api/account/login/facebook",
+      {
+        id,
+        name,
+        avatar,
+      }
+    );
     localStorage.setItem("token", JSON.stringify(response.data));
     if (response?.data) {
-      message.success("Đăng nhập thành công")
+      message.success("Đăng nhập thành công");
       setTimeout(() => {
-        window.location.replace("/")
-      }, 500)
+        window.location.replace("/");
+      }, 500);
     }
-  }
+  };
 
   const onFailureFacebook = (res) => {
-    message.error("Đăng nhập thất bại")
-  }
+    message.error("Đăng nhập thất bại");
+  };
 
   const onSuccessGoogle = async (res) => {
     var decoded = jwt_decode(res.credential);
-    const {iat, name, email} = decoded
-    console.log(decoded)
-    const response = await axios.post("http://localhost:5000/api/account/login/google", {
-      iat, name, email
-    })
+    const { iat, name, email } = decoded;
+    console.log(decoded);
+    const response = await axios.post(
+      "http://localhost:5000/api/account/login/google",
+      {
+        iat,
+        name,
+        email,
+      }
+    );
     localStorage.setItem("token", JSON.stringify(response.data));
     if (response?.data) {
-      message.success("Đăng nhập thành công")
+      message.success("Đăng nhập thành công");
       setTimeout(() => {
-        window.location.replace("/")
-      }, 500)
+        window.location.replace("/");
+      }, 500);
     }
-  }
+  };
 
   const onFailureGoogle = (res) => {
-    message.error("Đăng nhập thất bại")
-  }
+    message.error("Đăng nhập thất bại");
+  };
 
   return (
     <div>
@@ -108,14 +116,8 @@ const LoginComponent = () => {
                       message: "Vui lòng nhập tài khoản!",
                     },
                   ]}
-                  // validateStatus={error ? "error" : ""}
-                  // errorMessage={error ? error : ""}
                 >
                   <Input placeholder="Địa chỉ email hoặc số điện thoại của bạn" />
-
-                  {error === "Email hoặc số điện thoại sai" ? (
-                    <label style={{ color: "red" }}>{error}</label>
-                  ) : null}
                 </Form.Item>
 
                 <Form.Item
@@ -128,9 +130,6 @@ const LoginComponent = () => {
                   ]}
                 >
                   <Input.Password placeholder="Mật khẩu" />
-                  {error === "Sai mật khẩu" ? (
-                    <label style={{ color: "red" }}>{error}</label>
-                  ) : null}
                 </Form.Item>
 
                 <Button htmlType="submit" className="submit">
@@ -143,22 +142,26 @@ const LoginComponent = () => {
                 className="login-facebook"
                 authorizationUrl="https://www.facebook.com/dialog/oauth"
                 responseType="token"
-                clientId="1977957859224393"
+                clientId="259667280114120"
                 redirectUri="http://localhost:3000/login"
                 onSuccess={onSuccessFacebook}
-                onFailure={onFailureFacebook}>
-                <i className="fa-brands fa-facebook"></i> Đăng nhập bằng Facebook
+                onFailure={onFailureFacebook}
+              >
+                <i className="fa-brands fa-facebook"></i> Đăng nhập bằng
+                Facebook
               </OAuth2Login>
 
               {/* <button className="login-google"> */}
-                <GoogleOAuthProvider className="login-google" clientId="113981226682-gjneaaoui6fr5sv53iql9rp0dc9oaks7.apps.googleusercontent.com">
-                  <GoogleLogin
-                    onSuccess={onSuccessGoogle}
-                    
-                    onError={onFailureGoogle}
-                  />
-                </GoogleOAuthProvider>
-                {/* <i className="fa-brands fa-google"></i> Đăng nhập bằng Google
+              <GoogleOAuthProvider
+                className="login-google"
+                clientId="113981226682-gjneaaoui6fr5sv53iql9rp0dc9oaks7.apps.googleusercontent.com"
+              >
+                <GoogleLogin
+                  onSuccess={onSuccessGoogle}
+                  onError={onFailureGoogle}
+                />
+              </GoogleOAuthProvider>
+              {/* <i className="fa-brands fa-google"></i> Đăng nhập bằng Google
               </button> */}
               <p className="login-register-text">
                 Bạn chưa có tài khoản?{" "}

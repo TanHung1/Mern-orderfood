@@ -10,13 +10,11 @@ function Nav() {
   const navigate = useNavigate();
   const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
   const user = JSON.parse(localStorage.getItem("token")) || [];
-  // console.log(user.user.role    ,'user');
   const totalAmount = () => {
     return cartItems.reduce((total, item) => {
       return total + item.quantity++;
     }, 0);
   };
-
   useEffect(() => {});
 
   // useEffect(() => {

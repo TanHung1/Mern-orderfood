@@ -74,7 +74,7 @@ function MyAccountEdit() {
     localStorage.removeItem("cart");
 
     // Chuyển hướng đến trang đăng nhập
-    window.location.pathname = "/login";
+    //window.location.pathname = "/login";
   };
 
   const handleUpdate = async (e) => {
@@ -121,9 +121,19 @@ function MyAccountEdit() {
       message.success("Cập nhật thành công");
     } catch (error) {
       if (error instanceof yup.ValidationError) {
-        // Nếu có lỗi xảy ra, hiển thị các thông báo lỗi
         const errorMessages = error.errors;
-        notification.error({ message: errorMessages.join(", ") });
+
+        const errorMessageList = errorMessages.map((message, index) => (
+          <li key={index}>{message}</li>
+        ));
+
+        notification.error({
+          message: (
+            <ul>
+              {errorMessageList}
+            </ul>
+          ),
+        });
       } else {
         console.error(error.response?.data?.error);
         notification.error({ message: error.response?.data?.error });
@@ -143,7 +153,9 @@ function MyAccountEdit() {
                   <br /> {FullName}
                 </h2>
                 <p>
-                  <NavLink onClick={handleLogout}>Đăng xuất</NavLink>
+                  <NavLink onClick={handleLogout} to={"/login"}>
+                    Đăng xuất
+                  </NavLink>
                 </p>
               </div>
               <ul>

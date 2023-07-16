@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import "../styles/Invoice.scss";
 import dayjs from "dayjs";
@@ -77,55 +77,57 @@ function InvoiceStaff() {
   });
 
   return (
-    <div class="bill">
-      <div class="bill-details" ref={componentRef}>
-        <div class="bill-section">
-          <div class="summary-item">
-            <p>Mã đơn hàng:</p>
-            <p>{id}</p>
+    <>
+      <div class="bill">
+        <Link to={"/Staff/manage-bill"}>Trở về</Link>
+        <div class="bill-details" ref={componentRef}>
+          <div class="bill-section">
+            <div class="summary-item">
+              <p>Mã đơn hàng:</p>
+              <p>{id}</p>
+            </div>
+            <div class="summary-item">
+              <p>Đơn hàng được tạo:</p>
+              <p>{moment(createdAt).format("DD/MM/YYYY HH:mm")}</p>
+            </div>
           </div>
-          <div class="summary-item">
-            <p>Đơn hàng được tạo:</p>
-            <p>{moment(createdAt).format("DD/MM/YYYY HH:mm")}</p>
+          <div class="bill-section">
+            <h2>Thông tin nhận hàng</h2>
+            <div class="summary-item">
+              <p>Tên người nhận:</p>
+              <p>{username}</p>
+            </div>
+            <div class="summary-item">
+              <p>SĐT người nhận:</p>
+              <p>{phonenumber}</p>
+            </div>
+            <div class="summary-item">
+              <p>Địa chỉ người nhận:</p>
+              <p>{address}</p>
+            </div>
+          </div>
+          <div class="bill-section">
+            <h2>Danh sách sản phẩm</h2>
+            <Table
+              columns={columns}
+              dataSource={order.product}
+              rowKey="_id"
+              pagination={false}
+            />
+          </div>
+          <div class="bill-summary">
+            <h2>Tiền thu người nhận</h2>
+            <div class="summary-item">
+              <p>Tổng giá đơn hàng:</p>
+              <p>{totalPrice.toLocaleString()} đ</p>
+            </div>
           </div>
         </div>
-        <div class="bill-section">
-          <h2>Thông tin nhận hàng</h2>
-          <div class="summary-item">
-            <p>Tên người nhận:</p>
-            <p>{username}</p>
-          </div>
-          <div class="summary-item">
-            <p>SĐT người nhận:</p>
-            <p>{phonenumber}</p>
-          </div>
-          <div class="summary-item">
-            <p>Địa chỉ người nhận:</p>
-            <p>{address}</p>
-          </div>
-        </div>
-        <div class="bill-section">
-          <h2>Danh sách sản phẩm</h2>
-          <Table
-            columns={columns}
-            dataSource={order.product}
-            rowKey="_id"
-            pagination={false}
-          />
-        </div>
-        <div class="bill-summary">
-          <h2>Tiền thu người nhận</h2>
-          <div class="summary-item">
-            <p>Tổng giá đơn hàng:</p>
-            <p>{totalPrice.toLocaleString()} đ</p>
-          </div>
-        </div>
-      </div>
 
-      <Button onClick={handlePrint}>
-        <i class="fa-solid fa-print"></i>
-      </Button>
-      <style>{`
+        <Button onClick={handlePrint}>
+          <i class="fa-solid fa-print"></i>
+        </Button>
+        <style>{`
         @media print {
           body {
             margin: 0;
@@ -143,7 +145,8 @@ function InvoiceStaff() {
           }
         }
       `}</style>
-    </div>
+      </div>
+    </>
   );
 }
 

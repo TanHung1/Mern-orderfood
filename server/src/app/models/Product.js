@@ -8,7 +8,9 @@ const Review= new Schema({
   user_id: {
     type: String
   },
-
+  avatar : {
+    type: String
+  },
   name: {
     type: String,
   },
