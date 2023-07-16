@@ -12,17 +12,13 @@ import { notification } from "antd";
 import "../styles/LoginComponent.scss";
 
 const LoginComponent = () => {
-  const [identifier, setidentifier] = useState("");
-  const [password, setPassword] = useState("");
-
-  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (values) => {
     try {
       const response = await axios.post(
         "http://localhost:5000/api/account/login",
-        identifier, password
+        values
       );
 
       localStorage.setItem("token", JSON.stringify(response.data));
@@ -152,7 +148,6 @@ const LoginComponent = () => {
                 Facebook
               </OAuth2Login>
 
-              {/* <button className="login-google"> */}
               <GoogleOAuthProvider
                 className="login-google"
                 clientId="113981226682-gjneaaoui6fr5sv53iql9rp0dc9oaks7.apps.googleusercontent.com"
@@ -162,8 +157,7 @@ const LoginComponent = () => {
                   onError={onFailureGoogle}
                 />
               </GoogleOAuthProvider>
-              {/* <i className="fa-brands fa-google"></i> Đăng nhập bằng Google
-              </button> */}
+            
               <p className="login-register-text">
                 Bạn chưa có tài khoản?{" "}
                 <NavLink to="/register" activeClassName="active">

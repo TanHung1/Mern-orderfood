@@ -3,6 +3,7 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import "../styles/Nav.scss";
 import pizza from "../assets/logoPizza.png";
 import { Avatar } from "antd";
+import { UserOutlined } from "@ant-design/icons";
 import iconuser from "../assets/user-solid.svg";
 function Nav() {
   const [cartItemCount, setCartItemCount] = useState(0);
@@ -133,12 +134,12 @@ function Nav() {
               {user.user.avatar ? (
                 <Avatar src={user.user.avatar}></Avatar>
               ) : (
-                <Avatar
-                  src={iconuser}
+                <Avatar                  
                   style={{
                     border: "1px solid black",
                   }}
-                ></Avatar>
+                ><UserOutlined />
+                </Avatar>
               )}
             </NavLink>
           )}

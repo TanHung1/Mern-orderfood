@@ -18,13 +18,22 @@ const show = async (req, res) => {
 const productDetail = async (req, res, next) => {
   try {
     const product = await Product.findById({ _id: req.params.id });
+    let totalRating = 0;
+    let numReviews = 0;
 
+    for (const review of product.reviews) {
+      totalRating += review.rating;
+      numReviews++;
+    }
+
+    const averageRating = numReviews > 0 ? totalRating / numReviews : 0;
     res.status(200).json({
       product: mongooesToObject(product),
+      starPoit: mongooesToObject(averageRating),
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json(err);
+    res.status(500).json(error);
   }
 };
 //[post] api/product/create-review/:id

@@ -94,6 +94,10 @@ function ManageFood() {
       .post("http://localhost:5000/api/admin/create-product", inputData, token)
       .then((res) => {
         message.success("Thêm món ăn thành công")
+        setInputData({
+          nameprod: "",
+          price: "",
+        })
         navigate("/admin/manage-food");
         setAddedProduct(res.data._id);
       })
@@ -273,6 +277,7 @@ function ManageFood() {
                     className="form-control"
                     placeholder="Nhập tên sản phẩm"
                     id="exampleFormControlFile1"
+                    value={inputData.nameprod}
                     {...register("nameprod")}
                     onChange={(e) =>
                       setInputData({ ...inputData, nameprod: e.target.value })
@@ -313,6 +318,7 @@ function ManageFood() {
                     <input
                       type="number"
                       className="form-control"
+                      value={inputData.price}
                       {...register('price')}
                       placeholder="Nhập giá tiền"
                       id="exampleFormControlFile1"
@@ -331,6 +337,7 @@ function ManageFood() {
                     </label>
                     <select
                       className="form-control"
+                      value={inputData.category}
                       {...register('category')}
                       onChange={(e) =>
                         setInputData({ ...inputData, category: e.target.value })
