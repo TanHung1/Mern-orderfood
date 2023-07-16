@@ -27,7 +27,7 @@ const token = {
     "Content-Type": "application/json",
   },
 };
-console.log(dataUser.user.avatar);
+// console.log(dataUser.user.avatar);
 
 export function DetailProduct() {
   const [open, setOpen] = useState(false);

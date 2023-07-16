@@ -124,21 +124,15 @@ function MyAccountEdit() {
     } catch (error) {
       if (error instanceof yup.ValidationError) {
         const errorMessages = error.errors;
-
         const errorMessageList = errorMessages.map((message, index) => (
           <li key={index}>{message}</li>
         ));
-
         notification.error({
-<<<<<<< HEAD
           message: (
             <ul>
               {errorMessageList}
             </ul>
           ),
-=======
-          message: <ul>{errorMessageList}</ul>,
->>>>>>> 810c8e7f98cf28fd9403c93df37eec00a2a91bbc
         });
       } else {
         console.error(error.response?.data?.error);
