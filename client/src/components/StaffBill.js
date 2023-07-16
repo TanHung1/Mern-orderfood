@@ -39,7 +39,7 @@ function StaffBill() {
       title: "ID",
       dataIndex: "_id",
       key: "_id",
-      render: (_id, record, index) => <span>{_id}</span>,
+      render: (_id) => <span>{_id}</span>,
     },
     {
       title: "Người đặt",

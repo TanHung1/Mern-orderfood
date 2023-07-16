@@ -3,6 +3,7 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import "../styles/Nav.scss";
 import pizza from "../assets/logoPizza.png";
 import { Avatar } from "antd";
+import { UserOutlined } from "@ant-design/icons";
 import iconuser from "../assets/user-solid.svg";
 function Nav() {
   const [cartItemCount, setCartItemCount] = useState(0);
@@ -12,13 +13,11 @@ function Nav() {
   const navigate = useNavigate();
   const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
   const user = JSON.parse(localStorage.getItem("token")) || [];
-  // console.log(user.user.role    ,'user');
   const totalAmount = () => {
     return cartItems.reduce((total, item) => {
       return total + item.quantity++;
     }, 0);
   };
-
   useEffect(() => {});
 
   // useEffect(() => {
@@ -135,12 +134,12 @@ function Nav() {
               {user.user.avatar ? (
                 <Avatar src={user.user.avatar}></Avatar>
               ) : (
-                <Avatar
-                  src={iconuser}
+                <Avatar                  
                   style={{
                     border: "1px solid black",
                   }}
-                ></Avatar>
+                ><UserOutlined />
+                </Avatar>
               )}
             </NavLink>
           )}

@@ -4,11 +4,12 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
-import { Modal, Button, message, notification, Avatar } from "antd";
+import {  message, notification, Avatar } from "antd";
+import { UserOutlined } from "@ant-design/icons";
 import { useForm } from "react-hook-form";
+import user from "../assets/user.png";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import iconuser from "../assets/user-solid.svg";
 const schema = yup
   .object({
     username: yup
@@ -33,22 +34,11 @@ const schema = yup
   .required();
 
 function MyAccountEdit() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
-
   const [customerName, setCustomerName] = useState("");
-  const [FullName, setFullName] = useState("");
   const [customerAddress, setCustomerAddress] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
   const [customerAvatar, setCustomerAvatar] = useState("");
-  // const [message, setMessage] = useState("");
-  const [modalVisible, setModalVisible] = useState(false);
   const accessToken = localStorage.getItem("token");
 
   const dataUser = JSON.parse(accessToken);
@@ -117,21 +107,21 @@ function MyAccountEdit() {
         "token",
         JSON.stringify({ user: updatedUser, token: dataUser?.token })
       );
-      setFullName(validatedData.username);
 
       // Hiển thị thông báo thành công
       message.success("Cập nhật thành công");
     } catch (error) {
       if (error instanceof yup.ValidationError) {
-        // Nếu có lỗi xảy ra, hiển thị các thông báo lỗi
         const errorMessages = error.errors;
-
         const errorMessageList = errorMessages.map((message, index) => (
           <li key={index}>{message}</li>
         ));
-
         notification.error({
-          message: <ul>{errorMessageList}</ul>,
+          message: (
+            <ul>
+              {errorMessageList}
+            </ul>
+          ),
         });
       } else {
         console.error(error.response?.data?.error);
@@ -154,19 +144,16 @@ function MyAccountEdit() {
                       style={{ width: "100%", height: "100%" }}
                     ></Avatar>
                   ) : (
-                    <Avatar
-                      src={iconuser}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        border: "1px solid black",
-                      }}
-                    ></Avatar>
+                    <Avatar 
+                      src = {user}  
+                      style={{ width: "100%", height: "100%" , border: "1px solid", borderRadius: "50%", backgroundColor: "rgba(0, 0, 0, 0.25)"}}            
+                    >
+                    </Avatar>
                   )}
                 </div>
                 <h2>
                   XIN CHÀO,
-                  <br /> {FullName}
+                  <br /> {dataUser.user.username}
                 </h2>
                 <p>
                   <NavLink onClick={handleLogout} to={"/login"}>
@@ -203,7 +190,7 @@ function MyAccountEdit() {
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
                   value={customerName}
-                  {...register("username")}
+                
                   onChange={(e) => setCustomerName(e.target.value)}
                 />
               </div>
@@ -214,15 +201,10 @@ function MyAccountEdit() {
                   className="form-control"
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
-                  value={customerAddress}
-                  {...register("address")}
+                  value={customerAddress}         
                   onChange={(e) => setCustomerAddress(e.target.value)}
-                />
-                <label style={{ color: "red" }}>
-                  {errors.address?.message}
-                </label>
+                />               
               </div>
-              <label style={{ color: "red" }}>{errors.address?.message}</label>
               <div className="form-group">
                 <label for="exampleInputEmail1">Số điện thoại</label>
                 <input
@@ -230,7 +212,7 @@ function MyAccountEdit() {
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
                   value={customerPhone}
-                  {...register("phonenumber")}
+                
                   onChange={(e) => setCustomerPhone(e.target.value)}
                 />
               </div>
@@ -243,7 +225,7 @@ function MyAccountEdit() {
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
                   value={customerEmail}
-                  {...register("email")}
+                  
                   onChange={(e) => setCustomerEmail(e.target.value)}
                 />
               </div>

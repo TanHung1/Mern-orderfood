@@ -1,6 +1,8 @@
 const Account = require("../models/Account");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const dotenv = require("dotenv");
+dotenv.config();
 
 //[post] api/account/register
 
@@ -8,7 +10,7 @@ register = async (req, res, next) => {
   try {
     const salt = await bcrypt.genSalt(10);
     const hashedPasword = await bcrypt.hash(req.body.password, salt);
-    const { username, phonenumber, email, role, password } = req.body;
+    const { username, phonenumber, email, role } = req.body;
 
     const phonenumberExists = await Account.findOne({
       phonenumber: phonenumber,
@@ -45,6 +47,7 @@ register = async (req, res, next) => {
 //[post] api/account/login
 login = async (req, res, next) => {
   const identifier = req.body.identifier;
+  const password = req.body.password;
   let user;
 
   if (/^\d+$/.test(identifier)) {
@@ -57,9 +60,9 @@ login = async (req, res, next) => {
     return res.status(403).json({ error: "Email hoặc số điện thoại sai" });
   }
 
-  const vallidPassword = await bcrypt.compare(req.body.password, user.password);
+  const validPassword = await bcrypt.compare(password, user.password);
 
-  if (!vallidPassword) {
+  if (!validPassword) {
     return res.status(403).json({ error: "Sai mật khẩu" });
   }
 

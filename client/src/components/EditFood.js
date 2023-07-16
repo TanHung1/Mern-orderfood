@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import { Button, message, Modal } from "antd";
+import { notification, Modal } from "antd";
 import "../styles/EditFood.scss";
+import * as yup from "yup";
 
 const accessToken = localStorage.getItem("token");
 const dataUser = JSON.parse(accessToken);
@@ -13,50 +14,79 @@ const token = {
   },
 };
 
-function EditFood() {
-  const [data, setData] = useState([]);
+const schema = yup
+  .object({
+    nameprod: yup
+      .string()
+      .required("Không được để tên sản phẩm"),
 
+    price: yup
+      .string()
+      .required("Không được để trống giá")
+      .test("minPrice", "Giá tối thiểu là 1,000đ", (value) => {
+        if (value) {
+          const price = parseInt(value, 10);
+          return price >= 1000;
+        }
+        return true;
+      }),
+
+    category: yup
+      .string()
+      .required("Phải chọn loại sản phẩm"),
+
+    image: yup
+      .string()
+      .required("Phải chọn hình")
+  })
+  .required();
+
+function EditFood() {
   const { _id } = useParams();
   const navigate = useNavigate();
-  const [inputData, setInputData] = useState({
-    nameprod: "",
-    price: "",
-    image: "",
-    category: "",
-  });
+  const [inputData, setInputData] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
     axios
       .get(`http://localhost:5000/api/product/${_id}`)
       .then((response) => {
-        const { nameprod, price, image, category } = response.data.product;
-        setInputData({
-          ...inputData,
-          nameprod: nameprod,
-          price: price,
-          image: image,
-          category: category,
-        });
+        setInputData(response.data.product);
       })
       .catch((err) => console.log(err));
   }, [_id]);
 
-  const handleEditFood = (event) => {
+  const handleEditFood = async (event) => {
     event.preventDefault();
-    axios
-      .put(
-        `http://localhost:5000/api/admin/update-product/${_id}`,
-        inputData,
-        token
-      )
-      .then((res) => {
-        setIsSuccess(true);
+    try {      
+      const validatedData = await schema.validate({
+        nameprod: inputData.nameprod,
+        price: inputData.price,
+        category: inputData.category,
+        image: inputData.image
       })
-      .catch((err) => {
-        console.log(err);
-        message.error("Chỉnh sửa món ăn thất bại");
-      });
+      await axios
+        .put(
+          `http://localhost:5000/api/admin/update-product/${_id}`,
+          validatedData,
+          token
+        )        
+          setIsSuccess(true);
+    } catch (error) {      
+        if (error instanceof yup.ValidationError) {
+          const errorMessages = error.errors;
+          const errorMessageList = errorMessages.map((message, index) => (
+            <li key={index}>{message}</li>
+          ));
+          notification.error({
+            message: (
+              <ul>
+                {errorMessageList}
+              </ul>
+            ),
+          });
+        }     
+    }    
   };
 
   const handleImageChange = (event) => {
@@ -104,7 +134,7 @@ function EditFood() {
             Giá
           </label>
           <input
-            type="text"
+            type="number"
             className="form-control"
             id="price"
             name="price"

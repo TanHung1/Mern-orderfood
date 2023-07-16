@@ -23,21 +23,21 @@ class StaffController {
         status === "Đơn hàng bị hủy"
       ) {
         order.status = status;
-
+  
         if (status === "Đã xác nhận") {
           order.status = "Đã xác nhận";
         }
-
+  
         if (status === "Đang giao") {
           order.status = "Đang giao";
           order.shippingDate = Date.now();
         }
-
+  
         if (status === "Đã hoàn thành") {
           order.status = "Đã hoàn thành";
           order.deliveredDate = Date.now();
         }
-
+  
         if (status === "Đơn hàng bị hủy") {
           order.status = "Đơn hàng bị hủy";
         }
