@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
-import { Modal, Button, message, notification } from "antd";
+import { Modal, Button, message, notification, Avatar } from "antd";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -148,7 +148,10 @@ function MyAccountEdit() {
             <div className="left-previousOders-content">
               <div className="header-info">
                 <div>
-                  <img src={customerAvatar}></img>
+                  <Avatar
+                    src={customerAvatar}
+                    style={{ width: "100%", height: "100%" }}
+                  ></Avatar>
                 </div>
                 <h2>
                   XIN CHÀO,
