@@ -29,11 +29,11 @@ function StaffEditBill() {
       .get(`http://localhost:5000/api/staff/order/${_id}`, token)
       .then((res) => {
         setOrder(res.data);
-        setUsername(res.data.username);
-        setPhoneNumber(res.data.phonenumber);
-        setAddress(res.data.address);
-        setTotalPrice(res.data.totalPrice);
-        setStatus(res.data.status);
+        setUsername(res.data.order.username);
+        setPhoneNumber(res.data.order.phonenumber);
+        setAddress(res.data.order.address);
+        setTotalPrice(res.data.order.totalPrice);
+        setStatus(res.data.order.status);
       })
       .catch((err) => console.log(err));
   }, [_id]);
@@ -61,19 +61,16 @@ function StaffEditBill() {
       .catch((err) => console.log(err));
   };
 
-  if (order) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <div className="container mt-4">
       <h2 className="Edit-order">Cập nhật thông tin đơn hàng</h2>
-    {!order?<div>Loading...</div>:<Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit}>
         <FormGroup>
           <Label>Tên khách hàng:</Label>
           <Input
             type="text"
             value={username}
+            disabled="true"
             onChange={(e) => setUsername(e.target.value)}
           />
         </FormGroup>
@@ -81,6 +78,7 @@ function StaffEditBill() {
           <Label>Số điện thoại:</Label>
           <Input
             type="text"
+            disabled="true"
             value={phonenumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
           />
@@ -89,6 +87,7 @@ function StaffEditBill() {
           <Label>Địa chỉ:</Label>
           <Input
             type="text"
+            disabled="true"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
           />
@@ -97,6 +96,7 @@ function StaffEditBill() {
           <Label>Tổng giá:</Label>
           <Input
             type="text"
+            disabled="true"
             value={totalPrice}
             onChange={(e) => setTotalPrice(e.target.value)}
           />
@@ -108,7 +108,7 @@ function StaffEditBill() {
             value={status}
             onChange={(e) => setStatus(e.target.value)}
           >
-             <option value="Chưa xác nhận">Chưa xác nhận</option>
+            <option value="Chưa xác nhận">Chưa xác nhận</option>
             <option value="Đã xác nhận">Đã xác nhận</option>
             <option value="Đang giao">Đang giao</option>
             <option value="Đã hoàn thành">Đã hoàn thành</option>
@@ -118,7 +118,7 @@ function StaffEditBill() {
         <Button color="primary" type="submit" className="btn-editOrder">
           Lưu
         </Button>
-      </Form>}  
+      </Form>
     </div>
   );
 }

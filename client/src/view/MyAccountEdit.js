@@ -74,7 +74,7 @@ function MyAccountEdit() {
     localStorage.removeItem("cart");
 
     // Chuyển hướng đến trang đăng nhập
-    window.location.pathname = "/login";
+    //window.location.pathname = "/login";
   };
 
   const handleUpdate = async (e) => {
@@ -143,7 +143,9 @@ function MyAccountEdit() {
                   <br /> {FullName}
                 </h2>
                 <p>
-                  <NavLink onClick={handleLogout}>Đăng xuất</NavLink>
+                  <NavLink onClick={handleLogout} to={"/login"}>
+                    Đăng xuất
+                  </NavLink>
                 </p>
               </div>
               <ul>

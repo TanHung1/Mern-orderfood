@@ -67,7 +67,6 @@ function EditBill() {
         setAddress(res.data.order.address);
         setTotalPrice(res.data.order.totalPrice);
         setStatus(res.data.order.status);
-        
       })
       .catch((err) => console.log(err));
   }, [_id]);
@@ -135,6 +134,15 @@ function EditBill() {
             onChange={(e) => setAddress(e.target.value)}
           />
           <label style={{ color: "red" }}>{errors.address?.message}</label>
+        </FormGroup>
+        <FormGroup>
+          <Label>Tổng giá:</Label>
+          <Input
+            type="text"
+            disabled="true"
+            value={totalPrice}
+            onChange={(e) => setTotalPrice(e.target.value)}
+          />
         </FormGroup>
         <FormGroup>
           <Label>Trạng thái:</Label>

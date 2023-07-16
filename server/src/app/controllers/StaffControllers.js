@@ -17,15 +17,15 @@ class StaffController {
 
       if (
         status === "Chưa xác nhận" ||
-        status === "Đang chuẩn bị món" ||
+        status === "Đã xác nhận" ||
         status === "Đang giao" ||
-        status === "Đã hoàn thành giao đơn hàng" ||
+        status === "Đã hoàn thành" ||
         status === "Đơn hàng bị hủy"
       ) {
         order.status = status;
 
-        if (status === "Đang chuẩn bị món") {
-          order.status = "Đang chuẩn bị món";
+        if (status === "Đã xác nhận") {
+          order.status = "Đã xác nhận";
         }
 
         if (status === "Đang giao") {
@@ -33,8 +33,8 @@ class StaffController {
           order.shippingDate = Date.now();
         }
 
-        if (status === "Đã hoàn thành giao đơn hàng") {
-          order.status = "Đã hoàn thành giao đơn hàng";
+        if (status === "Đã hoàn thành") {
+          order.status = "Đã hoàn thành";
           order.deliveredDate = Date.now();
         }
 

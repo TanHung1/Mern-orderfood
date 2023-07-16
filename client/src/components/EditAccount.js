@@ -24,7 +24,7 @@ const schema = yup
       .matches(/^[a-zA-ZÀ-ỹ\s]*$/, "Họ và tên chỉ cho phép các ký tự chữ")
       .required("Không được để trống họ và tên"),
 
-    address: yup.string().required("Không được để trống địa chỉ giao hàng"),
+    // address: yup.string().required("Không được để trống địa chỉ giao hàng"),
 
     phonenumber: yup
       .string()
@@ -35,19 +35,11 @@ const schema = yup
 
     email: yup
       .string()
-      .email("Định dạng email không hợp lệ")
-      .required("Không được để trống email"),
+      .required("Không được để trống email")
+      .email("Định dạng email không hợp lệ"),
   })
   .required();
 function EditAccount() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
-
   const [account, setAccount] = useState(null);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -108,7 +100,7 @@ function EditAccount() {
         message.error(errorMessages.join(", "));
       } else {
         console.error(error);
-        message.error("Cập nhật thất bại");
+        message.error(error.response?.data.error);
       }
     }
   };
@@ -126,40 +118,32 @@ function EditAccount() {
           <Input
             type="text"
             value={username}
-            {...register("username")}
             onChange={(event) => setUsername(event.target.value)}
           />
-          <label style={{ color: "red" }}>{errors.username?.message}</label>
         </FormGroup>
         <FormGroup>
           <Label>Email:</Label>
           <Input
             type="email"
             value={email}
-            {...register("email")}
             onChange={(event) => setEmail(event.target.value)}
           />
-          <label style={{ color: "red" }}>{errors.email?.message}</label>
         </FormGroup>
         <FormGroup>
           <Label>Số điện thoại:</Label>
           <Input
             type="text"
             value={phonenumber}
-            {...register("phonenumber")}
             onChange={(event) => setPhoneNumber(event.target.value)}
           />
-          <label style={{ color: "red" }}>{errors.phonenumber?.message}</label>
         </FormGroup>
         <FormGroup>
           <Label>Địa chỉ:</Label>
           <Input
             type="text"
             value={address}
-            {...register("address")}
             onChange={(event) => setAddress(event.target.value)}
           />
-          <label style={{ color: "red" }}>{errors.address?.message}</label>
         </FormGroup>
         <FormGroup>
           <Label>Vị trí:</Label>
