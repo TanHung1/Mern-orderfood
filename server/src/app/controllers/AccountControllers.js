@@ -104,7 +104,7 @@ const loginWithFacebook = async (req, res) => {
 
 //[post] /api/account/login/google
 const loginWithGoogle = async (req, res) => {
-  const { iat, name, email } = req.body;
+  const { iat, name, email, picture } = req.body;
   try {
     const user = await Account.findOne({ authGoogleID: iat });
     if (user) {
@@ -119,6 +119,7 @@ const loginWithGoogle = async (req, res) => {
         authGoogleID: iat,
         username: name,
         email: email,
+        avatar: picture,
         loginType: "google",
       });
       const user = await newAccount.save();

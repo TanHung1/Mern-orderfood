@@ -4,9 +4,9 @@ const mongooseDelete = require("mongoose-delete");
 
 const Schema = mongoose.Schema;
 
-const Review= new Schema({
+const Review = new Schema({
   user_id: {
-    type: String
+    type: String,
   },
   avatar : {
     type: String
@@ -15,17 +15,21 @@ const Review= new Schema({
     type: String,
   },
 
+  avatar: {
+    type: String,
+  },
+
   rating: {
-    type: Number
+    type: Number,
   },
 
   comment: {
-    type: String
+    type: String,
   },
   created: {
     type: Date,
-    default: new Date()
-  }
+    default: new Date(),
+  },
 });
 
 const Product = new mongoose.Schema(
@@ -36,7 +40,7 @@ const Product = new mongoose.Schema(
     price: { type: Number },
     reviews: [Review],
 
-    deleted:{
+    deleted: {
       type: Boolean,
       default: false,
     },
@@ -49,7 +53,6 @@ const Product = new mongoose.Schema(
     // timestamps: true,
   }
 );
-
 
 mongoose.plugin(slug);
 Product.plugin(mongooseDelete, { overrideMethods: "all" });

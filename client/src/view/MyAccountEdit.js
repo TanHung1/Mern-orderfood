@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
-import { Modal, Button, message, notification } from "antd";
+import { Modal, Button, message, notification, Avatar } from "antd";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -46,6 +46,7 @@ function MyAccountEdit() {
   const [customerAddress, setCustomerAddress] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
+  const [customerAvatar, setCustomerAvatar] = useState("");
   // const [message, setMessage] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const accessToken = localStorage.getItem("token");
@@ -63,6 +64,7 @@ function MyAccountEdit() {
       setCustomerAddress(dataUser.user?.address);
       setCustomerPhone(dataUser.user?.phonenumber);
       setCustomerEmail(dataUser.user?.email);
+      setCustomerAvatar(dataUser.user?.avatar);
     }
   }, []);
 
@@ -128,11 +130,15 @@ function MyAccountEdit() {
         ));
 
         notification.error({
+<<<<<<< HEAD
           message: (
             <ul>
               {errorMessageList}
             </ul>
           ),
+=======
+          message: <ul>{errorMessageList}</ul>,
+>>>>>>> 810c8e7f98cf28fd9403c93df37eec00a2a91bbc
         });
       } else {
         console.error(error.response?.data?.error);
@@ -148,6 +154,12 @@ function MyAccountEdit() {
           <div>
             <div className="left-previousOders-content">
               <div className="header-info">
+                <div>
+                  <Avatar
+                    src={customerAvatar}
+                    style={{ width: "100%", height: "100%" }}
+                  ></Avatar>
+                </div>
                 <h2>
                   XIN CHÀO,
                   <br /> {FullName}
