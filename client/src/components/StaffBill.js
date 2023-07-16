@@ -190,9 +190,11 @@ function StaffBill() {
           <Link to={`/Staff/manage-bill/edit/${record._id}`}>
             <Button type="primary">Sửa</Button>
           </Link>
-          <Button onClick={() => printInvoice(record)}>
-            <i class="fa-solid fa-print"></i>
-          </Button>
+          <Link to={`/Admin/manage-bill/print-bill/${record._id}`}>
+            <Button >
+              <i class="fa-solid fa-print"></i>
+            </Button>
+          </Link>
         </span>
       ),
     },

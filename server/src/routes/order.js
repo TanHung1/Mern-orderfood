@@ -9,6 +9,6 @@ router.get(
   AuthenticationAccount,
   myOrder
 );
-router.post("/neworder", newOrder);
+router.post("/neworder",AuthenticationAccount, newOrder);
 
 module.exports = router;
