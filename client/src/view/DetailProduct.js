@@ -27,7 +27,6 @@ const token = {
     "Content-Type": "application/json",
   },
 };
-// console.log(dataUser.user.avatar);
 
 export function DetailProduct() {
   const [open, setOpen] = useState(false);
@@ -175,11 +174,14 @@ export function DetailProduct() {
               {review.avatar ? (
                 <Avatar src={review.avatar} />
               ) : (
-                <Avatar 
-                      src = {user}  
-                      style={{border: "1px solid", borderRadius: "50%", backgroundColor: "rgba(0, 0, 0, 0.25)"}}            
-                    >
-                    </Avatar>
+                <Avatar
+                  src={user}
+                  style={{
+                    border: "1px solid",
+                    borderRadius: "50%",
+                    backgroundColor: "rgba(0, 0, 0, 0.25)",
+                  }}
+                ></Avatar>
               )}
               <p className="username">{review.name}</p>
               <Rate value={review.rating} disabled />

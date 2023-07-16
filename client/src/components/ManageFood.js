@@ -3,12 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/ManageFood.scss";
 import Footer from "../view/Footer";
-import { useForm, Controller, Control } from "react-hook-form"
-import { Button, Table, message, Popconfirm } from 'antd';
+import { useForm, Controller, Control } from "react-hook-form";
+import { Button, Table, message, Popconfirm } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
-import { yupResolver } from "@hookform/resolvers/yup"
-import * as yup from "yup"
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import { api } from "../util/api";
 const accessToken = localStorage.getItem("token");
 const dataUser = JSON.parse(accessToken);
@@ -19,16 +19,15 @@ const token = {
   },
 };
 
-
 function ManageFood() {
   const schema = yup
     .object({
-      nameprod: yup.string().required('Tên không được để trống'),
+      nameprod: yup.string().required("Tên không được để trống"),
       image: yup.string().required("Không được để trống"),
       price: yup.string().required("Không được để trống"),
-      category: yup.string().required("Phải chọn món ăn thuộc loại nào")
+      category: yup.string().required("Phải chọn món ăn thuộc loại nào"),
     })
-    .required()
+    .required();
   const {
     register,
     handleSubmit,
@@ -37,8 +36,8 @@ function ManageFood() {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
-  })
-  const onSubmit = (data) => console.log(data)
+  });
+  const onSubmit = (data) => console.log(data);
   const [inputData, setInputData] = useState({
     nameprod: "",
     price: "",
@@ -48,7 +47,7 @@ function ManageFood() {
   const [image, setImage] = useState(null);
   const [error, setError] = useState(null);
   const [data, setData] = useState([]);
-  const [count, setCount] = useState(1000)
+  const [count, setCount] = useState(1000);
   const [dialogActive, setDialogActive] = useState(false);
   const navigate = useNavigate();
   const [deletedProduct, setDeletedProduct] = useState(null);
@@ -63,14 +62,12 @@ function ManageFood() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-         
-      axios
-        .get(`http://localhost:5000/api/admin/get-all-products`, token)
-       .then((res)=>{
-        setData(res.data)
-       }) 
-    .catch ((error) =>
-      console.log(error));      
+    axios
+      .get(`http://localhost:5000/api/admin/get-all-products`, token)
+      .then((res) => {
+        setData(res.data);
+      })
+      .catch((error) => console.log(error));
   }, [deletedProduct, addedProduct]);
 
   const handleImageChange = (event) => {
@@ -85,24 +82,20 @@ function ManageFood() {
         setImage(reader.result);
       };
     } else {
-      setImage(error)
+      setImage(error);
     }
   };
   const handleAddFood = (event) => {
-
     axios
       .post("http://localhost:5000/api/admin/create-product", inputData, token)
       .then((res) => {
-        message.success("Thêm món ăn thành công")
-        setInputData({
-          nameprod: "",
-          price: "",
-        })
+        message.success("Thêm món ăn thành công");
+        setInputData({ nameprod: "", price: "", category: "" });
         navigate("/admin/manage-food");
         setAddedProduct(res.data._id);
       })
-      .catch((err) => {       
-        message.error("Thêm thất bại")
+      .catch((err) => {
+        message.error("Thêm thất bại");
       });
   };
 
@@ -129,85 +122,86 @@ function ManageFood() {
   const handleDelete = async (_id) => {
     setOpen(true);
     try {
-      const response = await axios.delete(`http://localhost:5000/api/admin/delete-product/${_id}`, token);
+      const response = await axios.delete(
+        `http://localhost:5000/api/admin/delete-product/${_id}`,
+        token
+      );
       if (response) {
         message.success("Xóa thành công");
       }
       setDeletedProduct(_id);
-
     } catch (error) {
       message.error("Xóa thất bại");
     }
   };
   const columns = [
     {
-      title: 'ID',
-      dataIndex: '_id',
-      key: '_id',
+      title: "ID",
+      dataIndex: "_id",
+      key: "_id",
       width: "10%",
       align: "center",
       render: (_id) => <span>{_id}</span>,
-
     },
     {
-      title: 'Tên món',
-      dataIndex: 'nameprod',
-      key: 'nameprod',
+      title: "Tên món",
+      dataIndex: "nameprod",
+      key: "nameprod",
       width: "40%",
       align: "center",
-      render: (nameprod) => <span>{nameprod}</span>
+      render: (nameprod) => <span>{nameprod}</span>,
     },
     {
-      title: 'Hình',
-      dataIndex: 'image',
-      key: 'image',
+      title: "Hình",
+      dataIndex: "image",
+      key: "image",
       width: "20%",
       align: "center",
-      render: (image) => <img style={{ maxWidth: 100 }} src={image}></img>
+      render: (image) => <img style={{ maxWidth: 100 }} src={image}></img>,
     },
     {
-      title: 'Giá',
-      dataIndex: 'price',
-      key: 'price',
+      title: "Giá",
+      dataIndex: "price",
+      key: "price",
       align: "center",
-      defaultSortOrder: 'descend',
+      defaultSortOrder: "descend",
       sorter: (a, b) => a.price - b.price,
-      render: (price) => <span>{price}</span>
+      render: (price) => <span>{price}</span>,
     },
     {
-      title: 'Loại',
-      dataIndex: 'category',
-      key: 'category',
+      title: "Loại",
+      dataIndex: "category",
+      key: "category",
       align: "center",
       filters: [
         {
-          text: 'pizza',
-          value: 'pizza',
+          text: "pizza",
+          value: "pizza",
         },
         {
-          text: 'drink',
-          value: 'drink',
+          text: "drink",
+          value: "drink",
         },
         {
-          text: 'desserts',
-          value: 'desserts',
+          text: "desserts",
+          value: "desserts",
         },
         {
-          text: 'side',
-          value: 'side',
-        }
+          text: "side",
+          value: "side",
+        },
       ],
       onFilter: (value, record) => record.category.indexOf(value) === 0,
-      render: (category) => <span>{category}</span>
+      render: (category) => <span>{category}</span>,
     },
     {
-      title: 'Lựa chọn',
-      key: 'action',
+      title: "Lựa chọn",
+      key: "action",
       align: "center",
       render: (record) => (
         <span>
           <Link to={`/admin/edit-food/${record._id}`}>
-          <Button type="primary">Sửa</Button>
+            <Button type="primary">Sửa</Button>
           </Link>
           <Popconfirm
             placement="top"
@@ -221,18 +215,19 @@ function ManageFood() {
               <DeleteOutlined />
             </Button>
           </Popconfirm>
-
         </span>
-      )
-    }
-  ]
+      ),
+    },
+  ];
 
   return (
     <section className="">
       <div className="account-food-content">
         <div className="right-history">
           <div className="admin-right">
-            <h3 className="list-food" style={{textAlign: "center"}}>DANH SÁCH MÓN ĂN</h3>
+            <h3 className="list-food" style={{ textAlign: "center" }}>
+              DANH SÁCH MÓN ĂN
+            </h3>
             <div className="add-dish">
               <a
                 className="dialog-btn"
@@ -241,11 +236,12 @@ function ManageFood() {
               >
                 Thêm món ăn
               </a>
-
             </div>
             <div className="trash-dish">
               <Link to="/admin/trash-food">
-                <button className="trash-dish-btn text-decoration-none btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i>({data.deleteCount})</button>
+                <button className="trash-dish-btn text-decoration-none btn btn-sm btn-danger">
+                  <i class="fa-solid fa-trash"></i>({data.deleteCount})
+                </button>
               </Link>
             </div>
 
@@ -269,7 +265,10 @@ function ManageFood() {
                 </a>
                 <h3>Thêm món ăn</h3>
                 <form onSubmit={handleSubmit(handleAddFood)}>
-                  <label htmlFor="exampleFormControlFile1" className="text-lable">
+                  <label
+                    htmlFor="exampleFormControlFile1"
+                    className="text-lable"
+                  >
                     Tên món ăn
                   </label>
                   <input
@@ -283,7 +282,7 @@ function ManageFood() {
                       setInputData({ ...inputData, nameprod: e.target.value })
                     }
                   />
-                  <p style={{ color: 'red' }}>{errors.nameprod?.message}</p>
+                  <p style={{ color: "red" }}>{errors.nameprod?.message}</p>
                   <div className="form-group">
                     <label
                       htmlFor="exampleFormControlFile1"
@@ -294,7 +293,7 @@ function ManageFood() {
                     <input
                       type="file"
                       className="form-control"
-                      {...register('image')}
+                      {...register("image")}
                       accept="image/*"
                       id="exampleFormControlFile1"
                       onChange={handleImageChange}
@@ -306,7 +305,9 @@ function ManageFood() {
                         className="preview-image"
                       />
                     )}
-                    {!error ? <p style={{ color: 'red' }}>Chưa có hình ảnh</p> : null}
+                    {!error ? (
+                      <p style={{ color: "red" }}>Chưa có hình ảnh</p>
+                    ) : null}
                   </div>
                   <div className="form-group">
                     <label
@@ -317,16 +318,16 @@ function ManageFood() {
                     </label>
                     <input
                       type="number"
-                      className="form-control"
                       value={inputData.price}
-                      {...register('price')}
+                      className="form-control"
+                      {...register("price")}
                       placeholder="Nhập giá tiền"
                       id="exampleFormControlFile1"
                       onChange={(e) =>
                         setInputData({ ...inputData, price: e.target.value })
                       }
                     />
-                    <p style={{ color: 'red' }}>{errors.price?.message}</p>
+                    <p style={{ color: "red" }}>{errors.price?.message}</p>
                   </div>
                   <div className="form-group">
                     <label
@@ -338,19 +339,21 @@ function ManageFood() {
                     <select
                       className="form-control"
                       value={inputData.category}
-                      {...register('category')}
+                      {...register("category")}
                       onChange={(e) =>
                         setInputData({ ...inputData, category: e.target.value })
                       }
                     >
-                      <option>Loại</option>
-                      <option>pizza</option>
-                      <option>desserts</option>
-                      <option>drink</option>
-                      <option>side</option>
+                      <option value="">Chọn loại</option>
+                      <option value="pizza">Pizza</option>
+                      <option value="desserts">Tráng miệng</option>
+                      <option value="drink">Đồ uống</option>
+                      <option value="side">Món ăn kèm</option>
                     </select>
                   </div>
-                  <p style={{ color: 'red' }}>{errors.category === "Loại".message}</p>
+                  <p style={{ color: "red" }}>
+                    {errors.category === "Loại".message}
+                  </p>
 
                   <button type="submit" className="btn btn-primary">
                     Thêm món
@@ -363,8 +366,7 @@ function ManageFood() {
               columns={columns}
               dataSource={data.products}
               bordered
-            >
-            </Table>
+            ></Table>
           </div>
         </div>
       </div>
