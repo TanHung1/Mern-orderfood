@@ -8,7 +8,7 @@ import { Modal, Button, message, notification, Avatar } from "antd";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-
+import iconuser from "../assets/user-solid.svg";
 const schema = yup
   .object({
     username: yup
@@ -148,10 +148,21 @@ function MyAccountEdit() {
             <div className="left-previousOders-content">
               <div className="header-info">
                 <div>
-                  <Avatar
-                    src={customerAvatar}
-                    style={{ width: "100%", height: "100%" }}
-                  ></Avatar>
+                  {customerAvatar ? (
+                    <Avatar
+                      src={customerAvatar}
+                      style={{ width: "100%", height: "100%" }}
+                    ></Avatar>
+                  ) : (
+                    <Avatar
+                      src={iconuser}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        border: "1px solid black",
+                      }}
+                    ></Avatar>
+                  )}
                 </div>
                 <h2>
                   XIN CHÀO,
