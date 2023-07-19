@@ -9,7 +9,6 @@ import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { api } from "../util/api";
 const accessToken = localStorage.getItem("token");
 const dataUser = JSON.parse(accessToken);
 const token = {

@@ -93,7 +93,6 @@ function MyAccountEdit() {
           },
         }
       );
-      console.log(response);
 
       // Lưu thông tin người dùng mới vào local storage và cập nhật state
       const updatedUser = {
@@ -108,7 +107,6 @@ function MyAccountEdit() {
         JSON.stringify({ user: updatedUser, token: dataUser?.token })
       );
 
-      // Hiển thị thông báo thành công
       message.success("Cập nhật thành công");
     } catch (error) {
       if (error instanceof yup.ValidationError) {

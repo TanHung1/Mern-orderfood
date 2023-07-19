@@ -1,4 +1,4 @@
-const express = require("express");
+const express = require("express")
 const { createProduct, getAllProducts, trashProducts, updateProduct, deleteProduct, restoreProduct, forcedeleteProduct, getAllOrders, getOrderById, updateOrder, deleteOrder, getAllAccounts, getAccountById, updateAccount, restoreOrder, forcedeleteOrder, updateStatusOrder } = require("../app/controllers/AdminControllers");
 const { AuthenticationAccount, checkRole } = require("../app/middleware/Authentication");
 const router = express.Router();

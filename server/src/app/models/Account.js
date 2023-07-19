@@ -55,7 +55,6 @@ const Account = new Schema(
 
   {
     versionKey: false,
-    collection: "accounts",
     timestamps: true,
   }
 );
