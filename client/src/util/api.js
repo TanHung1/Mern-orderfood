@@ -1,1 +1,2 @@
-export const api = "https://api-order-food.onrender.com"
+ const api = "https://api-order-food.onrender.com"
+ export default api;
