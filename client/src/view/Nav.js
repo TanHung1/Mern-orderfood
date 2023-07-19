@@ -5,6 +5,7 @@ import pizza from "../assets/logoPizza.png";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import iconuser from "../assets/user-solid.svg";
+
 function Nav() {
   const [cartItemCount, setCartItemCount] = useState(0);
   const [isNavOpen, setIsNavOpen] = useState(false);

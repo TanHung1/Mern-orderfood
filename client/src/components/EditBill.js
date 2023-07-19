@@ -7,6 +7,7 @@ import "../styles/EditBill.scss";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import api from "../util/api.js";
 
 const schema = yup
   .object({
@@ -59,7 +60,7 @@ function EditBill() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/admin/order/${_id}`, token)
+      .get(`${api}/api/admin/order/${_id}`, token)
       .then((res) => {
         setOrder(res.data);
         setUsername(res.data.order.username);
@@ -82,7 +83,7 @@ function EditBill() {
     };
     axios
       .put(
-        `http://localhost:5000/api/admin/update-order/${_id}`,
+        `${api}/api/admin/update-order/${_id}`,
         updatedOrder,
         token
       )

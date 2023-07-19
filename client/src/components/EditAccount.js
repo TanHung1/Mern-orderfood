@@ -7,6 +7,7 @@ import { message } from "antd";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import api from "../util/api.js";
 
 const accessToken = localStorage.getItem("token");
 const dataUser = JSON.parse(accessToken);
@@ -50,7 +51,7 @@ function EditAccount() {
   const navigate = useNavigate();
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/admin/account/${_id}`, token)
+      .get(`${api}/api/admin/account/${_id}`, token)
       .then((response) => {
         const accountData = response.data.account;
         setAccount(accountData);
@@ -87,7 +88,7 @@ function EditAccount() {
         role: validate.role,
       };
       await axios.put(
-        `http://localhost:5000/api/admin/update-account/${_id}`,
+        `${api}/api/admin/update-account/${_id}`,
         updatedAccount,
         token
       );

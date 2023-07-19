@@ -15,6 +15,7 @@ import {
 } from "antd";
 import user from "../assets/user.png";
 import Avatar from "antd/es/avatar/avatar";
+import api from "../util/api.js";
 
 const { TextArea } = Input;
 
@@ -40,7 +41,7 @@ export function DetailProduct() {
 
   const productAll = async () => {
     const response = await axios.get(
-      `http://localhost:5000/api/product/${_id}`
+      `${api}/api/product/${_id}`
     );
 
     if (response?.data) {
@@ -94,7 +95,7 @@ export function DetailProduct() {
         handleCancel();
       }
       const response = await axios.post(
-        `http://localhost:5000/api/product/create-review/${_id}`,
+        `${api}/api/product/create-review/${_id}`,
         {
           user_id: dataUser.user._id,
           avatar: dataUser.user.avatar,

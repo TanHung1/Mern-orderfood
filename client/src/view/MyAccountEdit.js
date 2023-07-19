@@ -10,6 +10,8 @@ import { useForm } from "react-hook-form";
 import user from "../assets/user.png";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import api from "../util/api.js";
+
 const schema = yup
   .object({
     username: yup
@@ -84,7 +86,7 @@ function MyAccountEdit() {
 
       // Gửi dữ liệu lên server nếu dữ liệu hợp lệ
       const response = await axios.put(
-        `http://localhost:5000/api/account/${dataUser?.user?._id}/update-account`,
+        `${api}/api/account/${dataUser?.user?._id}/update-account`,
         validatedData,
         {
           headers: {

@@ -7,8 +7,9 @@ import "../styles/EditBill.scss";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import moment from "moment";
-
 import "moment/locale/vi";
+import api from "../util/api.js";
+
 const accessToken = localStorage.getItem("token");
 const dataUser = JSON.parse(accessToken);
 const token = {
@@ -25,7 +26,7 @@ function StaffBill() {
 
   const result = async () => {
     const ressponse = await axios
-      .get("http://localhost:5000/api/staff/all-orders", token)
+      .get(`${api}/api/staff/all-orders`, token)
       .then((res) => setData(res.data))
       .catch((err) => console.log(err));
 

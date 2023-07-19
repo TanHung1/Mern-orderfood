@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Form, FormGroup, Label, Input, Button } from "reactstrap";
 import { message } from "antd";
 import "../styles/EditBill.scss";
+import api from "../util/api.js";
 
 const accessToken = localStorage.getItem("token");
 const dataUser = JSON.parse(accessToken);
@@ -26,7 +27,7 @@ function StaffEditBill() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/staff/order/${_id}`, token)
+      .get(`${api}/api/staff/order/${_id}`, token)
       .then((res) => {
         setOrder(res.data);
         setUsername(res.data.order.username);
@@ -49,7 +50,7 @@ function StaffEditBill() {
     };
     axios
       .put(
-        `http://localhost:5000/api/staff/update-status-order/${_id}`,
+        `${api}/api/staff/update-status-order/${_id}`,
         updatedOrder,
         token
       )

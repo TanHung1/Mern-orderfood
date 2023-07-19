@@ -7,6 +7,7 @@ import { Modal, message, Button, Result, notification } from "antd";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import api from "../util/api.js";
 
 const schema = yup
   .object({
@@ -104,7 +105,7 @@ const CheckOut = () => {
       }
 
       const response = await axios.post(
-        "http://localhost:5000/api/order/neworder",
+        `${api}/api/order/neworder`,
         {
           cart,
           customerName,

@@ -3,6 +3,8 @@ import axios from "axios";
 import { Table, Tag, Button } from "antd";
 import { NavLink, Link } from "react-router-dom";
 import moment from "moment";
+import api from "../util/api.js";
+
 const PreviousOrders = ({ customerId }) => {
   const [orders, setOrders] = useState([]);
   const [customerName, setCustomerName] = useState("");
@@ -28,7 +30,7 @@ const PreviousOrders = ({ customerId }) => {
     const fetchOrders = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/order/${userId}/myorder`,
+          `${api}/api/order/${userId}/myorder`,
           token
         );
         console.log(

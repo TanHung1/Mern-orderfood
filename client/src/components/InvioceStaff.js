@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import moment from "moment";
 import { Table, Button } from "antd";
 import { useReactToPrint } from "react-to-print";
+import api from "../util/api.js";
 
 function InvoiceStaff() {
   const [order, setOrder] = useState([]);
@@ -32,7 +33,7 @@ function InvoiceStaff() {
     };
 
     axios
-      .get(`http://localhost:5000/api/staff/order/${_id}`, token)
+      .get(`${api}/api/staff/order/${_id}`, token)
       .then((res) => {
         setOrder(res.data.order);
         setId(res.data.order._id);

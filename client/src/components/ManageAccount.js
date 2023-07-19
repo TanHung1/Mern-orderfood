@@ -4,6 +4,7 @@ import { Table, Button } from "antd";
 import { Link } from "react-router-dom";
 import {EditOutlined} from "@ant-design/icons"
 import "../styles/ManageAccount.scss";
+import api from "../util/api.js";
 
 const accessToken = localStorage.getItem("token");
 const dataUser = JSON.parse(accessToken);
@@ -19,7 +20,7 @@ function ManageAccount() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/admin/all-accounts", token)
+      .get(`${api}/api/admin/all-accounts`, token)
       .then((response) => {
         setaccounts(response.data.accounts);
       })

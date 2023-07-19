@@ -6,6 +6,7 @@ import Footer from "../view/Footer";
 import { useForm, Controller, Control } from "react-hook-form";
 import { Button, Table, message, Popconfirm } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import api from "../util/api.js";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -62,7 +63,7 @@ function ManageFood() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/admin/get-all-products`, token)
+      .get(`${api}/api/admin/get-all-products`, token)
       .then((res) => {
         setData(res.data);
       })
@@ -86,7 +87,7 @@ function ManageFood() {
   };
   const handleAddFood = (event) => {
     axios
-      .post("http://localhost:5000/api/admin/create-product", inputData, token)
+      .post(`${api}/api/admin/create-product`, inputData, token)
       .then((res) => {
         message.success("Thêm món ăn thành công");
         setInputData({ nameprod: "", price: "", category: "" });
@@ -122,7 +123,7 @@ function ManageFood() {
     setOpen(true);
     try {
       const response = await axios.delete(
-        `http://localhost:5000/api/admin/delete-product/${_id}`,
+        `${api}/api/admin/delete-product/${_id}`,
         token
       );
       if (response) {

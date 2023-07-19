@@ -8,6 +8,7 @@ import jwt_decode from "jwt-decode";
 import about from "../assets/about-img.png";
 import { NavLink, useRoutes, useNavigate } from "react-router-dom";
 import { notification } from "antd";
+import api from "../util/api.js";
 
 import "../styles/LoginComponent.scss";
 
@@ -17,7 +18,7 @@ const LoginComponent = () => {
   const handleSubmit = async (values) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/account/login",
+        `${api}/api/account/login`,
         values
       );
 
@@ -46,7 +47,7 @@ const LoginComponent = () => {
     const { id, name } = profile;
     const avatar = profile.picture.data.url;
     const response = await axios.post(
-      "http://localhost:5000/api/account/login/facebook",
+      `${api}/api/account/login/facebook`,
       {
         id,
         name,
@@ -71,7 +72,7 @@ const LoginComponent = () => {
     const { iat, name, email, picture } = decoded;
     console.log(decoded);
     const response = await axios.post(
-      "http://localhost:5000/api/account/login/google",
+      `${api}/api/account/login/google`,
       {
         iat,
         name,

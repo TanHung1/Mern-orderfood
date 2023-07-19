@@ -7,6 +7,8 @@ import "../styles/EditBill.scss";
 import moment from "moment";
 import "moment/locale/vi";
 import "jspdf-autotable";
+import api from "../util/api.js";
+
 const accessToken = localStorage.getItem("token");
 const dataUser = JSON.parse(accessToken);
 const token = {
@@ -22,7 +24,7 @@ function ManageBill() {
 
   useEffect((res) => {
     axios
-      .get("http://localhost:5000/api/admin/get-all-orders", token)
+      .get(`${api}/api/admin/get-all-orders`, token)
       .then((res) => {
         setData(res.data);
       })
@@ -31,7 +33,7 @@ function ManageBill() {
 
   const handleDelete = (_id) => {
     axios
-      .delete(`http://localhost:5000/api/admin/${_id}/delete-order`, token)
+      .delete(`${api}/api/admin/${_id}/delete-order`, token)
       .then((res) => {
         message.success("Xóa đơn hàng thành công!");
         setData(data.filter((d) => d._id !== _id));

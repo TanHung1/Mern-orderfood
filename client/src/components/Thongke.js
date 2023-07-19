@@ -5,6 +5,7 @@ import "../styles/EditBill.scss";
 import moment from "moment";
 import "moment/locale/vi";
 import { Line, Column } from "@ant-design/charts";
+import api from "../util/api.js";
 
 const accessToken = localStorage.getItem("token");
 const dataUser = JSON.parse(accessToken);
@@ -21,7 +22,7 @@ function ThongKe() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/admin/get-all-orders", token)
+      .get(`${api}/api/admin/get-all-orders`, token)
       .then((res) => {
         setData(res.data);
       })

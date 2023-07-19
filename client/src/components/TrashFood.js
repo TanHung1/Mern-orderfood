@@ -4,6 +4,8 @@ import axios from "axios";
 import "../styles/ManageFood.scss";
 import { message, Button, Popconfirm, Table } from "antd";
 import { DeleteOutlined, RetweetOutlined } from "@ant-design/icons";
+import api from "../util/api.js";
+
 const accessToken = localStorage.getItem("token");
 
 const dataUser = JSON.parse(accessToken);
@@ -23,7 +25,7 @@ function TrashFood() {
 
     const getTrash = async () => {
         await axios
-            .get("http://localhost:5000/api/admin/trash-product", token)
+            .get(`${api}/api/admin/trash-product`, token)
             .then((res) => setData(res.data))
             .catch((err) => console.log(err));
     }
@@ -36,7 +38,7 @@ function TrashFood() {
     };
 
     const handleRestore = async (_id, data) => {
-        const result = await axios.patch(`http://localhost:5000/api/admin/restore-product/${_id}`, data, token)
+        const result = await axios.patch(`${api}/api/admin/restore-product/${_id}`, data, token)
         console.log(result)
         if (result?.data?.success) {
             message.success("Khôi phục thành công")
@@ -52,7 +54,7 @@ function TrashFood() {
         setOpen(true)
         try {
             await axios
-                .delete(`http://localhost:5000/api/admin/forcedelete-product/${_id}`, token)
+                .delete(`${api}/api/admin/forcedelete-product/${_id}`, token)
                 message.success("Xóa thành công")
                     
             setDeletedProduct(_id);

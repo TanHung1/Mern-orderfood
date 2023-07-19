@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { notification, Modal } from "antd";
 import "../styles/EditFood.scss";
 import * as yup from "yup";
+import api from "../util/api.js";
 
 const accessToken = localStorage.getItem("token");
 const dataUser = JSON.parse(accessToken);
@@ -49,7 +50,7 @@ function EditFood() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/product/${_id}`)
+      .get(`${api}/api/product/${_id}`)
       .then((response) => {
         setInputData(response.data.product);
       })
@@ -67,7 +68,7 @@ function EditFood() {
       })
       await axios
         .put(
-          `http://localhost:5000/api/admin/update-product/${_id}`,
+          `${api}/api/admin/update-product/${_id}`,
           validatedData,
           token
         )        

@@ -3,6 +3,7 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, notification, message, Space, Select } from "antd";
+import api from "../util/api.js";
 
 function MenuComponent() {
   const [data, setData] = useState([]);
@@ -17,7 +18,7 @@ function MenuComponent() {
   };
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/product")
+    fetch(`${api}/api/product`)
       .then((response) => response.json())
       .then((data) => {
         setData(data);

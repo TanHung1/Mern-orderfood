@@ -12,6 +12,7 @@ import { Form, Input, Button, message, Alert, notification } from "antd";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
+import api from "../util/api.js";
 
 function RegisterComponent() {
   const [success, setSuccess] = useState(false);
@@ -30,7 +31,7 @@ function RegisterComponent() {
     setError(null);
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/account/register",
+        `${api}/api/account/register`,
         data
       );
       setSuccess(true);
