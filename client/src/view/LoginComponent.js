@@ -139,7 +139,7 @@ const LoginComponent = () => {
                 authorizationUrl="https://www.facebook.com/dialog/oauth"
                 responseType="token"
                 clientId="1977957859224393"
-                redirectUri="http://localhost:3000/login"
+                redirectUri="https://api-order-food.onrender.com/login"
                 onSuccess={onSuccessFacebook}
                 onFailure={onFailureFacebook}
               >
