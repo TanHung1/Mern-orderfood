@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import "../styles/Invoice.scss";
-import dayjs from "dayjs";
 import moment from "moment";
 import { Table, Button } from "antd";
 import { useReactToPrint } from "react-to-print";
@@ -17,10 +16,9 @@ function InvoiceStaff() {
   const [totalPrice, setTotalPrice] = useState(0);
   const [status, setStatus] = useState("");
   const [createdAt, setCreatedAt] = useState("");
-  const [currentDateTime, setCurrentDateTime] = useState(dayjs());
   const { _id } = useParams();
   const componentRef = useRef();
-  const navigate = useNavigate();
+
 
   useEffect(() => {
     const accessToken = localStorage.getItem("token");

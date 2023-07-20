@@ -44,7 +44,6 @@ const token = {
 function EditBill() {
   const {
     register,
-    handleSubmit,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),

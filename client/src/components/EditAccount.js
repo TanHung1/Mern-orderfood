@@ -4,8 +4,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Form, FormGroup, Label, Input, Button } from "reactstrap";
 import "../styles/EditStaff.scss";
 import { message } from "antd";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import api from "../util/api.js";
 

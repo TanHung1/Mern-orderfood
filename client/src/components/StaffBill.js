@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { Table, Tag, Button } from "antd";
-import { EditOutlined } from "@ant-design/icons";
 import "../styles/EditBill.scss";
-import jsPDF from "jspdf";
 import "jspdf-autotable";
 import moment from "moment";
 import "moment/locale/vi";
@@ -21,7 +19,6 @@ const token = {
 
 function StaffBill() {
   const [data, setData] = useState([]);
-  const [order, setOrder] = useState(null);
   const navigate = useNavigate();
 
   const result = async () => {
@@ -108,7 +105,7 @@ function StaffBill() {
           value: "Đơn hàng bị hủy",
         },
       ],
-      onFilter: (value, record) => record.status.indexOf(value) == 0,
+      onFilter: (value, record) => record.status.indexOf(value) === 0,
       render: (status) => {
         let color;
         switch (status) {

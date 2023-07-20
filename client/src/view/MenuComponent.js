@@ -1,8 +1,7 @@
 import "../styles/MenuComponent.scss";
-import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Button, notification, message, Space, Select } from "antd";
+import { Link } from "react-router-dom";
+import { message, Space, Select } from "antd";
 import api from "../util/api.js";
 
 function MenuComponent() {

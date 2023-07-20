@@ -5,10 +5,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
 import {  message, notification, Avatar } from "antd";
-import { UserOutlined } from "@ant-design/icons";
-import { useForm } from "react-hook-form";
 import user from "../assets/user.png";
-import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import api from "../util/api.js";
 

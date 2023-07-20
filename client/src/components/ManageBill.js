@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
-import { Table, Tag, Popconfirm, message, Button } from "antd";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
+import { Table, Tag, message, Button } from "antd";
+import { EditOutlined } from "@ant-design/icons";
 import "../styles/EditBill.scss";
 import moment from "moment";
 import "moment/locale/vi";
@@ -20,7 +20,6 @@ const token = {
 
 function ManageBill() {
   const [data, setData] = useState([]);
-  const navigate = useNavigate();
 
   useEffect((res) => {
     axios
@@ -31,15 +30,6 @@ function ManageBill() {
       .catch((error) => console.log(error));
   }, []);
 
-  const handleDelete = (_id) => {
-    axios
-      .delete(`${api}/api/admin/${_id}/delete-order`, token)
-      .then((res) => {
-        message.success("Xóa đơn hàng thành công!");
-        setData(data.filter((d) => d._id !== _id));
-      })
-      .catch((err) => console.log(err));
-  };
   const columns = [
     {
       title: "ID",

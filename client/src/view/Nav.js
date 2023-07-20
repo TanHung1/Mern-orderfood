@@ -4,21 +4,13 @@ import "../styles/Nav.scss";
 import pizza from "../assets/logoPizza.png";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import iconuser from "../assets/user-solid.svg";
 
 function Nav() {
   const [cartItemCount, setCartItemCount] = useState(0);
   const [isNavOpen, setIsNavOpen] = useState(false);
 
-  const location = useLocation();
-  const navigate = useNavigate();
   const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
   const user = JSON.parse(localStorage.getItem("token")) || [];
-  const totalAmount = () => {
-    return cartItems.reduce((total, item) => {
-      return total + item.quantity++;
-    }, 0);
-  };
   useEffect(() => {});
 
   // useEffect(() => {
@@ -66,7 +58,7 @@ function Nav() {
               Về N o No
             </NavLink>
           </li>
-          {user?.user?.role != "staff" ? null : (
+          {user?.user?.role !== "staff" ? null : (
             <li className="nav-item">
               <NavLink
                 className="nav-link"
@@ -77,7 +69,7 @@ function Nav() {
               </NavLink>
             </li>
           )}
-          {user?.user?.role != "admin" ? null : (
+          {user?.user?.role !== "admin" ? null : (
             <li className="nav-item dropdown">
               <a
                 className="nav-link dropdown-toggle"

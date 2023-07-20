@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
 import "../styles/EditBill.scss";
 import moment from "moment";
 import "moment/locale/vi";
-import { Line, Column } from "@ant-design/charts";
+import { Line } from "@ant-design/charts";
 import api from "../util/api.js";
-
 const accessToken = localStorage.getItem("token");
 const dataUser = JSON.parse(accessToken);
 const token = {

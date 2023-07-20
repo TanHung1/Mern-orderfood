@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
 import f6 from "../assets/f6.png";
-import { Form, Input, Button, Modal, Alert, message } from "antd";
+import { Form, Input, Button, message } from "antd";
 import OAuth2Login from "react-simple-oauth2-login";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
-import about from "../assets/about-img.png";
-import { NavLink, useRoutes, useNavigate } from "react-router-dom";
-import { notification } from "antd";
+import { NavLink, useNavigate } from "react-router-dom";
 import api from "../util/api.js";
 
 import "../styles/LoginComponent.scss";

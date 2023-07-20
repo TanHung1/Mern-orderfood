@@ -2,10 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/ManageFood.scss";
-import Footer from "../view/Footer";
-import { useForm, Controller, Control } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Button, Table, message, Popconfirm } from "antd";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { DeleteOutlined } from "@ant-design/icons";
 import api from "../util/api.js";
 
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -31,8 +30,6 @@ function ManageFood() {
   const {
     register,
     handleSubmit,
-    setValue,
-    control,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -47,14 +44,12 @@ function ManageFood() {
   const [image, setImage] = useState(null);
   const [error, setError] = useState(null);
   const [data, setData] = useState([]);
-  const [count, setCount] = useState(1000);
   const [dialogActive, setDialogActive] = useState(false);
   const navigate = useNavigate();
   const [deletedProduct, setDeletedProduct] = useState(null);
   const [addedProduct, setAddedProduct] = useState(null);
   const [formValues, setFormValues] = useState({
     nameprod: "",
-    price: "",
     image: "",
     category: "",
   });
@@ -305,9 +300,6 @@ function ManageFood() {
                         className="preview-image"
                       />
                     )}
-                    {!error ? (
-                      <p style={{ color: "red" }}>Chưa có hình ảnh</p>
-                    ) : null}
                   </div>
                   <div className="form-group">
                     <label

@@ -1,10 +1,6 @@
 import React from "react";
 import "../styles/RegisterComponent.scss";
 import {
-  Link,
-  Navigate,
-  Router,
-  redirect,
   useNavigate,
 } from "react-router-dom";
 import f6 from "../assets/f6.png";
@@ -17,7 +13,6 @@ import api from "../util/api.js";
 function RegisterComponent() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
-  const [modalVisible, setModalVisible] = useState(false);
   const navigate = useNavigate();
   const handleSubmit = async (values) => {
     const { username, password, email, phonenumber } = values;

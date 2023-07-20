@@ -4,12 +4,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import moment from "moment";
 import axios from "axios";
 import {
-  Typography,
   message,
   Rate,
   Form,
   Input,
-  Button,
   Modal,
   Image,
 } from "antd";
